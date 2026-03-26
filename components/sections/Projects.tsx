@@ -47,6 +47,9 @@ export default function Projects() {
         const el = sectionRef.current;
         if (!el) return;
 
+        // Performans Optimizasyonu: Masaüstü logici (>= 1024px) geçerli değilse döngüye girip hesaplama yapma
+        if (window.innerWidth < 1024) return;
+
         let rafId: number;
         let lastProgress = 0;
 

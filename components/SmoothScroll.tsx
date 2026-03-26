@@ -16,6 +16,9 @@ interface SmoothScrollProps {
 
 export default function SmoothScroll({ children }: SmoothScrollProps) {
     useEffect(() => {
+        // Performans: Mobilde native tarayıcı kaydırmasını kullan, ağır animasyon motoru (Lenis) yükleme
+        if (window.innerWidth < 1024) return;
+
         const lenis = new Lenis({
             duration: 1.2,
             easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),

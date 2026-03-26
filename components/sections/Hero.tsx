@@ -2,7 +2,7 @@
 
 import dynamic from 'next/dynamic';
 import { ArrowDown } from 'lucide-react';
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import HeroWordCycle from '@/components/ui/HeroWordCycle';
 
@@ -24,7 +24,19 @@ const Spline = dynamic(() => import('@splinetool/react-spline'), {
 export default function Hero() {
     // Word-cycle fires onComplete when all 4 words have shown → reveal brand name
     const [settled, setSettled] = useState(false);
+    const [isDesktop, setIsDesktop] = useState(false);
+    
     const handleCycleComplete = useCallback(() => setSettled(true), []);
+
+    useEffect(() => {
+        // Sadece client-side çalışır, ekran genişliğini kontrol et
+        const handleResize = () => setIsDesktop(window.innerWidth >= 768);
+        handleResize(); // İlk açılışta kontrol
+        
+        // Yeniden boyutlandırma için event listener (isteğe bağlı ama önerilir)
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
 
     const handleScroll = (e: React.MouseEvent<HTMLAnchorElement | HTMLButtonElement>, targetId: string) => {
         e.preventDefault();
@@ -49,15 +61,36 @@ export default function Hero() {
             }}
             aria-label="Ana bölüm"
         >
-            {/* ── 3D Background (Spline) ─────────────────────────────── */}
+            {/* ── Background (3D on Desktop, Video on Mobile) ────────────────────── */}
             <div
-                style={{ position: 'absolute', inset: 0, zIndex: 0 }}
+                style={{ 
+                    position: 'absolute', 
+                    inset: 0, 
+                    zIndex: 0,
+                    backgroundColor: '#F3F3F3' // Dirty White Default Theme
+                }}
                 aria-hidden="true"
             >
-                <Spline
-                    scene="https://prod.spline.design/cYKgymvDXd6rGuOs/scene.splinecode"
-                    style={{ width: '100%', height: '100%' }}
-                />
+                {isDesktop ? (
+                    <Spline
+                        scene="https://prod.spline.design/cYKgymvDXd6rGuOs/scene.splinecode"
+                        style={{ width: '100%', height: '100%' }}
+                    />
+                ) : (
+                    <video
+                        autoPlay
+                        loop
+                        muted
+                        playsInline
+                        style={{
+                            width: '100%',
+                            height: '100%',
+                            objectFit: 'cover'
+                        }}
+                    >
+                        <source src="/media/hero_video.mp4" type="video/mp4" />
+                    </video>
+                )}
             </div>
 
             {/* ── Foreground Content ── */}
