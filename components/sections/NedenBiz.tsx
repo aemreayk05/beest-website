@@ -67,7 +67,6 @@ function StackedCard({ item, index, globalIndexOffset, totalCards, progress, isF
     const range = [index * 0.1, 1];
 
     const scale = useTransform(progress, range, [1, targetScale]);
-    const opacity = useTransform(progress, range, [1, 0.4]);
 
     return (
         <div

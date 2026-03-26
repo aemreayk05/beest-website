@@ -22,7 +22,6 @@ export default function ScrambleText({
     startDelay = 0
 }: ScrambleTextProps) {
     const [displayText, setDisplayText] = useState('');
-    const [isAnimating, setIsAnimating] = useState(false);
 
     useEffect(() => {
         let frame = 0;
@@ -30,7 +29,6 @@ export default function ScrambleText({
         let startTimeout: NodeJS.Timeout;
 
         const startAnimation = () => {
-            setIsAnimating(true);
             interval = setInterval(() => {
                 let scrambled = '';
                 let isFinished = true;
@@ -51,7 +49,6 @@ export default function ScrambleText({
 
                 if (isFinished) {
                     clearInterval(interval);
-                    setIsAnimating(false);
                     if (onComplete) onComplete();
                 }
             }, delay);
