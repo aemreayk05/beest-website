@@ -1,0 +1,107 @@
+
+> next-tmp@0.1.0 dev
+> next dev
+
+  ▲ Next.js 14.2.35
+  - Local:        http://localhost:3000
+
+ ✓ Starting...
+ ✓ Ready in 1270ms
+ ○ Compiling / ...
+ ✓ Compiled / in 621ms (557 modules)
+ GET / 200 in 726ms
+ ✓ Compiled in 77ms (272 modules)
+ ✓ Compiled in 141ms (557 modules)
+ GET / 200 in 48ms
+ ✓ Compiled in 684ms (272 modules)
+ ✓ Compiled in 157ms (557 modules)
+ ✓ Compiled in 43ms (272 modules)
+ GET / 200 in 51ms
+ GET / 200 in 34ms
+ ✓ Compiled /favicon.ico in 80ms (317 modules)
+ GET /favicon.ico 200 in 106ms
+ GET / 200 in 59ms
+ ✓ Compiled in 116ms (557 modules)
+ ✓ Compiled in 61ms (272 modules)
+ GET / 200 in 43ms
+ ✓ Compiled in 60ms (272 modules)
+ ✓ Compiled in 35ms (272 modules)
+ ✓ Compiled in 61ms (272 modules)
+ ✓ Compiled in 52ms (272 modules)
+ ⨯ ./components/ui/ProjectCard.tsx
+Error: 
+  [31mx[0m Unexpected token `a`. Expected jsx identifier
+    ,-[[36;1;4m/Users/aemre/Desktop/aea_temt_site/components/ui/ProjectCard.tsx[0m:16:1]
+ [2m16[0m |     link = '#',
+ [2m17[0m | }: ProjectCardProps) {
+ [2m18[0m |     return (
+ [2m19[0m |         <a
+    : [31;1m         ^[0m
+ [2m20[0m |             href={link}
+ [2m21[0m |             className="group relative flex flex-col w-[85vw] md:w-[60vw] lg:w-[45vw] lg:max-w-[800px] shrink-0 bg-white rounded-[2rem] p-4 lg:p-6 transition-transform duration-500 ease-out hover:-translate-y-2 pointer-events-auto"
+ [2m22[0m |             style={{
+    `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./components/ui/ProjectCard.tsx
+./components/sections/Projects.tsx
+ ⨯ ./components/ui/ProjectCard.tsx
+Error: 
+  [31mx[0m Unexpected token `a`. Expected jsx identifier
+    ,-[[36;1;4m/Users/aemre/Desktop/aea_temt_site/components/ui/ProjectCard.tsx[0m:16:1]
+ [2m16[0m |     link = '#',
+ [2m17[0m | }: ProjectCardProps) {
+ [2m18[0m |     return (
+ [2m19[0m |         <a
+    : [31;1m         ^[0m
+ [2m20[0m |             href={link}
+ [2m21[0m |             className="group relative flex flex-col w-[85vw] md:w-[60vw] lg:w-[45vw] lg:max-w-[800px] shrink-0 bg-white rounded-[2rem] p-4 lg:p-6 transition-transform duration-500 ease-out hover:-translate-y-2 pointer-events-auto"
+ [2m22[0m |             style={{
+    `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./components/ui/ProjectCard.tsx
+./components/sections/Projects.tsx
+ ⨯ ./components/ui/ProjectCard.tsx
+Error: 
+  [31mx[0m Unexpected token `a`. Expected jsx identifier
+    ,-[[36;1;4m/Users/aemre/Desktop/aea_temt_site/components/ui/ProjectCard.tsx[0m:16:1]
+ [2m16[0m |     link = '#',
+ [2m17[0m | }: ProjectCardProps) {
+ [2m18[0m |     return (
+ [2m19[0m |         <a
+    : [31;1m         ^[0m
+ [2m20[0m |             href={link}
+ [2m21[0m |             className="group relative flex flex-col w-[85vw] md:w-[60vw] lg:w-[45vw] lg:max-w-[800px] shrink-0 bg-white rounded-[2rem] p-4 lg:p-6 transition-transform duration-500 ease-out hover:-translate-y-2 pointer-events-auto"
+ [2m22[0m |             style={{
+    `----
+
+Caused by:
+    Syntax Error
+
+Import trace for requested module:
+./components/ui/ProjectCard.tsx
+./components/sections/Projects.tsx
+ ✓ Compiled in 194ms (595 modules)
+ ⚠ Fast Refresh had to perform a full reload due to a runtime error.
+ GET / 200 in 44ms
+ ✓ Compiled /favicon.ico in 49ms (337 modules)
+ GET /favicon.ico 200 in 72ms
+ GET / 200 in 64ms
+ GET / 200 in 19ms
+ ✓ Compiled in 117ms (595 modules)
+ ✓ Compiled in 68ms (595 modules)
+ ✓ Compiled in 28ms (290 modules)
+ ⚠ Found a change in next.config.mjs. Restarting the server to apply the changes...
+  ▲ Next.js 14.2.35
+  - Local:        http://localhost:3000
+
+ ✓ Starting...
+ ✓ Ready in 1430ms
+[?25h
