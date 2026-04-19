@@ -2,6 +2,7 @@
 
 import { useRef, useState, useEffect } from 'react';
 import Image from 'next/image';
+import { Check } from 'lucide-react';
 
 // ─── Veri ─────────────────────────────────────────────────────────────────────
 const HIZMETLER = [
@@ -105,11 +106,11 @@ export default function Hizmetler() {
         <section
             id="services"
             ref={containerRef}
-            style={{ height: '300vh' }}
+            style={{ height: '200vh' }}
             className="relative bg-[#F3F3F3]"
-            aria-label="Hizmetlerimiz"
+            aria-label="Beest Hizmet Ekosistemi"
         >
-            <div className="sticky top-0 h-screen flex items-center">
+            <div className="sticky top-0 h-screen flex items-center z-10">
                 {/* İki kolon: Mobil -> Tek Sütun (Sağ kart gizli), Desktop -> İki Sütun */}
                 <div
                     className="w-full max-w-7xl mx-auto px-6 lg:px-12 flex flex-col lg:flex-row gap-12 lg:gap-20 items-center"
@@ -141,7 +142,7 @@ export default function Hizmetler() {
                                 marginBottom: '2.5rem',
                             }}
                         >
-                            Markanızı bir{' '}
+                            Beest ile markanızı bir{' '}
                             <span
                                 style={{
                                     backgroundImage: 'linear-gradient(90deg, #7F00FF, #b94fff)',
@@ -232,27 +233,22 @@ export default function Hizmetler() {
                                         >
                                             <div className="overflow-hidden pl-[2rem]">
                                                 <div className="pb-6">
-                                                    {/* Açıklama */}
-                                                    <p className="text-sm leading-relaxed text-black/60 mb-4">
-                                                        {h.aciklama}
-                                                    </p>
-
-                                                    {/* Etiketler */}
-                                                    <ul className="flex flex-wrap gap-2 m-0 p-0 list-none">
+                                                    {/* Etiketler (Maddeli Liste) */}
+                                                    <ul className="flex flex-col gap-3 m-0 p-0 list-none">
                                                         {h.etiketler.map((e) => (
                                                             <li
                                                                 key={e}
                                                                 style={{
-                                                                    padding: '0.2rem 0.6rem',
-                                                                    fontSize: '0.6rem',
-                                                                    fontWeight: 600,
-                                                                    borderRadius: '9999px',
-                                                                    border: '1px solid rgba(127,0,255,0.25)',
-                                                                    color: '#7F00FF',
-                                                                    background: 'rgba(127,0,255,0.07)',
+                                                                    display: 'flex',
+                                                                    alignItems: 'flex-start',
+                                                                    gap: '0.75rem',
+                                                                    fontSize: '0.85rem',
+                                                                    lineHeight: '1.4',
+                                                                    color: '#111111',
                                                                 }}
                                                             >
-                                                                {e}
+                                                                <Check size={16} color="#7F00FF" style={{ flexShrink: 0, marginTop: '0.1rem' }} />
+                                                                <span>{e}</span>
                                                             </li>
                                                         ))}
                                                     </ul>
@@ -323,11 +319,10 @@ export default function Hizmetler() {
                                         lineHeight: 1.15,
                                         letterSpacing: '-0.02em',
                                         color: '#111111',
-                                        whiteSpace: 'pre-line',
                                         transition: 'all 0.35s ease',
                                     }}
                                 >
-                                    {hizmet.baslik}
+                                    {hizmet.baslik.replace('\n', ' ')}
                                 </h4>
 
                                 {/* Neon ayraç */}
@@ -340,27 +335,15 @@ export default function Hizmetler() {
                                     }}
                                 />
 
-                                {/* Açıklama */}
-                                <p
-                                    style={{
-                                        fontSize: '0.9rem',
-                                        lineHeight: 1.7,
-                                        color: 'rgba(17,17,17,0.65)',
-                                        transition: 'all 0.35s ease',
-                                    }}
-                                >
-                                    {hizmet.aciklama}
-                                </p>
-
-                                {/* Etiketler */}
+                                {/* Etiketler (Maddeli Liste) */}
                                 <ul
                                     style={{
                                         listStyle: 'none',
                                         padding: 0,
                                         margin: 0,
                                         display: 'flex',
-                                        flexWrap: 'wrap',
-                                        gap: '0.5rem',
+                                        flexDirection: 'column',
+                                        gap: '0.85rem',
                                         marginTop: '0.5rem',
                                     }}
                                 >
@@ -368,16 +351,16 @@ export default function Hizmetler() {
                                         <li
                                             key={e}
                                             style={{
-                                                padding: '0.25rem 0.75rem',
-                                                fontSize: '0.65rem',
-                                                fontWeight: 600,
-                                                borderRadius: '9999px',
-                                                border: '1px solid rgba(127,0,255,0.25)',
-                                                color: '#7F00FF',
-                                                background: 'rgba(127,0,255,0.07)',
+                                                display: 'flex',
+                                                alignItems: 'flex-start',
+                                                gap: '0.75rem',
+                                                fontSize: '0.95rem',
+                                                lineHeight: '1.5',
+                                                color: 'rgba(17,17,17,0.85)',
                                             }}
                                         >
-                                            {e}
+                                            <Check size={18} color="#7F00FF" style={{ flexShrink: 0, marginTop: '0.15rem' }} />
+                                            <span>{e}</span>
                                         </li>
                                     ))}
                                 </ul>

@@ -49,7 +49,7 @@ const ADIMLAR = [
     },
 ] as const;
 
-// ─── Karşı Taraf: Büyük şeffaf numara + özlü söz (Varyasyon A) ────────────────
+// ─── Karşı Taraf: Büyük şeffaf numara + özlü söz (Varyasyon A) ────────────────────
 function KarsiTaraf({
     adim,
     index,
@@ -57,7 +57,7 @@ function KarsiTaraf({
 }: {
     adim: (typeof ADIMLAR)[number];
     index: number;
-    textAlign: 'left' | 'right';
+    textAlign: 'left' | 'right' | 'center';
 }) {
     const ref = useRef<HTMLDivElement>(null);
     const isInView = useInView(ref, { once: true, margin: '-80px 0px' });
@@ -72,7 +72,7 @@ function KarsiTaraf({
                 position: 'relative',
                 display: 'flex',
                 alignItems: 'center',
-                justifyContent: textAlign === 'left' ? 'flex-start' : 'flex-end',
+                justifyContent: textAlign === 'left' ? 'flex-start' : textAlign === 'right' ? 'flex-end' : 'center',
                 minHeight: '180px',
                 overflow: 'hidden',
                 padding: '1rem 0',
@@ -84,9 +84,9 @@ function KarsiTaraf({
                 style={{
                     position: 'absolute',
                     top: '50%',
-                    left: textAlign === 'left' ? '0' : 'auto',
+                    left: textAlign === 'center' ? '50%' : textAlign === 'left' ? '0' : 'auto',
                     right: textAlign === 'right' ? '0' : 'auto',
-                    transform: 'translateY(-50%)',
+                    transform: textAlign === 'center' ? 'translate(-50%, -50%)' : 'translateY(-50%)',
                     fontSize: 'clamp(7rem, 14vw, 12rem)',
                     fontWeight: 900,
                     letterSpacing: '-0.05em',
@@ -144,15 +144,91 @@ function KarsiTaraf({
     );
 }
 
+// ─── MOBİL: Derinlikli İstifleme Bloğu ───────────────────────────────────────────
+function MobileAdimBlock({
+    adim,
+    index,
+}: {
+    adim: (typeof ADIMLAR)[number];
+    index: number;
+}) {
+    const ref = useRef<HTMLDivElement>(null);
+    const isInView = useInView(ref, { once: true, margin: '-60px 0px' });
+
+    return (
+        <motion.div
+            ref={ref}
+            initial={{ opacity: 0, y: 32 }}
+            animate={isInView ? { opacity: 1, y: 0 } : {}}
+            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+            style={{ position: 'relative', textAlign: 'center' }}
+        >
+            {/* Devasa transparan sayı — arkaplanda */}
+            <span
+                aria-hidden="true"
+                style={{
+                    display: 'block',
+                    fontSize: 'clamp(8rem, 40vw, 14rem)',
+                    fontWeight: 900,
+                    letterSpacing: '-0.06em',
+                    lineHeight: 0.85,
+                    color: '#7F00FF',
+                    opacity: 0.06,
+                    userSelect: 'none',
+                    pointerEvents: 'none',
+                    marginBottom: '-2rem',
+                }}
+            >
+                {adim.no}
+            </span>
+
+            {/* Özlü Söz */}
+            <div style={{ position: 'relative', zIndex: 2, marginBottom: '1.25rem', padding: '0 1rem' }}>
+                <span
+                    aria-hidden="true"
+                    style={{
+                        display: 'block',
+                        fontSize: '2rem',
+                        lineHeight: 0.6,
+                        color: '#7F00FF',
+                        opacity: 0.5,
+                        marginBottom: '0.5rem',
+                        fontFamily: 'Georgia, serif',
+                    }}
+                >
+                    &ldquo;
+                </span>
+                <p style={{
+                    fontSize: 'clamp(1.1rem, 4.5vw, 1.4rem)',
+                    fontWeight: 700,
+                    fontStyle: 'italic',
+                    lineHeight: 1.35,
+                    color: '#111111',
+                    whiteSpace: 'pre-line',
+                    margin: 0,
+                    letterSpacing: '-0.01em',
+                }}>
+                    {adim.soz}
+                </p>
+            </div>
+
+            {/* Kart */}
+            <AdimKart adim={adim} index={index} side="left" isMobile={true} />
+        </motion.div>
+    );
+}
+
 // ─── Tek Kart Bileşeni ────────────────────────────────────────────────────────
 function AdimKart({
     adim,
     index,
     side,
+    isMobile = false,
 }: {
     adim: (typeof ADIMLAR)[number];
     index: number;
     side: 'left' | 'right';
+    isMobile?: boolean;
 }) {
     const ref = useRef<HTMLDivElement>(null);
     const isInView = useInView(ref, { once: true, margin: '-80px 0px' });
@@ -168,23 +244,49 @@ function AdimKart({
                 ease: [0.22, 1, 0.36, 1],
             }}
             style={{
-                background: '#ffffff',
+                background: isMobile ? 'rgba(255,255,255,0.82)' : '#ffffff',
+                backdropFilter: isMobile ? 'blur(16px)' : undefined,
+                WebkitBackdropFilter: isMobile ? 'blur(16px)' : undefined,
                 borderRadius: '1.25rem',
                 padding: '2.25rem 2rem',
-                boxShadow: '0 10px 30px -10px rgba(127, 0, 255, 0.12)',
-                border: '1px solid rgba(127,0,255,0.08)',
+                boxShadow: isMobile
+                    ? '0 10px 40px -10px rgba(127, 0, 255, 0.18)'
+                    : '0 10px 30px -10px rgba(127, 0, 255, 0.12)',
+                border: isMobile
+                    ? '1px solid rgba(127,0,255,0.12)'
+                    : '1px solid rgba(127,0,255,0.08)',
+                borderLeft: isMobile ? '4px solid #7F00FF' : '1px solid rgba(127,0,255,0.08)',
                 display: 'flex',
                 flexDirection: 'column',
                 gap: '1rem',
                 cursor: 'default',
+                overflow: 'hidden',
+                position: 'relative',
             }}
             whileHover={{
                 y: -6,
                 boxShadow: '0 20px 40px -12px rgba(127, 0, 255, 0.22)',
             }}
         >
-            {/* Numara */}
+            {/* Mobil: Üst neon gradient çizgisi */}
+            {isMobile && (
+                <div
+                    aria-hidden="true"
+                    style={{
+                        position: 'absolute',
+                        top: 0,
+                        left: 0,
+                        right: 0,
+                        height: '2px',
+                        background: 'linear-gradient(90deg, #7F00FF 0%, #b94fff 60%, transparent 100%)',
+                        borderRadius: '9999px 9999px 0 0',
+                    }}
+                />
+            )}
+
+            {/* Numara — Masaüstünde görünür, mobilde gizli (üstteki dev rakam yeterli) */}
             <span
+                className="hidden lg:block"
                 style={{
                     fontSize: 'clamp(2.5rem, 5vw, 3.5rem)',
                     fontWeight: 900,
@@ -327,19 +429,20 @@ export default function CalismaGecisi() {
                         </span>{' '}
                         başlar.
                     </h2>
-                    <p
+                    <div 
                         style={{
-                            marginTop: '1.5rem',
-                            fontSize: 'clamp(0.95rem, 1.5vw, 1.1rem)',
-                            color: 'rgba(17,17,17,0.55)',
-                            maxWidth: '38rem',
-                            margin: '1.5rem auto 0',
-                            lineHeight: 1.7,
+                            display: 'flex',
+                            justifyContent: 'center',
+                            marginTop: '2.5rem',
+                            opacity: 0.95
                         }}
                     >
-                        BEEST Systems ile çalışmak; şeffaf bir süreç, öngörülebilir sonuçlar ve
-                        uzun vadeli bir ortaklık demektir.
-                    </p>
+                        <img 
+                            src="/beest_logo.svg" 
+                            alt="Beest Studio" 
+                            className="h-10 sm:h-14 lg:h-16 w-auto"
+                        />
+                    </div>
                 </motion.div>
 
                 {/* ── Timeline ── */}
@@ -361,32 +464,18 @@ export default function CalismaGecisi() {
                         }}
                     />
 
-                    {/* Mobil sol kenar çizgi */}
-                    <div
-                        aria-hidden="true"
-                        className="lg:hidden"
-                        style={{
-                            position: 'absolute',
-                            left: '1.25rem',
-                            top: 0,
-                            bottom: 0,
-                            width: '2px',
-                            background:
-                                'linear-gradient(to bottom, transparent 0%, #7F00FF 10%, #b94fff 50%, #7F00FF 90%, transparent 100%)',
-                            borderRadius: '9999px',
-                        }}
-                    />
+                    {/* Mobil sol kenar çizgi -- KALDIRILDI (Alternatif 1 ile artık gerekmez) */}
 
                     <ul
                         style={{ listStyle: 'none', padding: 0, margin: 0 }}
-                        className="flex flex-col gap-10 lg:gap-16"
+                        className="flex flex-col gap-16 lg:gap-16"
                     >
                         {ADIMLAR.map((adim, index) => {
                             const side = index % 2 === 0 ? 'left' : 'right';
                             return (
                                 <li
                                     key={adim.no}
-                                    className="pl-12 lg:pl-0"
+                                    className="lg:pl-0"
                                     style={{ position: 'relative' }}
                                 >
                                     {/* ── Desktop: 3 kolon (kart | nokta | karşı taraf) ── */}
@@ -437,23 +526,9 @@ export default function CalismaGecisi() {
                                         </div>
                                     </div>
 
-                                    {/* ── Mobil: sadece AdimKart ── */}
-                                    <div className="lg:hidden">
-                                        <div
-                                            aria-hidden="true"
-                                            style={{
-                                                position: 'absolute',
-                                                left: '1.06rem',
-                                                top: '2.25rem',
-                                                width: '10px',
-                                                height: '10px',
-                                                borderRadius: '50%',
-                                                background: '#7F00FF',
-                                                boxShadow: '0 0 0 3px rgba(127,0,255,0.18)',
-                                                transform: 'translateX(-50%)',
-                                            }}
-                                        />
-                                        <AdimKart adim={adim} index={index} side="left" />
+                                    {/* ── Mobil: Derinlikli İstifleme (MobileAdimBlock) ── */}
+                                    <div className="lg:hidden px-2">
+                                        <MobileAdimBlock adim={adim} index={index} />
                                     </div>
                                 </li>
                             );

@@ -1,197 +1,302 @@
 'use client';
 
-import { useRef } from 'react';
+import { useRef, useEffect, useState } from 'react';
 import { motion, useScroll, useTransform, MotionValue } from 'framer-motion';
+import { Map, BarChart3, Target, ShieldCheck, BrainCircuit } from 'lucide-react';
 
-// --- Data ---
-const GROUP_1 = [
+const veri = [
     {
-        title: 'Stratejik Yaklaşım',
-        desc: 'Her projeye işletmenizin hedeflerini ve sektörünü analiz ederek başlar, doğru dijital stratejiyi oluştururuz.',
+        no: '01',
+        tag: 'ROTA & VİZYON',
+        icon: Map,
+        title: '30 / 60 / 90 Gün Dijital Yol Haritası',
+        desc: 'Her projeye net bir planla başlarız. İlk 90 gün içerisinde yapılacak tüm çalışmalar ve hedefler baştan belirlenir.'
     },
     {
-        title: '30 / 60 / 90 Gün Yol Haritası',
-        desc: 'Her projeye net bir planla başlarız. İlk 90 gün içerisinde yapılacak tüm çalışmalar ve hedefler baştan belirlenir.',
+        no: '02',
+        tag: 'VERİ ŞEFFAFLIĞI',
+        icon: BarChart3,
+        title: 'Şeffaf Performans Raporları',
+        desc: 'Yapılan tüm çalışmalar düzenli raporlarla paylaşılır. Web sitesi trafiği, SEO gelişimi ve reklam performansı net şekilde takip edilir.'
     },
     {
-        title: 'Ölçülebilir Sonuçlar',
-        desc: 'SEO, web ve reklam çalışmalarının performansını düzenli raporlarla takip eder ve şeffaf şekilde paylaşırız.',
-    },
-    {
+        no: '03',
+        tag: 'SÜREKLİ BÜYÜME',
+        icon: Target,
         title: 'Müşteri Kazanım Sistemleri',
-        desc: 'Web sitenizi sadece tanıtım için değil, yeni müşteri kazanmanızı sağlayan bir dijital sistem haline getiririz.',
+        desc: 'Web sitenizi sadece tanıtım için değil, yeni müşteri kazanmanızı sağlayan bir dijital sistem haline getiririz.'
     },
+    {
+        no: '04',
+        tag: 'KUSURSUZ ALTYAPI',
+        icon: ShieldCheck,
+        title: 'Site Bakım ve Güvenlik Yönetimi',
+        desc: 'Web sitenizin güvenli, hızlı ve sorunsuz çalışması için düzenli bakım, güvenlik ve teknik destek hizmeti sunarız.'
+    },
+    {
+        no: '05',
+        tag: 'STRATEJİK REHBERLİK',
+        icon: BrainCircuit,
+        title: 'Strateji ve Dijital Danışmanlık',
+        desc: 'İşletmenizin dijital dünyada doğru adımlar atabilmesi için sektöre ve hedef kitlenize uygun stratejik yönlendirmeler sağlarız.'
+    }
 ];
 
-const GROUP_2 = [
-    {
-        title: 'Kurumsal Altyapı',
-        desc: 'Geliştirdiğimiz web siteleri hızlı, güvenli ve kullanıcı deneyimi yüksek altyapılar üzerine kurulur.',
-    },
-    {
-        title: 'İşletmeye Özel Çözümler',
-        desc: 'Her markanın ihtiyacı farklıdır. Bu nedenle hazır paketler yerine işletmenize özel çözümler geliştiririz.',
-    },
-    {
-        title: 'Site Bakım ve Güvenlik',
-        desc: 'Web sitenizin güvenli, hızlı ve sorunsuz çalışması için düzenli bakım, güvenlik ve teknik destek hizmeti sunarız.',
-    },
-    {
-        title: 'Uzun Vadeli İş Ortaklığı',
-        desc: 'Amacımız tek bir proje değil, işletmenizin dijital büyümesinde uzun vadeli teknoloji partneri olmaktır.',
-    },
-];
+function DialItem({ item, index, progress, isDesktop }: { item: typeof veri[0], index: number, progress: MotionValue<number>, isDesktop: boolean }) {
+    const Icon = item.icon;
 
-const GROUP_FINAL = [
-    {
-        title: 'Sürekli Destek',
-        desc: 'Proje tamamlandıktan sonra da teknik destek ve danışmanlık hizmeti sunarak dijital altyapınızı sürdürülebilir hale getiririz. Sizi asla yalnız bırakmıyoruz.',
-    },
-];
+    const getDistance = (p: number) => {
+        // "Tam Ekran" hissiyatı için Deadzone ekstrem seviyeye (0.40) çıkarıldı!
+        // Kullanıcı Neden Biz'e girip tüm siyah efekti görüp "bir tam" ekran scroll edene kadar KİLİTLİ.
+        let val = 0;
+        if (p <= 0.40) val = 0;
+        else if (p >= 0.90) val = 4;
+        else val = ((p - 0.40) / 0.50) * 4;
+        return val - index;
+    };
 
-// --- Sub-component for individual sticky card ---
-interface CardProps {
-    item: { title: string; desc: string };
-    index: number;
-    globalIndexOffset: number; // To keep numbering correct (e.g. 05 instead of 01 for group 2)
-    totalCards: number;
-    progress: MotionValue<number>;
-    isFinal?: boolean;
-}
+    const R = 800; // px
+    const angleStepDesktop = 28; 
 
-function StackedCard({ item, index, globalIndexOffset, totalCards, progress, isFinal = false }: CardProps) {
-    // Target scale based on how deep in the stack this card is
-    const targetScale = 1 - (totalCards - index) * 0.05;
-
-    // The scroll range over which this card scales/fades
-    const range = [index * 0.1, 1];
-
-    const scale = useTransform(progress, range, [1, targetScale]);
-
-    return (
-        <div
-            className="sticky top-0 flex h-screen items-start justify-center pt-[15vh] md:pt-[22vh]"
-            style={{ zIndex: index }}
-        >
-            <motion.div
-                style={{
-                    scale: isFinal ? 1 : scale,
-                    opacity: 1, // NO MORE OPACITY FADE
-                    top: isFinal ? 0 : `calc(${index * 1.5}rem)`, // Cards physically stack with a small vertical offset
-                }}
-                className={`relative flex w-[90%] md:w-[70%] max-w-[900px] flex-col justify-center rounded-[2rem] p-8 md:p-12 lg:p-16 shadow-[0_15px_50px_-15px_rgba(127,0,255,0.2)] origin-top border border-gray-100 ${isFinal ? 'bg-[#7F00FF] text-white' : 'bg-white text-[#111111]'}`}
-            >
-                <div className="flex flex-col gap-6 md:gap-8">
-                    {/* Index Number Badge */}
-                    <div className="flex items-center gap-4">
-                        <span className={`flex h-10 w-10 md:h-12 md:w-12 items-center justify-center rounded-full text-[0.8rem] font-bold ${isFinal ? 'bg-white/20 text-white' : 'bg-purple-50 text-[#7F00FF]'}`}>
-                            {String(index + 1 + globalIndexOffset).padStart(2, '0')}
-                        </span>
-                        <div className={`h-[2px] w-12 ${isFinal ? 'bg-white/30' : 'bg-[#7F00FF]'}`} />
-                    </div>
-
-                    {/* Content */}
-                    <div>
-                        <h3 className={`text-3xl md:text-5xl font-black tracking-tight leading-tight mb-6 ${isFinal ? 'text-white' : 'text-[#111111]'}`}>
-                            {item.title}
-                        </h3>
-                        <p className={`text-lg md:text-xl leading-relaxed max-w-2xl font-medium ${isFinal ? 'text-white/90' : 'text-[#111111]/70'}`}>
-                            {item.desc}
-                        </p>
-                    </div>
-                </div>
-            </motion.div>
-        </div>
-    );
-}
-
-// --- Group Component handling its own local scroll progress ---
-function CardGroup({ data, globalIndexOffset, title }: { data: typeof GROUP_1, globalIndexOffset: number, title: string }) {
-    const groupRef = useRef<HTMLDivElement>(null);
-    const { scrollYProgress } = useScroll({
-        target: groupRef,
-        offset: ['start start', 'end end'],
+    const desktopX = useTransform(progress, (p) => {
+        const d = getDistance(p);
+        const angleRad = (d * angleStepDesktop * Math.PI) / 180;
+        return (1 - Math.cos(angleRad)) * R;
     });
 
+    const desktopY = useTransform(progress, (p) => {
+        const d = getDistance(p);
+        const angleRad = (d * angleStepDesktop * Math.PI) / 180;
+        return Math.sin(angleRad) * R;
+    });
+
+    const desktopOpacity = useTransform(progress, (p) => {
+        const d = getDistance(p);
+        return 1 - Math.abs(d) * 0.45;
+    });
+
+    const desktopScale = useTransform(progress, (p) => {
+        const d = getDistance(p);
+        return 1 - Math.abs(d) * 0.15;
+    });
+
+    const desktopFilter = useTransform(progress, (p) => {
+        // PERFORMANS İYİLEŞTİRMESİ: Dinamik blur aşırı GPU tükettiği için kaldırıldı. Sadece opaklık ve boyut ile hissiyat verilecek.
+        return 'none';
+    });
+
+    // MOBİL
+    const slotAngleStep = 35; 
+
+    const mobileY = useTransform(progress, (p) => {
+        const d = getDistance(p);
+        return d * 130;
+    });
+
+    const mobileRotateX = useTransform(progress, (p) => {
+        const d = getDistance(p);
+        return d * -slotAngleStep;
+    });
+
+    const mobileScale = useTransform(progress, (p) => {
+        const d = getDistance(p);
+        return 1 - Math.abs(d) * 0.2;
+    });
+
+    const mobileOpacity = useTransform(progress, (p) => {
+        const d = getDistance(p);
+        return 1 - Math.abs(d) * 0.55;
+    });
+
+    const mobileZIndex = useTransform(progress, (p) => {
+        const d = getDistance(p);
+        return Math.floor(100 - Math.abs(d) * 10);
+    });
+
+    // Ortak
+    const isCenter = useTransform(progress, (p) => Math.abs(getDistance(p)) < 0.2);
+    // Metin ve ikon renkleri Karanlık Moda uygun olarak beyaz/gri (#F3F3F3) ayarlanıyor
+    const titleColor = useTransform(progress, (p) => Math.abs(getDistance(p)) < 0.2 ? '#F3F3F3' : 'rgba(243,243,243,0.3)');
+    const descColor = useTransform(progress, (p) => Math.abs(getDistance(p)) < 0.2 ? 'rgba(243,243,243,0.7)' : 'rgba(243,243,243,0.1)');
+
     return (
-        <div ref={groupRef} className="relative w-full">
-            {/* Group Title pinned above cards */}
-            <div className="sticky top-[6vh] md:top-[8vh] w-full flex justify-center z-[50] pointer-events-none">
-                <div className="bg-[#F3F3F3] px-8 py-3 rounded-full border border-purple-200 shadow-[0_10px_30px_-10px_rgba(127,0,255,0.2)]">
-                    <h3 className="text-lg md:text-2xl font-black text-[#7F00FF] tracking-widest uppercase">
-                        {title}
-                    </h3>
-                </div>
+        <motion.div
+            style={{
+                position: 'absolute',
+                top: '50%',
+                left: 0,
+                marginTop: '-100px', 
+                x: isDesktop ? desktopX : 0,
+                y: isDesktop ? desktopY : mobileY,
+                rotateX: isDesktop ? 0 : mobileRotateX,
+                scale: isDesktop ? desktopScale : mobileScale,
+                opacity: isDesktop ? desktopOpacity : mobileOpacity,
+                filter: 'none',
+                zIndex: isDesktop ? 10 : mobileZIndex,
+                width: '100%',
+                transformOrigin: 'center center',
+                perspective: '1000px',
+                transformStyle: 'preserve-3d',
+                willChange: 'transform, opacity',
+            }}
+            className="flex flex-col gap-2 origin-left md:origin-center px-4 max-w-[90vw] md:max-w-2xl"
+        >
+            {/* Arkaplan Dev İkon (Eski numaraların yerine) */}
+            <div className="absolute top-1/2 left-0 md:left-[-15%] -translate-y-1/2 -z-10 opacity-[0.03] md:opacity-[0.02] text-white">
+                <Icon size={isDesktop ? 320 : 200} strokeWidth={1} />
             </div>
 
-            <div className="relative mt-[-10vh]">
-                {data.map((item, index) => (
-                    <StackedCard
-                        key={index}
-                        item={item}
-                        index={index}
-                        globalIndexOffset={globalIndexOffset}
-                        totalCards={data.length}
-                        progress={scrollYProgress}
-                    />
-                ))}
+            <div className="relative z-10 flex flex-col gap-4">
+                {/* Neon Güç Etiketi */}
+                <motion.div 
+                    style={{
+                        borderColor: isCenter ? '#7F00FF' : 'rgba(127, 0, 255, 0.1)',
+                        boxShadow: isCenter ? '0 0 20px rgba(127,0,255,0.4)' : 'none',
+                    }}
+                    className="flex items-center gap-2 border rounded-full px-3 py-1.5 w-fit transition-all duration-300 bg-[#7F00FF]/5"
+                >
+                    <div className="w-1.5 h-1.5 rounded-full bg-[#7F00FF] shadow-[0_0_8px_#7F00FF] animate-pulse" />
+                    <span 
+                        style={{ color: isCenter ? '#7F00FF' : 'rgba(127,0,255,0.6)' }}
+                        className="font-bold text-[0.65rem] md:text-[0.7rem] tracking-[0.2em] uppercase"
+                    >
+                        {item.tag}
+                    </span>
+                </motion.div>
+                
+                <motion.h3 
+                    style={{ color: titleColor }}
+                    className="text-2xl sm:text-3xl md:text-5xl lg:text-[3.2rem] font-black leading-[1.05] tracking-tight transition-colors duration-300"
+                >
+                    {item.title}
+                </motion.h3>
+                
+                <motion.p 
+                    style={{ color: descColor }}
+                    className="text-sm sm:text-base md:text-lg leading-relaxed max-w-xl font-medium transition-colors duration-300"
+                >
+                    {item.desc}
+                </motion.p>
             </div>
-        </div>
-    );
-}
-
-function FinalCard() {
-    const { scrollYProgress } = useScroll(); // Provide a real motion value
-    return (
-        <div className="relative w-full h-[150vh] flex flex-col items-center justify-start"> {/* Extra scroll to let it pause gracefully */}
-            <StackedCard
-                item={GROUP_FINAL[0]}
-                index={0}
-                globalIndexOffset={8}
-                totalCards={1}
-                progress={scrollYProgress}
-                isFinal={true}
-            />
-        </div>
+        </motion.div>
     );
 }
 
 export default function NedenBiz() {
+    const containerRef = useRef<HTMLDivElement>(null);
+    const [isDesktop, setIsDesktop] = useState(true);
+
+    useEffect(() => {
+        const checkSize = () => setIsDesktop(window.innerWidth >= 1024);
+        checkSize();
+        window.addEventListener('resize', checkSize);
+        return () => window.removeEventListener('resize', checkSize);
+    }, []);
+
+    const { scrollYProgress } = useScroll({
+        target: containerRef,
+        offset: ["start start", "end end"] 
+    });
+
+    // Dark Mode Arkaplan Geçişi (%0-10 arası tam kararma)
+    const bgOpacity = useTransform(scrollYProgress, [0, 0.10, 0.90, 1], [0, 1, 1, 0]);
+    
+    // Sol Başlık Renk Geçişleri Siyah/Beyaz
+    const titleColor = useTransform(scrollYProgress, [0, 0.10, 0.90, 1], ['#111111', '#F3F3F3', '#F3F3F3', '#111111']);
+    const subtitleColor = useTransform(scrollYProgress, [0, 0.10, 0.90, 1], ['rgba(17,17,17,0.5)', 'rgba(243,243,243,0.5)', 'rgba(243,243,243,0.5)', 'rgba(17,17,17,0.5)']);
+
+    // Ambiyans Işıkları (Lava Orbs) Parallax hareketi
+    const topOrbY = useTransform(scrollYProgress, [0, 1], [0, 600]);
+    const bottomOrbY = useTransform(scrollYProgress, [0, 1], [0, -500]);
+
+    // Bütün içeriği sayfa sonuna doğru yavaşça eritme (Exit Fade-out Transition)
+    const contentOpacity = useTransform(scrollYProgress, [0, 0.88, 0.98], [1, 1, 0]);
+
     return (
-        <section
-            id="why-us"
-            className="relative z-10 bg-[#F3F3F3] pb-0"
-            aria-label="Neden Beest Systems?"
-        >
-            {/* Header / Intro (Normal flow, not sticky over 900vh) */}
-            <div className="flex flex-col items-center justify-center w-full px-6 py-32 z-0">
-                <div className="flex flex-col items-center justify-center max-w-4xl text-center">
-                    <p className="text-[#7F00FF] font-bold tracking-[0.18em] uppercase text-[0.65rem] md:text-xs mb-4">
-                        Farkımız
-                    </p>
-                    <h2 className="text-4xl md:text-5xl lg:text-7xl font-black text-[#111111] tracking-tight mb-6 leading-[1.1]">
-                        Neden <span className="text-[#7F00FF]">Beest Systems?</span>
-                    </h2>
-                    <p className="text-sm md:text-lg text-[#111111]/60 font-medium max-w-2xl">
-                        Sadece dijital bir ajans değil, işletmenizin büyümesinde sorumluluk alan ve ölçülebilir sonuçlar üreten teknoloji partneriniziz.
-                    </p>
+        <section ref={containerRef} id="neden-biz" className="relative w-full bg-[#F3F3F3] h-[350vh]">
+            
+            {/* DARK MODE YÜZEYİ */}
+            <motion.div 
+                style={{ opacity: bgOpacity }} 
+                className="absolute inset-0 bg-[#0a0a0a] z-0 pointer-events-none" // Çok koyu griden siyaha geçiş #0a0a0a
+            />
+
+            {/* AMBİYANS IŞIKLARI (LAVA ORBS - PERFORMANS ODAKLI) */}
+            <motion.div 
+                style={{ opacity: bgOpacity }}
+                className="sticky top-0 h-screen w-full overflow-hidden pointer-events-none z-0"
+            >
+                <motion.div 
+                    style={{ 
+                        y: topOrbY,
+                        background: 'radial-gradient(circle, rgba(127, 0, 255, 0.15) 0%, rgba(127, 0, 255, 0) 70%)',
+                        willChange: 'transform'
+                    }}
+                    className="absolute top-[-20%] right-[-10%] w-[80vw] h-[80vh] rounded-full" 
+                />
+                <motion.div 
+                    style={{ 
+                        y: bottomOrbY,
+                        background: 'radial-gradient(circle, rgba(185, 79, 255, 0.1) 0%, rgba(185, 79, 255, 0) 70%)',
+                        willChange: 'transform'
+                    }}
+                    className="absolute bottom-[-10%] left-[-10%] w-[70vw] h-[70vh] rounded-full" 
+                />
+            </motion.div>
+            
+            {/* GÖSTERİM ÇERÇEVESİ */}
+            <motion.div 
+                style={{ opacity: contentOpacity }}
+                className="sticky top-0 h-screen w-full flex flex-col lg:flex-row items-center overflow-hidden max-w-7xl mx-auto px-6 lg:px-12 z-10"
+            >
+                
+                {/* SOL: Başlık Alanı */}
+                <div className="w-full lg:w-[40%] flex-shrink-0 flex flex-col items-start pt-24 lg:pt-0">
+                    <span className="text-[0.65rem] font-bold tracking-[0.18em] text-[#7F00FF] uppercase mb-4">
+                        Ayrıcalıklar
+                    </span>
+                    
+                    <motion.h2 
+                        style={{ color: titleColor }}
+                        className="text-[clamp(2.8rem,6vw,5.5rem)] font-black leading-[0.95] tracking-[-0.03em] transition-colors duration-300"
+                    >
+                        Neden <br />
+                        <span 
+                            style={{
+                                backgroundImage: 'linear-gradient(90deg, #7F00FF, #b94fff)',
+                                WebkitBackgroundClip: 'text',
+                                WebkitTextFillColor: 'transparent',
+                                backgroundClip: 'text',
+                            }}
+                        >
+                            Beest <br className="hidden lg:block"/> Studio?
+                        </span>
+                    </motion.h2>
+
+                    <div className="w-16 h-[3px] bg-[#7F00FF] rounded-full mt-6 shadow-[0_0_15px_rgba(127,0,255,0.5)]" />
+                    
+                    <motion.p 
+                        style={{ color: subtitleColor }}
+                        className="text-sm md:text-base font-medium max-w-xs leading-relaxed mt-6 hidden lg:block transition-colors duration-300"
+                    >
+                        Standart ajans yaklaşımlarının ötesinde, ölçülebilir ve garantili büyüme sunan mimariler inşa ediyoruz.
+                    </motion.p>
                 </div>
-            </div>
 
-            {/* Group 1: Strategy */}
-            <CardGroup data={GROUP_1} globalIndexOffset={0} title="Strateji" />
+                {/* SAĞ: Dial / Slot Alanı */}
+                <div className="w-full lg:w-[60%] flex-1 relative h-[60vh] lg:h-full mt-10 lg:mt-0 perspective-[1000px]">
+                    {veri.map((item, index) => (
+                        <DialItem 
+                            key={item.no} 
+                            item={item} 
+                            index={index} 
+                            progress={scrollYProgress} 
+                            isDesktop={isDesktop} 
+                        />
+                    ))}
+                </div>
 
-            {/* Spacer between groups so the previous cards scroll cleanly out of view */}
-            <div className="h-[20vh] w-full bg-gradient-to-b from-[#F3F3F3] to-[#F3F3F3] relative z-20" />
-
-            {/* Group 2: Infrastructure */}
-            <CardGroup data={GROUP_2} globalIndexOffset={4} title="Altyapı" />
-
-            {/* Spacer */}
-            <div className="h-[20vh] w-full bg-gradient-to-b from-[#F3F3F3] to-[#F3F3F3] relative z-20" />
-
-            {/* Group Final: Support */}
-            <FinalCard />
+            </motion.div>
         </section>
     );
 }

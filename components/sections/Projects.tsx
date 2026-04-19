@@ -87,13 +87,11 @@ export default function Projects() {
         <section
             id="projects"
             ref={sectionRef}
-            // Masaüstünde scroll space yaratmak için uzun bir bölüm (300vh)
-            // Mobilde auto height çünkü normal stack layout olacak
             className="relative z-20 bg-[#F3F3F3] h-[auto] lg:h-[300vh]"
-            aria-label="Çalışmalarımız"
+            aria-label="Beest Tasarım Mimarisi"
         >
             {/* Yapışkan Konteyner */}
-            <div className="lg:sticky lg:top-0 lg:h-screen lg:overflow-hidden flex flex-col justify-center py-20 lg:py-0">
+            <div className="lg:sticky lg:top-0 lg:h-screen lg:overflow-hidden flex flex-col justify-center py-20 lg:py-0 z-10">
 
                 <div className="w-full max-w-7xl mx-auto px-6 lg:px-12 mb-8 lg:mb-12">
                     <p className="text-[0.65rem] font-bold tracking-[0.18em] uppercase text-[#7F00FF] mb-4">

@@ -36,8 +36,8 @@ export default function Contact() {
 
                         <div>
                             <h4 className="text-sm font-bold text-[#111111] tracking-wider uppercase mb-2">İletişim</h4>
-                            <a href="mailto:hello@beestsystems.com" className="block text-lg text-black/60 hover:text-[#7F00FF] transition-colors duration-300">
-                                hello@beestsystems.com
+                            <a href="mailto:hello@beeststudio.com" className="block text-lg text-black/60 hover:text-[#7F00FF] transition-colors duration-300">
+                                hello@beeststudio.com
                             </a>
                             <a href="tel:+902120000000" className="block text-lg text-black/60 hover:text-[#7F00FF] transition-colors duration-300">
                                 +90 (212) 000 00 00

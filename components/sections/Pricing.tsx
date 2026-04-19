@@ -1,9 +1,10 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Check } from 'lucide-react';
+import PricingModal, { PackageType } from '../ui/PricingModal';
 
-const packages = [
+const packages: PackageType[] = [
     {
         name: 'Basic',
         description: 'Dijital dünyada varlık göstermek isteyen yeni markalar için.',
@@ -13,6 +14,12 @@ const packages = [
             'Temel SEO Optimizasyonu',
             'Mobil Uyumlu Tasarım',
             'Standart İletişim Formu',
+        ],
+        detailedFeatures: [
+            { title: 'Tek Sayfa Web Sitesi', desc: 'İşletmenizin vizyonunu, iletişim bilgilerini ve temel hizmetlerini içeren minimal ve şık bir Landing Page.' },
+            { title: 'Temel SEO', desc: 'Sitenizin arama motorları tarafından doğru indekslenmesi için gerekli meta etiketleri ve altyapı standartları.' },
+            { title: 'Tam Responsive', desc: 'Telefon, tablet ve bilgisayarlarda kusursuz görünen esnek arayüz.' },
+            { title: 'Form Entegrasyonu', desc: 'Müşterilerinizin size direkt olarak e-posta atabilmesini sağlayan iletişim formu.' },
         ],
         isPopular: false,
     },
@@ -27,6 +34,12 @@ const packages = [
             'Gelişmiş Formlar & API Entegrasyonu',
             'Öncelikli Teknik Destek',
         ],
+        detailedFeatures: [
+            { title: 'Swiss-Style Arayüz', desc: 'Modern, tipografik odaklı, bol boşluklu ve yüksek okunabilirliğe sahip Beest Studio imzalı özel tasarım.' },
+            { title: 'Kapsamlı SEO ve Hız', desc: 'Rakiplerinizi geride bırakmanız için Core Web Vitals optimizasyonu, 100/100 performans skorları ve yapılandırılmış veri işaretlemeleri.' },
+            { title: 'İleri Seviye Animasyonlar', desc: 'Framer Motion ve 3D entegrasyonuyla ziyaretçiyi büyüleyen, donmadan akan (60 FPS) geçişler.' },
+            { title: 'Teknik Destek Garantisi', desc: 'Proje teslimi sonrasında dahi ortaya çıkabilecek güncellemeler ve ihtiyaçlar için doğrudan iletişim hattı.' },
+        ],
         isPopular: true,
     },
     {
@@ -39,22 +52,31 @@ const packages = [
             'İçerik Yönetim Sistemi (CMS)',
             'Temel Animasyonlar (Framer)',
         ],
+        detailedFeatures: [
+            { title: 'Dinamik Mimari', desc: 'Blog, ürün sergileme veya hizmet alt sayfaları gibi birden fazla sayfadan oluşan kapsamlı ağ.' },
+            { title: 'Özel CMS Yönetim Paneli', desc: 'İçeriklerinizi, görsellerinizi ve yazılarınızı kod bilmeden yönetmenizi sağlayan kullanıcı dostu arka yüz.' },
+            { title: 'Modüler Genişleyebilirlik', desc: 'İleride eklenebilecek yeni sayfa ve özelliklere tamamen uyumlu, esnek ve sürdürülebilir altyapı.' },
+        ],
         isPopular: false,
     },
 ];
 
+const customPackage: PackageType = {
+    name: 'Özel Proje',
+    price: 'Özel Bütçelendirme',
+    description: 'E-Ticaret platformları, mobil uygulamalar veya sadece size has geliştirilen kompleks yazılım ekosistemleri.',
+    features: [],
+    detailedFeatures: [
+        { title: 'E-Ticaret & Pazaryeri', desc: 'Binlerce ürünü, sepeti ve kargo süreçlerini sorunsuz yöneten, dönüşüm (satış) odaklı e-ticaret altyapıları.' },
+        { title: 'Mobil Uygulama (iOS/Android)', desc: 'İşletmenizi veya girişiminizi kullanıcıların cebine taşıyan, kusursuz çalışan yerel (native) uygulamalar.' },
+        { title: 'Özel API Entegrasyonları', desc: 'Muhasebe programlarınız, ERP sistemleriniz veya üçüncü taraf servislerle çift yönlü haberleşen mimariler.' },
+        { title: 'SaaS & Web Platformları', desc: 'Kullanıcı panelli, üyelik sistemli ve size özgü iş kurallarını barındıran web portalı çözümleri.' },
+    ],
+    isPopular: false,
+};
+
 export default function Pricing() {
-    const handleScroll = (e: React.MouseEvent<HTMLAnchorElement>, targetId: string) => {
-        e.preventDefault();
-        const el = document.getElementById(targetId);
-        if (el) {
-            if (window.__lenis) {
-                window.__lenis.scrollTo(el, { offset: 0, duration: 1.2 });
-            } else {
-                el.scrollIntoView({ behavior: 'smooth' });
-            }
-        }
-    };
+    const [selectedPackage, setSelectedPackage] = useState<PackageType | null>(null);
 
     return (
         <section
@@ -199,38 +221,76 @@ export default function Pricing() {
                             </ul>
 
                             {/* Eylem Çağrısı Butonu */}
-                            <a
-                                href="#contact"
-                                onClick={(e) => handleScroll(e, 'contact')}
+                            <button
+                                onClick={() => setSelectedPackage(pkg)}
                                 style={{
                                     display: 'block',
+                                    width: '100%',
                                     textAlign: 'center',
                                     padding: '1rem',
                                     borderRadius: '0.5rem',
-                                    backgroundColor: pkg.isPopular ? '#7F00FF' : 'transparent',
-                                    color: pkg.isPopular ? '#ffffff' : '#111111',
-                                    border: pkg.isPopular ? 'none' : '1px solid rgba(17,17,17,0.2)',
+                                    backgroundColor: pkg.name === 'Premium' ? '#7F00FF' : 'transparent',
+                                    color: pkg.name === 'Premium' ? '#ffffff' : '#111111',
+                                    border: pkg.name === 'Premium' ? 'none' : '1px solid rgba(17,17,17,0.2)',
                                     fontWeight: 700,
-                                    textDecoration: 'none',
+                                    cursor: 'pointer',
                                     transition: 'background-color 0.2s ease, border-color 0.2s',
                                 }}
                                 onMouseEnter={(e) => {
-                                    if (!pkg.isPopular) {
-                                        (e.currentTarget as HTMLAnchorElement).style.borderColor = '#111111';
+                                    if (pkg.name !== 'Premium') {
+                                        (e.currentTarget as HTMLButtonElement).style.borderColor = '#111111';
                                     }
                                 }}
                                 onMouseLeave={(e) => {
-                                    if (!pkg.isPopular) {
-                                        (e.currentTarget as HTMLAnchorElement).style.borderColor = 'rgba(17,17,17,0.2)';
+                                    if (pkg.name !== 'Premium') {
+                                        (e.currentTarget as HTMLButtonElement).style.borderColor = 'rgba(17,17,17,0.2)';
                                     }
                                 }}
                             >
                                 Seç & İlerlet
-                            </a>
+                            </button>
                         </article>
                     ))}
                 </div>
+
+                {/* ── Enterprise / Custom Project Banner ── */}
+                <div 
+                    className="mt-12 w-full bg-[#111111] rounded-[1.5rem] p-8 lg:p-12 relative overflow-hidden group shadow-2xl"
+                >
+                    {/* Arkaplan dekor parlaması */}
+                    <div className="absolute -top-40 -right-40 w-96 h-96 bg-[#7F00FF]/20 rounded-full blur-[100px] pointer-events-none transition-transform duration-700 group-hover:scale-110" />
+                    <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-[#7F00FF]/10 rounded-full blur-[80px] pointer-events-none transition-transform duration-700 group-hover:scale-110" />
+
+                    <div className="relative z-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
+                        <div className="max-w-3xl">
+                            <h3 className="text-2xl md:text-3xl lg:text-4xl font-black text-[#F3F3F3] tracking-tight mb-4">
+                                E-Ticaret & Özel Yazılım<br />
+                                <span className="text-[#7F00FF]">Gereksinimleriniz Mi Var?</span>
+                            </h3>
+                            <p className="text-white/60 text-lg leading-relaxed max-w-2xl">
+                                Standart paketlere sığmayan; yüksek dönüşüm odaklı e-ticaret platformları, 
+                                mobil uygulamalar ve kurumsal SaaS tabanlı ekosistemlerini "Beest" mühendisliği ve mimari titizliğiyle sıfırdan inşa ediyoruz.
+                            </p>
+                        </div>
+                        
+                        <div className="flex-shrink-0">
+                            <button
+                                onClick={() => setSelectedPackage(customPackage)}
+                                className="px-8 py-5 rounded-full bg-[#7F00FF] text-white font-bold tracking-wide hover:bg-white hover:text-[#111111] transition-all duration-300 shadow-[0_10px_30px_-10px_rgba(127,0,255,0.4)] hover:shadow-[0_15px_40px_-10px_rgba(255,255,255,0.3)] hover:-translate-y-1 transform whitespace-nowrap"
+                            >
+                                Özel Proje Görüşmesi Ayarla
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
             </div>
+
+            <PricingModal 
+                isOpen={selectedPackage !== null} 
+                onClose={() => setSelectedPackage(null)} 
+                pkg={selectedPackage} 
+            />
         </section>
     );
 }
