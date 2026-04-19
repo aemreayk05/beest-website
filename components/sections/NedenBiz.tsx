@@ -80,10 +80,6 @@ function DialItem({ item, index, progress, isDesktop }: { item: typeof veri[0], 
         return 1 - Math.abs(d) * 0.15;
     });
 
-    const desktopFilter = useTransform(progress, (p) => {
-        // PERFORMANS İYİLEŞTİRMESİ: Dinamik blur aşırı GPU tükettiği için kaldırıldı. Sadece opaklık ve boyut ile hissiyat verilecek.
-        return 'none';
-    });
 
     // MOBİL
     const slotAngleStep = 35; 

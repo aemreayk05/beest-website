@@ -269,7 +269,7 @@ export default function Pricing() {
                             </h3>
                             <p className="text-white/60 text-lg leading-relaxed max-w-2xl">
                                 Standart paketlere sığmayan; yüksek dönüşüm odaklı e-ticaret platformları, 
-                                mobil uygulamalar ve kurumsal SaaS tabanlı ekosistemlerini "Beest" mühendisliği ve mimari titizliğiyle sıfırdan inşa ediyoruz.
+                                {'mobil uygulamalar ve kurumsal SaaS tabanlı ekosistemlerini "Beest" mühendisliği ve mimari titizliğiyle sıfırdan inşa ediyoruz.'}
                             </p>
                         </div>
                         

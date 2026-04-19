@@ -1,6 +1,7 @@
 'use client';
 
 import { useRef } from 'react';
+import Image from 'next/image';
 import { motion, useInView } from 'framer-motion';
 
 // ─── Veri ─────────────────────────────────────────────────────────────────────
@@ -437,9 +438,11 @@ export default function CalismaGecisi() {
                             opacity: 0.95
                         }}
                     >
-                        <img 
+                        <Image 
                             src="/beest_logo.svg" 
-                            alt="Beest Studio" 
+                            alt="Beest Studio"
+                            width={120}
+                            height={64}
                             className="h-10 sm:h-14 lg:h-16 w-auto"
                         />
                     </div>
