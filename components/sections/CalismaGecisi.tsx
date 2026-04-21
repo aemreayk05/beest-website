@@ -383,7 +383,7 @@ export default function CalismaGecisi() {
                     margin: '0 auto',
                     display: 'flex',
                     flexDirection: 'column',
-                    gap: '5rem',
+                    gap: '4rem',
                 }}
             >
                 {/* ── Üst Başlık ── */}
@@ -430,22 +430,6 @@ export default function CalismaGecisi() {
                         </span>{' '}
                         başlar.
                     </h2>
-                    <div 
-                        style={{
-                            display: 'flex',
-                            justifyContent: 'center',
-                            marginTop: '2.5rem',
-                            opacity: 0.95
-                        }}
-                    >
-                        <Image 
-                            src="/beest_logo.svg" 
-                            alt="Beest Studio"
-                            width={120}
-                            height={64}
-                            className="h-10 sm:h-14 lg:h-16 w-auto"
-                        />
-                    </div>
                 </motion.div>
 
                 {/* ── Timeline ── */}

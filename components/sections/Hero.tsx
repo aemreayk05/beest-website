@@ -37,8 +37,8 @@ export default function Hero() {
         }
     };
 
-    // Desktop 4s Spline bekler, mobilde video var → 0.5s
-    const d = mounted && isDesktop ? 4.0 : 0.5;
+    // SSR'da animasyonun hemen başlamaması için default 6.0s beklet, sonra duruma göre karar ver.
+    const d = !mounted ? 6.0 : (isDesktop ? 6.0 : 0.5);
 
     return (
         <section
@@ -79,7 +79,7 @@ export default function Hero() {
                     flexDirection: 'column',
                     alignItems: 'center',
                     justifyContent: 'flex-end',
-                    paddingBottom: '3.5rem',
+                    paddingBottom: '6.5rem', // Butonların kaydır animasyonu ile çakışmaması için artırıldı
                 }}
             >
                 {/* ① Logo */}
@@ -87,10 +87,10 @@ export default function Hero() {
                     initial={{ opacity: 0, y: 18 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: d, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-                    style={{ marginBottom: '1.1rem' }}
+                    style={{ marginBottom: '1.5rem' }} // Çizgi kalkınca butonlarla arasındaki nefes boşluğu düzeltildi
                 >
                     <Image
-                        src="/beest_wostudio.svg"
+                        src="/beest_logo.svg"
                         alt="Beest Logo"
                         width={220}
                         height={68}
@@ -98,20 +98,6 @@ export default function Hero() {
                         priority
                     />
                 </motion.div>
-
-                {/* ② Neon Divider */}
-                <motion.div
-                    initial={{ width: 0, opacity: 0 }}
-                    animate={{ width: '5rem', opacity: 1 }}
-                    transition={{ delay: d + 0.25, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-                    style={{
-                        height: '2px',
-                        background: 'linear-gradient(90deg, #7F00FF 0%, #b94fff 100%)',
-                        borderRadius: '9999px',
-                        marginBottom: '1.5rem',
-                        flexShrink: 0,
-                    }}
-                />
 
                 {/* ③ CTA Butonları */}
                 <motion.div

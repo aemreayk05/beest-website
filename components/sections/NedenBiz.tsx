@@ -46,12 +46,11 @@ function DialItem({ item, index, progress, isDesktop }: { item: typeof veri[0], 
     const Icon = item.icon;
 
     const getDistance = (p: number) => {
-        // "Tam Ekran" hissiyatı için Deadzone ekstrem seviyeye (0.40) çıkarıldı!
-        // Kullanıcı Neden Biz'e girip tüm siyah efekti görüp "bir tam" ekran scroll edene kadar KİLİTLİ.
+        // Sıfıra yakın ölü alan (%5), geri kalan her şey dönüş animasyonuna ait.
         let val = 0;
-        if (p <= 0.40) val = 0;
-        else if (p >= 0.90) val = 4;
-        else val = ((p - 0.40) / 0.50) * 4;
+        if (p <= 0.05) val = 0;
+        else if (p >= 0.95) val = 4;
+        else val = ((p - 0.05) / 0.90) * 4;
         return val - index;
     };
 
@@ -189,62 +188,90 @@ export default function NedenBiz() {
         return () => window.removeEventListener('resize', checkSize);
     }, []);
 
+    // Geliş anını yakalayan ekstra ölçüm
+    const { scrollYProgress: entryProgress } = useScroll({
+        target: containerRef,
+        offset: ["start end", "start start"]
+    });
+
+    const [hasEntered, setHasEntered] = useState(false);
+
+    useEffect(() => {
+        const unsubscribe = entryProgress.on('change', (v) => {
+            if (v >= 1 && !hasEntered) {
+                setHasEntered(true);
+                
+                // Kapıya tam oturdu, animasyon için scroll'u kilitle
+                const lenis = (window as any).__lenis;
+                if (lenis) lenis.stop();
+
+                // Animasyon hissiyatı bittikten 1.2s sonra serbest bırak
+                setTimeout(() => {
+                    if (lenis) lenis.start();
+                }, 1200);
+            }
+        });
+        return () => unsubscribe();
+    }, [entryProgress, hasEntered]);
+
+    // Asıl okuma ve çark döngüsü ekseni
     const { scrollYProgress } = useScroll({
         target: containerRef,
         offset: ["start start", "end end"] 
     });
-
-    // Dark Mode Arkaplan Geçişi (%0-10 arası tam kararma)
-    const bgOpacity = useTransform(scrollYProgress, [0, 0.10, 0.90, 1], [0, 1, 1, 0]);
     
-    // Sol Başlık Renk Geçişleri Siyah/Beyaz
-    const titleColor = useTransform(scrollYProgress, [0, 0.10, 0.90, 1], ['#111111', '#F3F3F3', '#F3F3F3', '#111111']);
-    const subtitleColor = useTransform(scrollYProgress, [0, 0.10, 0.90, 1], ['rgba(17,17,17,0.5)', 'rgba(243,243,243,0.5)', 'rgba(243,243,243,0.5)', 'rgba(17,17,17,0.5)']);
+    // ÇIKARKEN Tema Aydınlanması (Scroll > %95)
+    const titleColor = useTransform(scrollYProgress, [0.95, 1], ['#F3F3F3', '#111111']);
+    const subtitleColor = useTransform(scrollYProgress, [0.95, 1], ['rgba(243,243,243,0.5)', 'rgba(17,17,17,0.5)']);
 
-    // Ambiyans Işıkları (Lava Orbs) Parallax hareketi
     const topOrbY = useTransform(scrollYProgress, [0, 1], [0, 600]);
     const bottomOrbY = useTransform(scrollYProgress, [0, 1], [0, -500]);
 
-    // Bütün içeriği sayfa sonuna doğru yavaşça eritme (Exit Fade-out Transition)
-    const contentOpacity = useTransform(scrollYProgress, [0, 0.88, 0.98], [1, 1, 0]);
+    // ÇIKARKEN Elementlerin uçarak kaybolması (Scroll > %95)
+    const exitOpacity = useTransform(scrollYProgress, [0.95, 1], [1, 0]);
+    const exitY = useTransform(scrollYProgress, [0.95, 1], [0, -50]);
 
     return (
-        <section ref={containerRef} id="neden-biz" className="relative w-full bg-[#F3F3F3] h-[350vh]">
+        <section ref={containerRef} id="neden-biz" className="relative w-full bg-[#F3F3F3] h-[300vh]">
             
-            {/* DARK MODE YÜZEYİ */}
+            {/* ZEMİN ANA KATMANI - Kararma ve Çıkış */}
             <motion.div 
-                style={{ opacity: bgOpacity }} 
-                className="absolute inset-0 bg-[#0a0a0a] z-0 pointer-events-none" // Çok koyu griden siyaha geçiş #0a0a0a
-            />
-
-            {/* AMBİYANS IŞIKLARI (LAVA ORBS - PERFORMANS ODAKLI) */}
-            <motion.div 
-                style={{ opacity: bgOpacity }}
-                className="sticky top-0 h-screen w-full overflow-hidden pointer-events-none z-0"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: hasEntered ? 1 : 0 }}
+                transition={{ duration: 1, ease: 'easeOut' }}
+                className="absolute inset-0 z-0 pointer-events-none"
             >
+                {/* ÇIKARKEN AYDINLANMA (Scroll ile) */}
                 <motion.div 
-                    style={{ 
-                        y: topOrbY,
-                        background: 'radial-gradient(circle, rgba(127, 0, 255, 0.15) 0%, rgba(127, 0, 255, 0) 70%)',
-                        willChange: 'transform'
-                    }}
-                    className="absolute top-[-20%] right-[-10%] w-[80vw] h-[80vh] rounded-full" 
+                    style={{ opacity: exitOpacity }} 
+                    className="absolute inset-0 bg-[#0a0a0a]"
                 />
-                <motion.div 
-                    style={{ 
-                        y: bottomOrbY,
-                        background: 'radial-gradient(circle, rgba(185, 79, 255, 0.1) 0%, rgba(185, 79, 255, 0) 70%)',
-                        willChange: 'transform'
-                    }}
-                    className="absolute bottom-[-10%] left-[-10%] w-[70vw] h-[70vh] rounded-full" 
-                />
+
+                {/* AMBİYANS IŞIKLARI */}
+                <motion.div style={{ opacity: exitOpacity }} className="sticky top-0 h-screen w-full overflow-hidden pointer-events-none">
+                    <motion.div 
+                        style={{ y: topOrbY, background: 'radial-gradient(circle, rgba(127, 0, 255, 0.15) 0%, rgba(127, 0, 255, 0) 70%)', willChange: 'transform' }}
+                        className="absolute top-[-20%] right-[-10%] w-[80vw] h-[80vh] rounded-full" 
+                    />
+                    <motion.div 
+                        style={{ y: bottomOrbY, background: 'radial-gradient(circle, rgba(185, 79, 255, 0.1) 0%, rgba(185, 79, 255, 0) 70%)', willChange: 'transform' }}
+                        className="absolute bottom-[-10%] left-[-10%] w-[70vw] h-[70vh] rounded-full" 
+                    />
+                </motion.div>
             </motion.div>
             
-            {/* GÖSTERİM ÇERÇEVESİ */}
+            {/* GÖSTERİM ÇERÇEVESİ - Başlangıç Animasyonu */}
             <motion.div 
-                style={{ opacity: contentOpacity }}
-                className="sticky top-0 h-screen w-full flex flex-col lg:flex-row items-center overflow-hidden max-w-7xl mx-auto px-6 lg:px-12 z-10"
+                initial={{ opacity: 0, y: 50 }}
+                animate={{ opacity: hasEntered ? 1 : 0, y: hasEntered ? 0 : 50 }}
+                transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
+                className="sticky top-0 h-screen w-full overflow-hidden max-w-7xl mx-auto z-10"
             >
+                {/* İÇERİKLER - Çıkış Kaybolması */}
+                <motion.div
+                    style={{ opacity: exitOpacity, y: exitY }}
+                    className="w-full h-full flex flex-col lg:flex-row items-center px-6 lg:px-12"
+                >
                 
                 {/* SOL: Başlık Alanı */}
                 <div className="w-full lg:w-[40%] flex-shrink-0 flex flex-col items-start pt-24 lg:pt-0">
@@ -292,6 +319,7 @@ export default function NedenBiz() {
                     ))}
                 </div>
 
+                </motion.div>
             </motion.div>
         </section>
     );

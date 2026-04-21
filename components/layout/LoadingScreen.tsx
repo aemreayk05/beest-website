@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import Image from 'next/image';
 
 export default function LoadingScreen() {
     const [progress, setProgress] = useState(0);
@@ -47,10 +48,19 @@ export default function LoadingScreen() {
                 }`}
         >
             <div className="flex flex-col items-center">
-                {/* Logo / Marka */}
-                <h1 className="text-4xl md:text-5xl font-black text-white tracking-widest mb-8">
-                    BEEST<span className="text-[#7F00FF]">.</span>
-                </h1>
+                {/* Logo / Marka (Optik Ortalama için çok hafif sola kaydırıldı) */}
+                <div className="mb-4 translate-y-3 flex justify-center items-center w-full">
+                    <div className="-translate-x-2 md:-translate-x-3">
+                        <Image
+                            src="/beest_logo_white.svg"
+                            alt="Beest Studio"
+                            width={180}
+                            height={55}
+                            className="w-32 md:w-40 h-auto opacity-90"
+                            priority
+                        />
+                    </div>
+                </div>
 
                 {/* Progress Yüzdesi */}
                 <div className="text-white/40 text-sm tracking-[0.3em] font-medium mb-4 w-16 text-center">

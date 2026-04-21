@@ -93,11 +93,11 @@ export default function Projects() {
             {/* Yapışkan Konteyner */}
             <div className="lg:sticky lg:top-0 lg:h-screen lg:overflow-hidden flex flex-col justify-center py-20 lg:py-0 z-10">
 
-                <div className="w-full max-w-7xl mx-auto px-6 lg:px-12 mb-8 lg:mb-12">
+                <div className="w-full max-w-7xl mx-auto px-6 lg:px-12 mb-4 lg:mb-6">
                     <p className="text-[0.65rem] font-bold tracking-[0.18em] uppercase text-[#7F00FF] mb-4">
                         Seçili Çalışmalar
                     </p>
-                    <h2 className="text-3xl md:text-5xl lg:text-7xl font-black leading-tight tracking-tight text-[#111111] mb-6">
+                    <h2 className="text-3xl md:text-5xl lg:text-7xl font-black leading-tight tracking-tight text-[#111111] mb-2">
                         Dijitalin sınırlarını
                         <br />
                         <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#7F00FF] to-[#b94fff]">

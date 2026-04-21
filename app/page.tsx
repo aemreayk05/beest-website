@@ -18,7 +18,7 @@ export default function Home() {
       <Projects />
       <CalismaGecisi />
       <Pricing />
-      <BeestMarquee className="py-8 bg-[#111111] text-[#7F00FF]" text="READY TO BUILD WITH BEEST? • " speed={30} />
+      <BeestMarquee className="py-8 bg-[#111111] text-[#7F00FF]" text="READY TO BUILD WITH BEEST? • " speed={60} />
       <Contact />
     </main>
   );

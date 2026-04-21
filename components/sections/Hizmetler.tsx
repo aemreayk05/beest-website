@@ -8,51 +8,51 @@ import { Check } from 'lucide-react';
 const HIZMETLER = [
     {
         no: '01',
-        baslik: 'Kurumsal Web Sitesi\nve Dijital Altyapı',
+        baslik: 'Web Sitesi ve\nDijital Altyapı',
         aciklama:
-            'İşletmenizin internette güven veren ve profesyonel görünen bir dijital altyapıya sahip olmasını sağlıyoruz.',
+            'Markanızın dijitalde güçlü, güven veren ve profesyonel bir şekilde temsil edilmesi için modern web siteleri ve sağlam altyapılar geliştiriyoruz.',
         etiketler: [
             'Kurumsal web sitesi tasarımı ve geliştirme',
-            'Mobil uyumlu, hızlı ve güvenli web altyapısı',
-            'E-ticaret sitesi veya özel web çözümleri',
+            'Hızlı, güvenli ve mobil uyumlu dijital altyapı yapılandırması',
+            'İhtiyaca özel sayfa yapıları ve web çözümü geliştirmeleri',
         ],
         gorsel: 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=2600&auto=format&fit=crop',
     },
     {
         no: '02',
-        baslik: 'Google Görünürlüğü\nve SEO Çalışmaları',
+        baslik: 'SEO ve Google\nGörünürlüğü',
         aciklama:
-            'İşletmenizin Google\'da bulunabilir olmasını sağlayarak yeni müşterilerin sizi keşfetmesine yardımcı oluyoruz.',
+            'Markanızın Google\'daki görünürlüğünü artırmak ve doğru hedef kitle tarafından daha kolay bulunmasını sağlamak için stratejik SEO süreçleri yürütüyoruz.',
         etiketler: [
-            'Google SEO optimizasyonu ve teknik site analizi',
-            'Anahtar kelime ve rakip analizi',
-            'Google Haritalar ve yerel arama optimizasyonu',
+            'Teknik SEO ve site içi optimizasyon süreçleri',
+            'Anahtar kelime stratejisi, sayfa yapısı ve içerik planlaması',
+            'Google Haritalar ve yerel arama görünürlüğü çalışmaları',
         ],
         gorsel: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=2600&auto=format&fit=crop',
     },
     {
         no: '03',
-        baslik: 'Marka Kimliği\nve Dijital İmaj',
+        baslik: 'Dijital Reklam\nYönetimi',
         aciklama:
-            'Şirketinizin dijital dünyada güven veren ve profesyonel görünen bir marka kimliği oluşturuyoruz.',
+            'Markanızın reklam süreçlerini planlı ve kontrollü şekilde yöneterek daha doğru kitleye daha verimli biçimde ulaşmasını sağlıyoruz.',
         etiketler: [
-            'Logo ve kurumsal kimlik tasarımı',
-            'Marka renkleri ve dijital görsel standartlar',
-            'Sosyal medya ve dijital platform marka düzeni',
+            'Google ve sosyal medya reklam kampanyalarının yönetimi',
+            'Hedef kitleye uygun kampanya planlaması ve reklam kurgusu',
+            'Reklam performansının izlenmesi ve düzenli raporlanması',
         ],
-        gorsel: 'https://images.unsplash.com/photo-1561070791-2526d30994b5?q=80&w=2600&auto=format&fit=crop', // Branding and colors
+        gorsel: 'https://images.unsplash.com/photo-1561070791-2526d30994b5?q=80&w=2600&auto=format&fit=crop',
     },
     {
         no: '04',
-        baslik: 'Dijital Pazarlama\nve Müşteri Kazanımı',
+        baslik: 'Performans Analizi\nve İyileştirme',
         aciklama:
-            'Web sitenizin sadece var olmasını değil, aynı zamanda size müşteri getiren bir sistem haline gelmesini sağlıyoruz.',
+            'Yayına alınan dijital çalışmaların performansını veriye dayalı olarak takip ediyor, elde edilen bulgular doğrultusunda düzenli iyileştirmeler gerçekleştiriyoruz.',
         etiketler: [
-            'Google reklamları ve sosyal medya reklam yönetimi',
-            'Müşteri kazanımı için dijital kampanyalar',
-            'Performans takibi ve raporlama',
+            'Site ve reklam verilerinin düzenli olarak analiz edilmesi',
+            'Kullanıcı davranışlarına göre geliştirme alanlarının belirlenmesi',
+            'Performansı güçlendirmeye yönelik sürekli iyileştirme çalışmaları',
         ],
-        gorsel: 'https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=2600&auto=format&fit=crop', // Marketing strategy planning
+        gorsel: 'https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=2600&auto=format&fit=crop',
     },
 ] as const;
 
@@ -232,7 +232,18 @@ export default function Hizmetler() {
                                             }}
                                         >
                                             <div className="overflow-hidden pl-[2rem]">
-                                                <div className="pb-6">
+                                                <div className="pb-6 flex flex-col gap-4">
+                                                    {/* Kısa açıklama */}
+                                                    <p
+                                                        style={{
+                                                            fontSize: '0.85rem',
+                                                            lineHeight: '1.6',
+                                                            color: 'rgba(17,17,17,0.65)',
+                                                            margin: 0,
+                                                        }}
+                                                    >
+                                                        {h.aciklama}
+                                                    </p>
                                                     {/* Etiketler (Maddeli Liste) */}
                                                     <ul className="flex flex-col gap-3 m-0 p-0 list-none">
                                                         {h.etiketler.map((e) => (
@@ -334,6 +345,19 @@ export default function Hizmetler() {
                                         borderRadius: '9999px',
                                     }}
                                 />
+
+                                {/* Kısa açıklama */}
+                                <p
+                                    style={{
+                                        fontSize: '0.9rem',
+                                        lineHeight: '1.65',
+                                        color: 'rgba(17,17,17,0.65)',
+                                        margin: 0,
+                                        transition: 'all 0.35s ease',
+                                    }}
+                                >
+                                    {hizmet.aciklama}
+                                </p>
 
                                 {/* Etiketler (Maddeli Liste) */}
                                 <ul
