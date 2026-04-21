@@ -202,12 +202,14 @@ export default function NedenBiz() {
                 setHasEntered(true);
                 
                 // Kapıya tam oturdu, animasyon için scroll'u kilitle
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 const lenis = (window as any).__lenis;
                 if (lenis) lenis.stop();
 
                 // Animasyon hissiyatı bittikten 1.2s sonra serbest bırak
                 setTimeout(() => {
-                    if (lenis) lenis.start();
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                    if ((window as any).__lenis) (window as any).__lenis.start();
                 }, 1200);
             }
         });
