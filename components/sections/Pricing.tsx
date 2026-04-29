@@ -7,55 +7,71 @@ import PricingModal, { PackageType } from '../ui/PricingModal';
 const packages: PackageType[] = [
     {
         name: 'Basic',
-        description: 'Dijital dünyada varlık göstermek isteyen yeni markalar için.',
+        description: 'Dijital dünyada profesyonel bir başlangıç yapmak isteyen işletmeler için.',
         price: 'Başlangıç',
+        pricingDetails: {
+            setupFee: '₺15.000',
+        },
         features: [
-            'Kurumsal Web Sitesi (Tek Sayfa)',
-            'Temel SEO Optimizasyonu',
-            'Mobil Uyumlu Tasarım',
-            'Standart İletişim Formu',
+            '5 sayfaya kadar kurumsal web sitesi',
+            'Mobil uyumlu modern tasarım',
+            'Temel SEO altyapısı',
+            'Google İşletme entegrasyonları',
+            'Yayına alma ve temel teslim sonrası destek',
         ],
         detailedFeatures: [
-            { title: 'Tek Sayfa Web Sitesi', desc: 'İşletmenizin vizyonunu, iletişim bilgilerini ve temel hizmetlerini içeren minimal ve şık bir Landing Page.' },
-            { title: 'Temel SEO', desc: 'Sitenizin arama motorları tarafından doğru indekslenmesi için gerekli meta etiketleri ve altyapı standartları.' },
-            { title: 'Tam Responsive', desc: 'Telefon, tablet ve bilgisayarlarda kusursuz görünen esnek arayüz.' },
-            { title: 'Form Entegrasyonu', desc: 'Müşterilerinizin size direkt olarak e-posta atabilmesini sağlayan iletişim formu.' },
+            { title: 'Kurumsal Web Sitesi', desc: 'İşletmenizi en iyi şekilde anlatan, 5 sayfaya kadar profesyonel bir dijital varlık.' },
+            { title: 'Modern ve Mobil Uyumlu', desc: 'Tüm cihazlarda kusursuz çalışan, modern ve kullanıcı dostu arayüz tasarımı.' },
+            { title: 'SEO ve Entegrasyon', desc: 'Google İşletme kaydı ve arama motorlarında bulunabilirliğinizi artıracak temel SEO altyapısı.' },
+            { title: 'Destek ve İletişim', desc: 'Müşterilerinizin size kolayca ulaşmasını sağlayan form ve teslimat sonrası temel teknik destek.' },
         ],
         isPopular: false,
     },
     {
         name: 'Premium',
-        description: 'Sıra dışı tasarımlar ve gelişmiş etkileşimlerle fark yaratın.',
+        description: 'Web sitesini müşteri kazanan güçlü bir dijital kanala dönüştürmek isteyen işletmeler için.',
         price: 'Tavsiye Edilen',
+        pricingDetails: {
+            setupFee: '₺25.000',
+            monthlyFee: '₺5.000',
+            monthlyDesc: 'Aylık SEO Ödemesi',
+        },
         features: [
-            'Özel "Swiss-Style" Tasarım',
-            'Kapsamlı SEO & Hız Optimizasyonu',
-            '3D Animasyonlar & Smooth Scroll',
-            'Gelişmiş Formlar & API Entegrasyonu',
-            'Öncelikli Teknik Destek',
+            'Basic pakette yer alan tüm hizmetler',
+            'Çok sayfalı, gelişmiş kurumsal web sitesi',
+            'Yönetim paneli',
+            'SSS — Sık Sorulan Sorular altyapısı',
+            'Aylık SEO çalışması ve anahtar kelime takibi',
         ],
         detailedFeatures: [
-            { title: 'Swiss-Style Arayüz', desc: 'Modern, tipografik odaklı, bol boşluklu ve yüksek okunabilirliğe sahip Beest Studio imzalı özel tasarım.' },
-            { title: 'Kapsamlı SEO ve Hız', desc: 'Rakiplerinizi geride bırakmanız için Core Web Vitals optimizasyonu, 100/100 performans skorları ve yapılandırılmış veri işaretlemeleri.' },
-            { title: 'İleri Seviye Animasyonlar', desc: 'Framer Motion ve 3D entegrasyonuyla ziyaretçiyi büyüleyen, donmadan akan (60 FPS) geçişler.' },
-            { title: 'Teknik Destek Garantisi', desc: 'Proje teslimi sonrasında dahi ortaya çıkabilecek güncellemeler ve ihtiyaçlar için doğrudan iletişim hattı.' },
+            { title: 'Gelişmiş Web Sitesi', desc: 'Sınırları ortadan kaldıran çok sayfalı yapı ve ziyaretçileri müşteriye dönüştürmeyi hedefleyen stratejik tasarım.' },
+            { title: 'Kolay İçerik Yönetimi', desc: 'Sitenizdeki metin ve görselleri kimseye ihtiyaç duymadan güncelleyebileceğiniz kullanıcı dostu panel.' },
+            { title: 'Aktif SEO Çalışması', desc: 'Sektörünüzdeki anahtar kelimelerde üst sıralara çıkmanız için düzenli SEO takibi ve optimizasyon.' },
+            { title: 'Genişletilmiş Altyapı', desc: 'Kullanıcıların aklındaki soruları yanıtlayan SSS bölümü ve genişletilebilir sayfa mimarisi.' },
         ],
         isPopular: true,
     },
     {
         name: 'Plus',
-        description: 'Büyüyen işletmeler için dinamik ve yönetilebilir çözümler.',
+        description: 'Premium bir dijital deneyim sunmak ve uzun vadeli dijital büyüme hedefleyen işletmeler için.',
         price: 'Profesyonel',
+        pricingDetails: {
+            setupFee: '₺45.000',
+            monthlyFee: '₺10.000',
+            monthlyDesc: 'İleri Seviye SEO',
+        },
         features: [
-            'Çok Sayfalı Dinamik Web Sitesi',
-            'Gelişmiş SEO & Performans',
-            'İçerik Yönetim Sistemi (CMS)',
-            'Temel Animasyonlar (Framer)',
+            'Premium pakette yer alan tüm hizmetler',
+            '3D model destekli etkileyici web deneyimi',
+            'Logo ve görsel marka kimliği desteği',
+            'İleri seviye SEO mimarisi ve içerik stratejisi',
+            'Blog sistemi altyapısı',
         ],
         detailedFeatures: [
-            { title: 'Dinamik Mimari', desc: 'Blog, ürün sergileme veya hizmet alt sayfaları gibi birden fazla sayfadan oluşan kapsamlı ağ.' },
-            { title: 'Özel CMS Yönetim Paneli', desc: 'İçeriklerinizi, görsellerinizi ve yazılarınızı kod bilmeden yönetmenizi sağlayan kullanıcı dostu arka yüz.' },
-            { title: 'Modüler Genişleyebilirlik', desc: 'İleride eklenebilecek yeni sayfa ve özelliklere tamamen uyumlu, esnek ve sürdürülebilir altyapı.' },
+            { title: 'Premium Arayüz ve 3D', desc: 'Markanıza tamamen özgün, ziyaretçiyi büyüleyen 3D animasyonlu "Swiss-Style" lüks tasarım.' },
+            { title: 'Marka Kimliği Desteği', desc: 'Logo tasarımı ve kurumsal kimliğinizi yansıtan modern görsel materyallerin oluşturulması.' },
+            { title: 'İleri Seviye Strateji', desc: 'Rakiplerinizi analiz ederek hazırlanan kapsamlı SEO mimarisi ve etkili içerik planlaması.' },
+            { title: 'Blog Ekosistemi', desc: 'Sektörel otoritenizi artıracak ve organik trafiğinizi büyütecek gelişmiş blog altyapısı.' },
         ],
         isPopular: false,
     },
@@ -77,6 +93,22 @@ const customPackage: PackageType = {
 
 export default function Pricing() {
     const [selectedPackage, setSelectedPackage] = useState<PackageType | null>(null);
+
+    const allPackages = [...packages, customPackage];
+
+    const handleNext = () => {
+        if (!selectedPackage) return;
+        const currentIndex = allPackages.findIndex(p => p.name === selectedPackage.name);
+        const nextIndex = (currentIndex + 1) % allPackages.length;
+        setSelectedPackage(allPackages[nextIndex]);
+    };
+
+    const handlePrev = () => {
+        if (!selectedPackage) return;
+        const currentIndex = allPackages.findIndex(p => p.name === selectedPackage.name);
+        const prevIndex = (currentIndex - 1 + allPackages.length) % allPackages.length;
+        setSelectedPackage(allPackages[prevIndex]);
+    };
 
     return (
         <section
@@ -184,7 +216,7 @@ export default function Pricing() {
 
                             {/* Paket Başı */}
                             <div style={{ marginBottom: '2rem' }}>
-                                <h3 style={{ fontSize: '1.5rem', fontWeight: 800, marginBottom: '0.5rem' }}>
+                                <h3 style={{ fontSize: '2rem', fontWeight: 800, marginBottom: '0.5rem' }}>
                                     {pkg.name}
                                 </h3>
                                 <p style={{ fontSize: '0.875rem', opacity: 0.7, minHeight: '3rem' }}>
@@ -224,17 +256,19 @@ export default function Pricing() {
                             <button
                                 onClick={() => setSelectedPackage(pkg)}
                                 style={{
-                                    display: 'block',
+                                    display: 'flex',
+                                    flexDirection: 'column',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
                                     width: '100%',
-                                    textAlign: 'center',
                                     padding: '1rem',
                                     borderRadius: '0.5rem',
                                     backgroundColor: pkg.name === 'Premium' ? '#7F00FF' : 'transparent',
                                     color: pkg.name === 'Premium' ? '#ffffff' : '#111111',
                                     border: pkg.name === 'Premium' ? 'none' : '1px solid rgba(17,17,17,0.2)',
-                                    fontWeight: 700,
                                     cursor: 'pointer',
                                     transition: 'background-color 0.2s ease, border-color 0.2s',
+                                    gap: '0.25rem',
                                 }}
                                 onMouseEnter={(e) => {
                                     if (pkg.name !== 'Premium') {
@@ -247,14 +281,16 @@ export default function Pricing() {
                                     }
                                 }}
                             >
-                                Seç & İlerlet
+                                <span style={{ fontWeight: 800, fontSize: '1.125rem' }}>
+                                    Paketi İncele
+                                </span>
                             </button>
                         </article>
                     ))}
                 </div>
 
                 {/* ── Enterprise / Custom Project Banner ── */}
-                <div 
+                <div
                     className="mt-12 w-full bg-[#111111] rounded-[1.5rem] p-8 lg:p-12 relative overflow-hidden group shadow-2xl"
                 >
                     {/* Arkaplan dekor parlaması */}
@@ -268,11 +304,11 @@ export default function Pricing() {
                                 <span className="text-[#7F00FF]">Gereksinimleriniz Mi Var?</span>
                             </h3>
                             <p className="text-white/60 text-lg leading-relaxed max-w-2xl">
-                                Standart paketlere sığmayan; yüksek dönüşüm odaklı e-ticaret platformları, 
+                                Standart paketlere sığmayan; yüksek dönüşüm odaklı e-ticaret platformları,
                                 {'mobil uygulamalar ve kurumsal SaaS tabanlı ekosistemlerini "Beest" mühendisliği ve mimari titizliğiyle sıfırdan inşa ediyoruz.'}
                             </p>
                         </div>
-                        
+
                         <div className="flex-shrink-0">
                             <button
                                 onClick={() => setSelectedPackage(customPackage)}
@@ -286,10 +322,12 @@ export default function Pricing() {
 
             </div>
 
-            <PricingModal 
-                isOpen={selectedPackage !== null} 
-                onClose={() => setSelectedPackage(null)} 
-                pkg={selectedPackage} 
+            <PricingModal
+                isOpen={selectedPackage !== null}
+                onClose={() => setSelectedPackage(null)}
+                pkg={selectedPackage}
+                onNext={handleNext}
+                onPrev={handlePrev}
             />
         </section>
     );

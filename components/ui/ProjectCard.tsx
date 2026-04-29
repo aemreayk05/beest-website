@@ -32,6 +32,7 @@ export default function ProjectCard({
                         fill
                         className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
                         sizes="(max-width: 768px) 85vw, (max-width: 1024px) 60vw, 45vw"
+                        unoptimized={resim.endsWith('.svg')}
                     />
                 ) : (
                     <div className="absolute inset-0 bg-gradient-to-br from-[#EDE8F5] to-[#D9CCF0] opacity-50 flex items-center justify-center">

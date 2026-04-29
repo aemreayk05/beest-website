@@ -6,34 +6,26 @@ import ProjectCard from '../ui/ProjectCard';
 const PROJELER = [
     {
         id: 'p1',
-        baslik: 'Fintech Devrimi: Global Ödeme Aracı arayüzü',
-        musteri: 'PayNova',
-        kategori: ['UI/UX Tasarım', 'Design System', 'Next.js'],
-        resim: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2070&auto=format&fit=crop',
-        link: '#',
+        baslik: 'Kurumsal Web Tasarımı & SEO Çalışması',
+        musteri: 'Weart Mimarlık',
+        kategori: ['Web Tasarım', 'Kurumsal Kimlik', 'SEO'],
+        resim: '/weart.png',
+        link: 'https://www.weartmimarlik.com',
     },
     {
         id: 'p2',
-        baslik: 'Premium E-Ticaret Deneyimi',
-        musteri: 'Lumina',
-        kategori: ['Web Geliştirme', 'E-Ticaret', 'Stripe API'],
-        resim: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?q=80&w=2015&auto=format&fit=crop',
-        link: '#',
+        baslik: 'Premium Cam & Ayna Çözümleri Platformu',
+        musteri: 'Erdoğan Ayna',
+        kategori: ['Web Geliştirme', 'Kurumsal', 'SEO'],
+        resim: '/erdogan-ayna.png',
+        link: 'https://www.erdoganayna.com',
     },
     {
         id: 'p3',
-        baslik: 'Yapay Zeka Destekli İçerik Platformu',
-        musteri: 'Nexus AI',
-        kategori: ['Web Geliştirme', 'Frontend Mimarisi', 'React'],
-        resim: 'https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?q=80&w=2070&auto=format&fit=crop',
-        link: '#',
-    },
-    {
-        id: 'p4',
-        baslik: 'Kurumsaldan Dijitale: Marka Dönüşümü',
-        musteri: 'Vanguard Group',
-        kategori: ['Marka Kimliği', 'Strateji', 'Web Tasarım'],
-        resim: 'https://images.unsplash.com/photo-1542744173-8e7e53415bb0?q=80&w=2070&auto=format&fit=crop',
+        baslik: 'Yapay Zeka Tabanlı Görsel Araçları',
+        musteri: 'FAI App',
+        kategori: ['Mobil Uygulama', 'React Native', 'Yapay Zeka'],
+        resim: '/fai.png',
         link: '#',
     },
 ];
@@ -127,7 +119,7 @@ export default function Projects() {
 
                     {/* Sonda bitiş mesajı kartı */}
                     <div className="flex flex-col items-center justify-center w-[85vw] md:w-[60vw] lg:w-[30vw] shrink-0 bg-white rounded-[2rem] p-10 text-center shadow-[0_10px_40px_-10px_rgba(127,0,255,0.08)]">
-                        <h4 className="text-2xl font-bold text-[#111111] mb-6">Sizin projeniz<br />sıradaki neden olmasın?</h4>
+                        <h4 className="text-2xl font-bold text-[#111111] mb-6">Sıradaki neden<br />sizin projeniz olmasın?</h4>
                         <a
                             href="#contact"
                             className="inline-block px-8 py-4 rounded-full bg-[#7F00FF] text-white font-semibold text-sm tracking-wide hover:scale-105 transition-transform duration-300 shadow-[0_8px_24px_-8px_rgba(127,0,255,0.4)]"
