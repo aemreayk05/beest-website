@@ -73,6 +73,38 @@ export async function POST(request: Request) {
             replyTo: email, // Cevapla dendiğinde direkt müşteriye gitsin
         });
 
+        // 6. WHATSAPP BİLDİRİMLERİ (CallMeBot)
+        try {
+            // Mesaj Şablonu (URL Encode için düz metin)
+            const waMessage = `🚨 *YENİ BİR TALEP GELDİ!* 🚨\n\n👤 *Ad Soyad:* ${name}\n📧 *E-posta:* ${email}\n📱 *Telefon:* ${phone || 'Belirtilmedi'}\n📦 *Paket:* ${packageName || 'Belirtilmedi'}\n\n📝 *Detaylar:*\n${details}`;
+            
+            // Encode mesaj (URL formatına uygun hale getir)
+            const encodedMessage = encodeURIComponent(waMessage);
+
+            const sendWaMessage = async (phoneStr: string | undefined, apiKey: string | undefined) => {
+                if (!phoneStr || !apiKey || phoneStr === '+905550000000') return; // Placeholder koruması
+                
+                // Telefon numarasındaki + işaretini CallMeBot için formatla (%2B)
+                const formattedPhone = phoneStr.startsWith('+') ? phoneStr.replace('+', '%2B') : phoneStr;
+                const url = `https://api.callmebot.com/whatsapp.php?phone=${formattedPhone}&text=${encodedMessage}&apikey=${apiKey}`;
+                
+                const res = await fetch(url, { method: 'GET' });
+                if (!res.ok) {
+                    console.error(`WhatsApp Gönderim Hatası (${phoneStr}):`, await res.text());
+                }
+            };
+
+            // Her iki yönetici için eşzamanlı bildirim gönder
+            await Promise.all([
+                sendWaMessage(process.env.WHATSAPP_ADMIN1_PHONE, process.env.WHATSAPP_ADMIN1_APIKEY),
+                sendWaMessage(process.env.WHATSAPP_ADMIN2_PHONE, process.env.WHATSAPP_ADMIN2_APIKEY)
+            ]);
+
+        } catch (waError) {
+            // WhatsApp API hatası ana süreci (formun başarılı gönderilmesini) bozmamalı
+            console.error('WhatsApp Notification Error:', waError);
+        }
+
         return NextResponse.json({ message: 'Email sent successfully' }, { status: 200 });
 
     } catch (error) {
