@@ -1,8 +1,8 @@
 'use client';
 
 import { useRef, useEffect, useState } from 'react';
-import { motion, useScroll, useTransform, MotionValue } from 'framer-motion';
-import { Map, BarChart3, Target, ShieldCheck, BrainCircuit } from 'lucide-react';
+import { motion, useScroll, useTransform, MotionValue, AnimatePresence } from 'framer-motion';
+import { Map, BarChart3, Target, ShieldCheck, BrainCircuit, ChevronDown } from 'lucide-react';
 
 const veri = [
     {
@@ -177,7 +177,7 @@ function DialItem({ item, index, progress, isDesktop }: { item: typeof veri[0], 
     );
 }
 
-export default function NedenBiz() {
+function DesktopNedenBiz() {
     const containerRef = useRef<HTMLDivElement>(null);
     const [isDesktop, setIsDesktop] = useState(true);
 
@@ -234,7 +234,7 @@ export default function NedenBiz() {
     const exitY = useTransform(scrollYProgress, [0.95, 1], [0, -50]);
 
     return (
-        <section ref={containerRef} id="neden-biz" className="relative w-full bg-[#F3F3F3] h-[300vh]">
+        <section ref={containerRef} className="relative w-full bg-[#F3F3F3] h-[300vh]">
             
             {/* ZEMİN ANA KATMANI - Kararma ve Çıkış */}
             <motion.div 
@@ -323,6 +323,143 @@ export default function NedenBiz() {
 
                 </motion.div>
             </motion.div>
+        </section>
+    );
+}
+
+function MobileNedenBiz() {
+    const [activeIndex, setActiveIndex] = useState(0);
+    const [direction, setDirection] = useState(1);
+
+    const nextSlide = () => {
+        setDirection(1);
+        setActiveIndex((prev) => (prev + 1) % veri.length);
+    };
+
+    const prevSlide = () => {
+        setDirection(-1);
+        setActiveIndex((prev) => (prev - 1 + veri.length) % veri.length);
+    };
+
+    const variants = {
+        enter: (direction: number) => ({
+            x: direction > 0 ? '100%' : '-100%',
+            opacity: 0
+        }),
+        center: {
+            x: 0,
+            opacity: 1
+        },
+        exit: (direction: number) => ({
+            x: direction < 0 ? '100%' : '-100%',
+            opacity: 0
+        })
+    };
+
+    useEffect(() => {
+        const timer = setInterval(() => {
+            nextSlide();
+        }, 6000);
+        return () => clearInterval(timer);
+    }, [activeIndex]); // Re-start timer when slide changes
+
+    const currentItem = veri[activeIndex];
+    const Icon = currentItem.icon;
+
+    return (
+        <div className="w-full h-[85vh] min-h-[500px] flex flex-col relative overflow-hidden bg-[#F3F3F3]">
+            {/* Story Progress Bars */}
+            <div className="absolute top-24 left-0 w-full px-6 z-50 flex gap-2">
+                {veri.map((_, i) => {
+                    const isActive = i === activeIndex;
+                    const isPassed = i < activeIndex;
+
+                    return (
+                        <div key={i} className="flex-1 h-1.5 bg-black/10 rounded-full overflow-hidden relative">
+                            {isActive ? (
+                                <motion.div 
+                                    key={`active-${activeIndex}`}
+                                    className="absolute top-0 left-0 h-full bg-[#7F00FF]"
+                                    initial={{ width: '0%' }}
+                                    animate={{ width: '100%' }}
+                                    transition={{ duration: 6, ease: 'linear' }}
+                                />
+                            ) : (
+                                <div 
+                                    className="absolute top-0 left-0 h-full bg-[#7F00FF]"
+                                    style={{ width: isPassed ? '100%' : '0%' }}
+                                />
+                            )}
+                        </div>
+                    );
+                })}
+            </div>
+
+            {/* Click areas for Next/Prev */}
+            <div className="absolute inset-0 z-40 flex">
+                <div className="w-1/3 h-full" onClick={prevSlide} />
+                <div className="w-2/3 h-full" onClick={nextSlide} />
+            </div>
+
+            {/* Content Area */}
+            <AnimatePresence initial={false} custom={direction}>
+                <motion.div
+                    key={activeIndex}
+                    custom={direction}
+                    variants={variants}
+                    initial="enter"
+                    animate="center"
+                    exit="exit"
+                    transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+                    className="absolute inset-0 w-full h-full flex flex-col justify-center px-8"
+                >
+                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-[0.03] text-[#7F00FF] pointer-events-none">
+                        <Icon size={350} strokeWidth={1} />
+                    </div>
+
+                    <div className="relative z-10">
+                        <div className="flex items-center gap-4 mb-8">
+                            <span className="font-mono text-4xl font-black text-[#7F00FF]">
+                                {currentItem.no}
+                            </span>
+                            <div className="flex items-center gap-2 border border-[#7F00FF]/20 rounded-full px-4 py-1.5 bg-[#7F00FF]/5">
+                                <div className="w-2 h-2 rounded-full bg-[#7F00FF] shadow-[0_0_8px_#7F00FF] animate-pulse" />
+                                <span className="font-bold text-[0.7rem] tracking-[0.2em] uppercase text-[#7F00FF]">
+                                    {currentItem.tag}
+                                </span>
+                            </div>
+                        </div>
+                        
+                        <h3 className="text-[2.5rem] leading-[1.05] font-black tracking-tight text-[#111111] mb-6">
+                            {currentItem.title}
+                        </h3>
+                        
+                        <p className="text-lg leading-relaxed font-medium text-black/70">
+                            {currentItem.desc}
+                        </p>
+                    </div>
+                </motion.div>
+            </AnimatePresence>
+
+            {/* Footer indicator */}
+            <div className="absolute bottom-12 left-0 w-full text-center z-50 pointer-events-none">
+                <p className="text-xs font-bold tracking-widest text-black/30 uppercase animate-pulse">
+                    İlerlemek için dokunun
+                </p>
+            </div>
+        </div>
+    );
+}
+
+export default function NedenBiz() {
+    return (
+        <section id="neden-biz" className="w-full bg-[#F3F3F3]">
+            <div className="hidden lg:block">
+                <DesktopNedenBiz />
+            </div>
+            <div className="block lg:hidden">
+                <MobileNedenBiz />
+            </div>
         </section>
     );
 }

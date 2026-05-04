@@ -18,6 +18,8 @@ export default function ProjectCard({
     return (
         <a
             href={link}
+            target="_blank"
+            rel="noopener noreferrer"
             className="group relative flex flex-col w-[85vw] md:w-[60vw] lg:w-[40vw] lg:max-w-[640px] shrink-0 bg-white rounded-[2rem] p-4 lg:p-5 transition-transform duration-500 ease-out hover:-translate-y-2 pointer-events-auto"
             style={{
                 boxShadow: '0 10px 40px -10px rgba(127,0,255,0.08)',

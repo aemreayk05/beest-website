@@ -3,7 +3,7 @@ import "./globals.css";
 import SmoothScroll from "@/components/SmoothScroll";
 import Footer from "@/components/layout/Footer";
 import LoadingScreen from "@/components/layout/LoadingScreen";
-
+import MobileNavbar from "@/components/layout/MobileNavbar";
 export const metadata: Metadata = {
   metadataBase: new URL('https://beeststudio.com'),
   title: "Beest Studio — Premium Dijital Deneyimler",
@@ -70,6 +70,7 @@ export default function RootLayout({
         />
       </head>
       <body className="bg-dirty-white text-jet-black antialiased flex flex-col min-h-screen">
+        <MobileNavbar />
         <LoadingScreen />
         <SmoothScroll>
           <div className="flex-grow">

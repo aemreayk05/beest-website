@@ -107,10 +107,10 @@ export default function Hizmetler() {
             id="services"
             ref={containerRef}
             style={{ height: '200vh' }}
-            className="relative bg-[#F3F3F3]"
+            className="relative bg-[#F3F3F3] max-lg:!h-auto max-lg:!mt-4"
             aria-label="Beest Hizmet Ekosistemi"
         >
-            <div className="sticky top-0 h-screen flex items-center z-10">
+            <div className="sticky top-0 h-screen flex items-center z-10 max-lg:!relative max-lg:!h-auto max-lg:!items-start max-lg:pb-10 max-lg:!pt-12">
                 {/* İki kolon: Mobil -> Tek Sütun (Sağ kart gizli), Desktop -> İki Sütun */}
                 <div
                     className="w-full max-w-7xl mx-auto px-6 lg:px-12 flex flex-col lg:flex-row gap-12 lg:gap-20 items-center"
@@ -156,8 +156,8 @@ export default function Hizmetler() {
                             taşıyoruz.
                         </h2>
 
-                        {/* Hizmet listesi */}
-                        <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
+                        {/* Hizmet listesi (Masaüstü) */}
+                        <ul className="hidden lg:block" style={{ listStyle: 'none', padding: 0, margin: 0 }}>
                             {HIZMETLER.map((h, i) => {
                                 const aktif = i === aktifIndex;
                                 return (
@@ -222,54 +222,57 @@ export default function Hizmetler() {
                                                 {h.baslik}
                                             </h3>
                                         </div>
-
-                                        {/* Sadece Mobil: Accordion Detay Alanı */}
-                                        <div
-                                            className="lg:hidden grid transition-all duration-500 ease-in-out"
-                                            style={{
-                                                gridTemplateRows: aktif ? '1fr' : '0fr',
-                                                opacity: aktif ? 1 : 0,
-                                            }}
-                                        >
-                                            <div className="overflow-hidden pl-[2rem]">
-                                                <div className="pb-6 flex flex-col gap-4">
-                                                    {/* Kısa açıklama */}
-                                                    <p
-                                                        style={{
-                                                            fontSize: '0.85rem',
-                                                            lineHeight: '1.6',
-                                                            color: 'rgba(17,17,17,0.65)',
-                                                            margin: 0,
-                                                        }}
-                                                    >
-                                                        {h.aciklama}
-                                                    </p>
-                                                    {/* Etiketler (Maddeli Liste) */}
-                                                    <ul className="flex flex-col gap-3 m-0 p-0 list-none">
-                                                        {h.etiketler.map((e) => (
-                                                            <li
-                                                                key={e}
-                                                                style={{
-                                                                    display: 'flex',
-                                                                    alignItems: 'flex-start',
-                                                                    gap: '0.75rem',
-                                                                    fontSize: '0.85rem',
-                                                                    lineHeight: '1.4',
-                                                                    color: '#111111',
-                                                                }}
-                                                            >
-                                                                <Check size={16} color="#7F00FF" style={{ flexShrink: 0, marginTop: '0.1rem' }} />
-                                                                <span>{e}</span>
-                                                            </li>
-                                                        ))}
-                                                    </ul>
-                                                </div>
-                                            </div>
-                                        </div>
                                     </li>
                                 );
                             })}
                         </ul>
+                    </div>
+
+                    {/* ── Sadece Mobil: Yatay Kaydırmalı Kartlar (Apple-Style) ── */}
+                    <div className="lg:hidden w-full w-screen -ml-6 px-6 overflow-x-auto snap-x snap-mandatory flex gap-6 pb-8" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
+                        <style dangerouslySetInnerHTML={{ __html: `
+                            .lg\\:hidden::-webkit-scrollbar { display: none; }
+                        `}} />
+                        {HIZMETLER.map((h, idx) => (
+                            <article 
+                                key={h.no} 
+                                className="snap-center w-[85vw] md:w-[60vw] shrink-0 flex flex-col bg-white rounded-3xl overflow-hidden"
+                                style={{ boxShadow: '0 10px 40px -10px rgba(127,0,255,0.15)' }}
+                            >
+                                <div className="relative w-full aspect-video bg-gray-100">
+                                    <Image
+                                        src={h.gorsel}
+                                        alt={`${h.baslik.replace('\n', ' ')} - Beest Studio Hizmeti`}
+                                        fill
+                                        priority={idx === 0}
+                                        sizes="(max-width: 768px) 85vw, 60vw"
+                                        quality={85}
+                                        className="object-cover"
+                                    />
+                                </div>
+                                <div className="p-6 md:p-8 flex flex-col gap-4">
+                                    <span className="text-[0.6rem] font-bold tracking-[0.18em] uppercase text-[#7F00FF]">
+                                        {h.no} / {String(HIZMETLER.length).padStart(2, '0')}
+                                    </span>
+                                    <h3 className="text-xl md:text-2xl font-black leading-tight text-[#111111]">
+                                        {h.baslik.replace('\n', ' ')}
+                                    </h3>
+                                    <p className="text-sm md:text-base leading-relaxed text-black/65">
+                                        {h.aciklama}
+                                    </p>
+                                    <ul className="flex flex-col gap-3 mt-2 list-none">
+                                        {h.etiketler.map((e) => (
+                                            <li key={e} className="flex items-start gap-3 text-sm text-black/85">
+                                                <Check size={16} color="#7F00FF" className="shrink-0 mt-[0.15rem]" />
+                                                <span>{e}</span>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                </div>
+                            </article>
+                        ))}
+                        {/* Sağdan boşluk bırakmak için sahte bir eleman */}
+                        <div className="shrink-0 w-2 md:w-6" aria-hidden="true"></div>
                     </div>
 
                     {/* ── Sağ: Detay kartı — Sadece masaüstünde görünür ── */}

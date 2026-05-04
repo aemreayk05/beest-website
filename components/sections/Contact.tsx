@@ -55,7 +55,7 @@ export default function Contact() {
     return (
         <section
             id="contact"
-            className="w-full bg-[#F3F3F3] py-20 lg:py-40 relative overflow-hidden"
+            className="w-full bg-[#F3F3F3] py-20 lg:py-40 relative overflow-hidden max-lg:!pt-12 max-lg:!mt-4"
             aria-label="İletişim"
         >
             <div className="max-w-7xl mx-auto px-6 lg:px-12 grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-20">
@@ -81,6 +81,9 @@ export default function Contact() {
                             <a href="mailto:hello@beeststudio.com" className="block text-lg text-black/60 hover:text-[#7F00FF] transition-colors duration-300">
                                 hello@beeststudio.com
                             </a>
+                            <a href="tel:+905373748454" className="block text-lg text-black/60 hover:text-[#7F00FF] transition-colors duration-300 mt-2">
+                                +90 537 374 84 54
+                            </a>
                         </div>
                     </address>
 
@@ -89,14 +92,14 @@ export default function Contact() {
                         <a href="#" aria-label="Instagram" className="text-[#111111] hover:text-[#7F00FF] transition-colors duration-300 hover:-translate-y-1 transform">
                             <Instagram size={24} strokeWidth={1.5} />
                         </a>
-                        <a href="#" aria-label="Twitter" className="text-[#111111] hover:text-[#7F00FF] transition-colors duration-300 hover:-translate-y-1 transform">
-                            <Twitter size={24} strokeWidth={1.5} />
-                        </a>
                         <a href="#" aria-label="LinkedIn" className="text-[#111111] hover:text-[#7F00FF] transition-colors duration-300 hover:-translate-y-1 transform">
                             <Linkedin size={24} strokeWidth={1.5} />
                         </a>
-                        <a href="#" aria-label="Dribbble" className="text-[#111111] hover:text-[#7F00FF] transition-colors duration-300 hover:-translate-y-1 transform">
-                            <Dribbble size={24} strokeWidth={1.5} />
+                        <a href="https://wa.me/905373748454" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp" className="text-[#111111] hover:text-[#7F00FF] transition-colors duration-300 hover:-translate-y-1 transform">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+                                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
+                                <path d="M11.996 21.999c-1.637 0-3.238-.432-4.646-1.25L2.5 21.5l.771-4.807A9.957 9.957 0 0 1 2 11.996C2 6.48 6.482 2 12.004 2 17.52 2 22 6.48 22 11.996c0 5.518-4.482 9.998-10.004 10.003z"/>
+                            </svg>
                         </a>
                     </div>
                 </div>

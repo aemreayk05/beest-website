@@ -79,11 +79,11 @@ export default function Projects() {
         <section
             id="projects"
             ref={sectionRef}
-            className="relative z-20 bg-[#F3F3F3] h-[auto] lg:h-[300vh]"
+            className="relative z-20 bg-[#F3F3F3] h-[auto] lg:h-[300vh] max-lg:!mt-4"
             aria-label="Beest Tasarım Mimarisi"
         >
             {/* Yapışkan Konteyner */}
-            <div className="lg:sticky lg:top-0 lg:h-screen lg:overflow-hidden flex flex-col justify-center py-20 lg:py-0 z-10">
+            <div className="lg:sticky lg:top-0 lg:h-screen lg:overflow-hidden flex flex-col lg:justify-center z-10 max-lg:!relative max-lg:!h-auto max-lg:pb-10 max-lg:!pt-12">
 
                 <div className="w-full max-w-7xl mx-auto px-6 lg:px-12 mb-4 lg:mb-6">
                     <p className="text-[0.65rem] font-bold tracking-[0.18em] uppercase text-[#7F00FF] mb-4">

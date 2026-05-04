@@ -23,7 +23,7 @@ export default function Footer() {
                         <a href="#hero" className="text-xl font-bold text-[#111111] hover:text-[#7F00FF] transition-colors duration-300">Ana Sayfa</a>
                         <a href="#services" className="text-xl font-bold text-[#111111] hover:text-[#7F00FF] transition-colors duration-300">Hizmetlerimiz</a>
                         <a href="#projects" className="text-xl font-bold text-[#111111] hover:text-[#7F00FF] transition-colors duration-300">Çalışmalarımız</a>
-                        <a href="#pricing" className="text-xl font-bold text-[#111111] hover:text-[#7F00FF] transition-colors duration-300">Fiyatlandırma</a>
+                        <a href="#pricing" className="text-xl font-bold text-[#111111] hover:text-[#7F00FF] transition-colors duration-300">Paketlerimiz</a>
                     </nav>
                 </div>
             </div>

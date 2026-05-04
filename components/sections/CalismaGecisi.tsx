@@ -356,6 +356,7 @@ export default function CalismaGecisi() {
                 position: 'relative',
                 overflow: 'hidden',
             }}
+            className="max-lg:!pt-0 max-lg:!mt-[-2rem]"
             aria-label="Çalışma Sürecimiz"
         >
             {/* Arka plan dekor */}
