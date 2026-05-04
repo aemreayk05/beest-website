@@ -2,7 +2,7 @@
 
 import { useRef, useEffect, useState } from 'react';
 import { motion, useScroll, useTransform, MotionValue, AnimatePresence } from 'framer-motion';
-import { Map, BarChart3, Target, ShieldCheck, BrainCircuit, Star, Zap, Activity } from 'lucide-react';
+import { Map, BarChart3, Target, ShieldCheck, BrainCircuit, Star, Zap, Activity, LucideProps } from 'lucide-react';
 
 export type WhyUsData = {
     _id?: string;
@@ -13,7 +13,9 @@ export type WhyUsData = {
     desc: string;
 };
 
-const IconMap: Record<string, any> = {
+type LucideIcon = React.ForwardRefExoticComponent<Omit<LucideProps, 'ref'> & React.RefAttributes<SVGSVGElement>>;
+
+const IconMap: Record<string, LucideIcon> = {
     Map, BarChart3, Target, ShieldCheck, BrainCircuit, Star, Zap, Activity
 };
 

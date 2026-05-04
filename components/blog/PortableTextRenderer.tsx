@@ -1,4 +1,5 @@
 import { PortableText, PortableTextComponents } from '@portabletext/react';
+import { PortableTextBlock } from '@portabletext/types';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -89,7 +90,7 @@ const customComponents: PortableTextComponents = {
   },
 };
 
-export default function PortableTextRenderer({ value }: { value: any }) {
+export default function PortableTextRenderer({ value }: { value: PortableTextBlock[] }) {
   if (!value) return null;
   return (
     <div className="max-w-none">

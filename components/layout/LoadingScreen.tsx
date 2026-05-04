@@ -9,8 +9,7 @@ export default function LoadingScreen() {
     const [isFadingOut, setIsFadingOut] = useState(false);
     const [isUnmounted, setIsUnmounted] = useState(false);
     const pathname = usePathname();
-
-    if (pathname.startsWith('/admin')) return null;
+    const isAdmin = pathname.startsWith('/admin');
 
     useEffect(() => {
         // Spline / Model yüklemesini simüle eden sayaç
@@ -45,6 +44,7 @@ export default function LoadingScreen() {
     }, []);
 
     if (isUnmounted) return null;
+    if (isAdmin) return null;
 
     return (
         <div

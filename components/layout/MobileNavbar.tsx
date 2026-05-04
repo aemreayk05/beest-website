@@ -20,8 +20,7 @@ const MENU_ITEMS = [
 export default function MobileNavbar() {
     const [isOpen, setIsOpen] = useState(false);
     const pathname = usePathname();
-
-    if (pathname.startsWith('/admin')) return null;
+    const isAdmin = pathname.startsWith('/admin');
 
     // Sayfa değiştiğinde menüyü kapat
     useEffect(() => {
@@ -39,6 +38,8 @@ export default function MobileNavbar() {
             document.body.style.overflow = 'auto';
         };
     }, [isOpen]);
+
+    if (isAdmin) return null;
 
     return (
         <div className="lg:hidden">

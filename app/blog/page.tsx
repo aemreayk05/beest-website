@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import Image from 'next/image';
 import { getPosts, getCategories } from '@/sanity/lib/queries';
 import BlogCard from '@/components/blog/BlogCard';
 import { BlogPostListItem, Category } from '@/types/blog';
@@ -90,11 +91,15 @@ export default async function BlogPage() {
               >
                 <div className="relative w-full lg:w-[55%] aspect-video lg:aspect-auto lg:min-h-[400px]">
                   {featuredPosts[0].coverImage ? (
-                    <img
-                      src={featuredPosts[0].coverImage}
-                      alt={featuredPosts[0].title}
-                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                    />
+                    <div className="relative w-full h-full">
+                      <Image
+                        src={featuredPosts[0].coverImage}
+                        alt={featuredPosts[0].title}
+                        fill
+                        className="object-cover transition-transform duration-700 group-hover:scale-105"
+                        sizes="(max-width: 1024px) 100vw, 55vw"
+                      />
+                    </div>
                   ) : (
                     <div className="w-full h-full bg-gradient-to-br from-[#EDE8F5] to-[#D9CCF0]" />
                   )}
