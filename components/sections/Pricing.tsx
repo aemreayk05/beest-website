@@ -108,7 +108,6 @@ const customPackage: PackageType = {
 export default function Pricing() {
     const [selectedPackage, setSelectedPackage] = useState<PackageType | null>(null);
     const scrollRef = useRef<HTMLDivElement>(null);
-    const isScrollingRef = useRef(false);
 
     const allPackages = [...packages, customPackage];
 
