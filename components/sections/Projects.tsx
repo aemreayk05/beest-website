@@ -3,7 +3,17 @@
 import { useRef, useState, useEffect } from 'react';
 import ProjectCard from '../ui/ProjectCard';
 
-const PROJELER = [
+export type ProjectData = {
+    _id?: string;
+    id?: string;
+    baslik: string;
+    musteri: string;
+    kategori: string[];
+    resim: string;
+    link?: string;
+};
+
+const PROJELER: ProjectData[] = [
     {
         id: 'p1',
         baslik: 'Kurumsal Web Tasarımı & SEO Çalışması',
@@ -30,9 +40,11 @@ const PROJELER = [
     },
 ];
 
-export default function Projects() {
+export default function Projects({ projects = [] }: { projects?: ProjectData[] }) {
     const sectionRef = useRef<HTMLElement>(null);
     const [progress, setProgress] = useState(0);
+
+    const displayProjects = projects && projects.length > 0 ? projects : PROJELER;
 
     // RAF Loop tabanlı scroll tracking
     useEffect(() => {
@@ -106,9 +118,9 @@ export default function Projects() {
                     className="flex flex-col lg:flex-row gap-6 lg:gap-10 px-6 lg:px-[10vw] items-center lg:w-max will-change-transform"
                     style={typeof window !== 'undefined' && window.innerWidth >= 1024 ? transformStyle : {}}
                 >
-                    {PROJELER.map((project) => (
+                    {displayProjects.map((project) => (
                         <ProjectCard
-                            key={project.id}
+                            key={project._id || project.id}
                             baslik={project.baslik}
                             musteri={project.musteri}
                             kategori={project.kategori}

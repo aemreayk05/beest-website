@@ -2,48 +2,61 @@
 
 import { useRef, useEffect, useState } from 'react';
 import { motion, useScroll, useTransform, MotionValue, AnimatePresence } from 'framer-motion';
-import { Map, BarChart3, Target, ShieldCheck, BrainCircuit } from 'lucide-react';
+import { Map, BarChart3, Target, ShieldCheck, BrainCircuit, Star, Zap, Activity } from 'lucide-react';
 
-const veri = [
+export type WhyUsData = {
+    _id?: string;
+    no: string;
+    tag: string;
+    iconName: string;
+    title: string;
+    desc: string;
+};
+
+const IconMap: Record<string, any> = {
+    Map, BarChart3, Target, ShieldCheck, BrainCircuit, Star, Zap, Activity
+};
+
+const veri: WhyUsData[] = [
     {
         no: '01',
         tag: 'ROTA & VİZYON',
-        icon: Map,
+        iconName: 'Map',
         title: '30 / 60 / 90 Gün Dijital Yol Haritası',
         desc: 'Her projeye net bir planla başlarız. İlk 90 gün içerisinde yapılacak tüm çalışmalar ve hedefler baştan belirlenir.'
     },
     {
         no: '02',
         tag: 'VERİ ŞEFFAFLIĞI',
-        icon: BarChart3,
+        iconName: 'BarChart3',
         title: 'Şeffaf Performans Raporları',
         desc: 'Yapılan tüm çalışmalar düzenli raporlarla paylaşılır. Web sitesi trafiği, SEO gelişimi ve reklam performansı net şekilde takip edilir.'
     },
     {
         no: '03',
         tag: 'SÜREKLİ BÜYÜME',
-        icon: Target,
+        iconName: 'Target',
         title: 'Müşteri Kazanım Sistemleri',
         desc: 'Web sitenizi sadece tanıtım için değil, yeni müşteri kazanmanızı sağlayan bir dijital sistem haline getiririz.'
     },
     {
         no: '04',
         tag: 'KUSURSUZ ALTYAPI',
-        icon: ShieldCheck,
+        iconName: 'ShieldCheck',
         title: 'Site Bakım ve Güvenlik Yönetimi',
         desc: 'Web sitenizin güvenli, hızlı ve sorunsuz çalışması için düzenli bakım, güvenlik ve teknik destek hizmeti sunarız.'
     },
     {
         no: '05',
         tag: 'STRATEJİK REHBERLİK',
-        icon: BrainCircuit,
+        iconName: 'BrainCircuit',
         title: 'Strateji ve Dijital Danışmanlık',
         desc: 'İşletmenizin dijital dünyada doğru adımlar atabilmesi için sektöre ve hedef kitlenize uygun stratejik yönlendirmeler sağlarız.'
     }
 ];
 
-function DialItem({ item, index, progress, isDesktop }: { item: typeof veri[0], index: number, progress: MotionValue<number>, isDesktop: boolean }) {
-    const Icon = item.icon;
+function DialItem({ item, index, progress, isDesktop }: { item: WhyUsData, index: number, progress: MotionValue<number>, isDesktop: boolean }) {
+    const Icon = IconMap[item.iconName] || Star;
 
     const getDistance = (p: number) => {
         // Sıfıra yakın ölü alan (%5), geri kalan her şey dönüş animasyonuna ait.
@@ -177,7 +190,7 @@ function DialItem({ item, index, progress, isDesktop }: { item: typeof veri[0], 
     );
 }
 
-function DesktopNedenBiz() {
+function DesktopNedenBiz({ reasons }: { reasons: WhyUsData[] }) {
     const containerRef = useRef<HTMLDivElement>(null);
     const [isDesktop, setIsDesktop] = useState(true);
 
@@ -310,7 +323,7 @@ function DesktopNedenBiz() {
 
                 {/* SAĞ: Dial / Slot Alanı */}
                 <div className="w-full lg:w-[60%] flex-1 relative h-[60vh] lg:h-full mt-10 lg:mt-0 perspective-[1000px]">
-                    {veri.map((item, index) => (
+                    {reasons.map((item, index) => (
                         <DialItem 
                             key={item.no} 
                             item={item} 
@@ -327,18 +340,18 @@ function DesktopNedenBiz() {
     );
 }
 
-function MobileNedenBiz() {
+function MobileNedenBiz({ reasons }: { reasons: WhyUsData[] }) {
     const [activeIndex, setActiveIndex] = useState(0);
     const [direction, setDirection] = useState(1);
 
     const nextSlide = () => {
         setDirection(1);
-        setActiveIndex((prev) => (prev + 1) % veri.length);
+        setActiveIndex((prev) => (prev + 1) % reasons.length);
     };
 
     const prevSlide = () => {
         setDirection(-1);
-        setActiveIndex((prev) => (prev - 1 + veri.length) % veri.length);
+        setActiveIndex((prev) => (prev - 1 + reasons.length) % reasons.length);
     };
 
     const variants = {
@@ -363,14 +376,14 @@ function MobileNedenBiz() {
         return () => clearInterval(timer);
     }, [activeIndex]); // Re-start timer when slide changes
 
-    const currentItem = veri[activeIndex];
-    const Icon = currentItem.icon;
+    const currentItem = reasons[activeIndex];
+    const Icon = IconMap[currentItem.iconName] || Star;
 
     return (
         <div className="w-full h-[85vh] min-h-[500px] flex flex-col relative overflow-hidden bg-[#F3F3F3]">
             {/* Story Progress Bars */}
             <div className="absolute top-24 left-0 w-full px-6 z-50 flex gap-2">
-                {veri.map((_, i) => {
+                {reasons.map((_, i) => {
                     const isActive = i === activeIndex;
                     const isPassed = i < activeIndex;
 
@@ -451,14 +464,16 @@ function MobileNedenBiz() {
     );
 }
 
-export default function NedenBiz() {
+export default function NedenBiz({ reasons = [] }: { reasons?: WhyUsData[] }) {
+    const displayReasons = reasons && reasons.length > 0 ? reasons : veri;
+
     return (
         <section id="neden-biz" className="w-full bg-[#F3F3F3]">
             <div className="hidden lg:block">
-                <DesktopNedenBiz />
+                <DesktopNedenBiz reasons={displayReasons} />
             </div>
             <div className="block lg:hidden">
-                <MobileNedenBiz />
+                <MobileNedenBiz reasons={displayReasons} />
             </div>
         </section>
     );

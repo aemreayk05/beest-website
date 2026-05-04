@@ -2,11 +2,15 @@
 
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
+import { usePathname } from 'next/navigation';
 
 export default function LoadingScreen() {
     const [progress, setProgress] = useState(0);
     const [isFadingOut, setIsFadingOut] = useState(false);
     const [isUnmounted, setIsUnmounted] = useState(false);
+    const pathname = usePathname();
+
+    if (pathname.startsWith('/admin')) return null;
 
     useEffect(() => {
         // Spline / Model yüklemesini simüle eden sayaç

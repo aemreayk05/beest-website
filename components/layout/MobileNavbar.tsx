@@ -13,12 +13,15 @@ const MENU_ITEMS = [
     { label: 'Çalışmalarımız', href: '/#projects' },
     { label: 'Çalışma Süreci', href: '/surec' },
     { label: 'Paketler', href: '/#pricing' },
+    { label: 'Blog', href: '/blog' },
     { label: 'İletişim', href: '/#contact' },
 ];
 
 export default function MobileNavbar() {
     const [isOpen, setIsOpen] = useState(false);
     const pathname = usePathname();
+
+    if (pathname.startsWith('/admin')) return null;
 
     // Sayfa değiştiğinde menüyü kapat
     useEffect(() => {

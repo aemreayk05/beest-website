@@ -94,7 +94,7 @@ export default function Hero() {
                         alt="Beest Logo"
                         width={220}
                         height={68}
-                        style={{ width: 'clamp(150px, 20vw, 220px)', height: 'auto', display: 'block' }}
+                        style={{ width: 'clamp(200px, 20vw, 220px)', height: 'auto', display: 'block' }}
                         priority
                     />
                 </motion.div>
@@ -197,7 +197,7 @@ export default function Hero() {
                 onMouseEnter={(e) => { (e.currentTarget as HTMLButtonElement).style.color = '#7F00FF'; }}
                 onMouseLeave={(e) => { (e.currentTarget as HTMLButtonElement).style.color = 'rgba(17,17,17,0.4)'; }}
             >
-                <span style={{ fontSize: '0.6rem', fontWeight: 600, letterSpacing: '0.2em', textTransform: 'uppercase' }}>
+                <span style={{ fontSize: '0.8rem', fontWeight: 600, letterSpacing: '0.2em', textTransform: 'uppercase' }}>
                     Kaydır
                 </span>
                 <div style={{ animation: 'scrollBounce 1.5s ease-in-out infinite' }}>

@@ -7,19 +7,75 @@ import Pricing from '@/components/sections/Pricing';
 import Contact from '@/components/sections/Contact';
 import BeestMarquee from '@/components/ui/BeestMarquee';
 import QuickAccessCard from '@/components/ui/QuickAccessCard';
+import { client } from '@/sanity/lib/client';
 
-export default function Home() {
+async function getServices() {
+  try {
+    const query = `*[_type == "service"] | order(no asc) {
+      _id,
+      no,
+      baslik,
+      aciklama,
+      etiketler,
+      "gorsel": gorsel.asset->url
+    }`;
+    return await client.fetch(query, {}, { next: { revalidate: 30 } });
+  } catch (error) {
+    console.error("Sanity fetch error:", error);
+    return [];
+  }
+}
+
+async function getWhyUs() {
+  try {
+    const query = `*[_type == "whyUs"] | order(no asc) {
+      _id,
+      no,
+      tag,
+      iconName,
+      title,
+      desc
+    }`;
+    return await client.fetch(query, {}, { next: { revalidate: 30 } });
+  } catch (error) {
+    console.error("Sanity fetch error (WhyUs):", error);
+    return [];
+  }
+}
+
+async function getProjects() {
+  try {
+    const query = `*[_type == "project"] | order(orderNo asc) {
+      _id,
+      baslik,
+      musteri,
+      kategori,
+      "resim": resim.asset->url,
+      link
+    }`;
+    return await client.fetch(query, {}, { next: { revalidate: 30 } });
+  } catch (error) {
+    console.error("Sanity fetch error (Projects):", error);
+    return [];
+  }
+}
+
+export default async function Home() {
+  const services = await getServices();
+  const whyUsReasons = await getWhyUs();
+  const projects = await getProjects();
+
   return (
     <main className="bg-[#F3F3F3] overflow-clip">
       <Hero />
       
-      <Hizmetler />
+      <Hizmetler services={services} />
       
       <BeestMarquee className="py-4 text-[#111111]" speed={50} />
 
       {/* Masaüstü Neden Biz */}
       <div className="hidden lg:block">
-        <NedenBiz />
+        <NedenBiz reasons={whyUsReasons} />
       </div>
 
       {/* Mobil Neden Biz Hızlı Erişim Kartı */}
@@ -35,7 +91,7 @@ export default function Home() {
         <BeestMarquee className="py-2 opacity-30 text-[#111111]" text="BEEST: GROWTH PARTNERS • " outlineText={true} speed={60} />
       </div>
 
-      <Projects />
+      <Projects projects={projects} />
 
       {/* Masaüstü Çalışma Geçişi */}
       <div className="hidden lg:block">

@@ -57,11 +57,20 @@ const HIZMETLER = [
 ] as const;
 
 
+export type ServiceData = {
+    _id?: string;
+    no: string;
+    baslik: string;
+    aciklama: string;
+    etiketler: string[];
+    gorsel: string;
+};
+
 // ─── Hook: RAF tabanlı aktif indeks (Lenis/native scroll bağımsız) ────────────
 // Event listener'a güvenmek yerine requestAnimationFrame ile her frame
 // getBoundingClientRect() okuyoruz. Bu yaklaşım her scroll kütüphanesiyle
 // ve native scroll ile çalışır.
-function useAktifIndex(containerRef: React.RefObject<HTMLDivElement>) {
+function useAktifIndex(containerRef: React.RefObject<HTMLDivElement>, dataLength: number) {
     const [aktifIndex, setAktifIndex] = useState(0);
 
     useEffect(() => {
@@ -77,8 +86,8 @@ function useAktifIndex(containerRef: React.RefObject<HTMLDivElement>) {
             if (scrollable > 0) {
                 const progress = Math.max(0, Math.min(1, -rect.top / scrollable));
                 const idx = Math.min(
-                    HIZMETLER.length - 1,
-                    Math.floor(progress * HIZMETLER.length)
+                    dataLength - 1,
+                    Math.floor(progress * dataLength)
                 );
                 if (idx !== lastIdx) {
                     lastIdx = idx;
@@ -97,10 +106,14 @@ function useAktifIndex(containerRef: React.RefObject<HTMLDivElement>) {
 
 
 // ─── Ana bileşen ──────────────────────────────────────────────────────────────
-export default function Hizmetler() {
+export default function Hizmetler({ services = [] }: { services?: ServiceData[] }) {
     const containerRef = useRef<HTMLDivElement>(null);
-    const aktifIndex = useAktifIndex(containerRef);
-    const hizmet = HIZMETLER[aktifIndex];
+    
+    // Fallback: Eğer Sanity'den veri gelmezse veya boşsa statik HIZMETLER dizisini kullan.
+    const displayServices = services && services.length > 0 ? services : (HIZMETLER as unknown as ServiceData[]);
+    
+    const aktifIndex = useAktifIndex(containerRef, displayServices.length);
+    const hizmet = displayServices[aktifIndex] || displayServices[0];
 
     return (
         <section
@@ -110,7 +123,7 @@ export default function Hizmetler() {
             className="relative bg-[#F3F3F3] max-lg:!h-auto max-lg:!mt-4"
             aria-label="Beest Hizmet Ekosistemi"
         >
-            <div className="sticky top-0 h-screen flex items-center z-10 max-lg:!relative max-lg:!h-auto max-lg:!items-start max-lg:pb-10 max-lg:!pt-12">
+            <div className="sticky top-0 h-screen flex items-center z-10 max-lg:!relative max-lg:!h-auto max-lg:!items-start max-lg:pb-6 max-lg:!pt-12">
                 {/* İki kolon: Mobil -> Tek Sütun (Sağ kart gizli), Desktop -> İki Sütun */}
                 <div
                     className="w-full max-w-7xl mx-auto px-6 lg:px-12 flex flex-col lg:flex-row gap-12 lg:gap-20 items-center"
@@ -158,7 +171,7 @@ export default function Hizmetler() {
 
                         {/* Hizmet listesi (Masaüstü) */}
                         <ul className="hidden lg:block" style={{ listStyle: 'none', padding: 0, margin: 0 }}>
-                            {HIZMETLER.map((h, i) => {
+                            {displayServices.map((h, i) => {
                                 const aktif = i === aktifIndex;
                                 return (
                                     <li
@@ -219,7 +232,7 @@ export default function Hizmetler() {
                                                     transition: 'color 0.4s ease',
                                                 }}
                                             >
-                                                {h.baslik}
+                                                {h.baslik.replace(/\\n/g, '\n')}
                                             </h3>
                                         </div>
                                     </li>
@@ -252,10 +265,10 @@ export default function Hizmetler() {
                                 </div>
                                 <div className="p-6 md:p-8 flex flex-col gap-4">
                                     <span className="text-[0.6rem] font-bold tracking-[0.18em] uppercase text-[#7F00FF]">
-                                        {h.no} / {String(HIZMETLER.length).padStart(2, '0')}
+                                        {h.no} / {String(displayServices.length).padStart(2, '0')}
                                     </span>
                                     <h3 className="text-xl md:text-2xl font-black leading-tight text-[#111111]">
-                                        {h.baslik.replace('\n', ' ')}
+                                        {h.baslik.replace(/\\n/g, ' ').replace(/\n/g, ' ')}
                                     </h3>
                                     <p className="text-sm md:text-base leading-relaxed text-black/65">
                                         {h.aciklama}
