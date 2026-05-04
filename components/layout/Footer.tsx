@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import Link from 'next/link';
 
 export default function Footer() {
     return (
@@ -20,10 +21,10 @@ export default function Footer() {
                 {/* Sağ Taraf: Hızlı Menü */}
                 <div className="flex flex-col items-center md:items-end justify-center">
                     <nav className="flex flex-col items-center md:items-end gap-4 text-center md:text-right">
-                        <a href="#hero" className="text-xl font-bold text-[#111111] hover:text-[#7F00FF] transition-colors duration-300">Ana Sayfa</a>
-                        <a href="#services" className="text-xl font-bold text-[#111111] hover:text-[#7F00FF] transition-colors duration-300">Hizmetlerimiz</a>
-                        <a href="#projects" className="text-xl font-bold text-[#111111] hover:text-[#7F00FF] transition-colors duration-300">Çalışmalarımız</a>
-                        <a href="#pricing" className="text-xl font-bold text-[#111111] hover:text-[#7F00FF] transition-colors duration-300">Paketlerimiz</a>
+                        <Link href="/" className="text-xl font-bold text-[#111111] hover:text-[#7F00FF] transition-colors duration-300">Ana Sayfa</Link>
+                        <Link href="/#services" className="text-xl font-bold text-[#111111] hover:text-[#7F00FF] transition-colors duration-300">Hizmetlerimiz</Link>
+                        <Link href="/#projects" className="text-xl font-bold text-[#111111] hover:text-[#7F00FF] transition-colors duration-300">Çalışmalarımız</Link>
+                        <Link href="/#pricing" className="text-xl font-bold text-[#111111] hover:text-[#7F00FF] transition-colors duration-300">Paketlerimiz</Link>
                     </nav>
                 </div>
             </div>

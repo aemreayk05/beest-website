@@ -131,22 +131,41 @@ export default function Pricing() {
         }
     }, []);
 
+    const scrollTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+
     const handleScroll = (e: React.UIEvent<HTMLDivElement>) => {
         if (window.innerWidth >= 1024) return;
-        if (isScrollingRef.current) return;
 
         const container = e.currentTarget;
-        const singleSetWidth = container.scrollWidth / 3;
-
-        if (container.scrollLeft < singleSetWidth * 0.5) {
-            isScrollingRef.current = true;
-            container.scrollLeft += singleSetWidth;
-            setTimeout(() => { isScrollingRef.current = false; }, 50);
-        } else if (container.scrollLeft > singleSetWidth * 1.5) {
-            isScrollingRef.current = true;
-            container.scrollLeft -= singleSetWidth;
-            setTimeout(() => { isScrollingRef.current = false; }, 50);
+        
+        if (scrollTimeoutRef.current) {
+            clearTimeout(scrollTimeoutRef.current);
         }
+
+        // Kullanıcı kaydırmayı bıraktığında teleport işlemini yap (jank oluşmaması için)
+        scrollTimeoutRef.current = setTimeout(() => {
+            const card0 = container.children[1] as HTMLElement;
+            const card4 = container.children[5] as HTMLElement;
+            if (!card0 || !card4) return;
+            
+            // Gerçek set genişliği: 4 kartın aradaki boşluklarla birlikte tam pixel değeri
+            const exactSetWidth = card4.offsetLeft - card0.offsetLeft;
+
+            if (container.scrollLeft < exactSetWidth * 0.8) {
+                // Snapping mekanizmasını anlık kapatıp pozisyonu değiştiriyoruz ki takılma hissi olmasın
+                container.style.scrollSnapType = 'none';
+                container.scrollLeft += exactSetWidth;
+                requestAnimationFrame(() => {
+                    container.style.scrollSnapType = 'x mandatory';
+                });
+            } else if (container.scrollLeft > exactSetWidth * 1.8) {
+                container.style.scrollSnapType = 'none';
+                container.scrollLeft -= exactSetWidth;
+                requestAnimationFrame(() => {
+                    container.style.scrollSnapType = 'x mandatory';
+                });
+            }
+        }, 150);
     };
 
     const handleNext = () => {
@@ -231,10 +250,15 @@ export default function Pricing() {
                             return (
                                 <div
                                     key={pkg.uniqueId}
-                                    className={`${pkg.isClone ? 'max-lg:flex lg:hidden' : 'lg:col-span-3'} shrink-0 w-[85vw] lg:w-full snap-center mt-0 lg:mt-4 bg-[#111111] rounded-[1.5rem] p-8 lg:p-12 relative overflow-hidden group shadow-2xl flex flex-col justify-center`}
+                                    className={`${pkg.isClone ? 'max-lg:flex lg:hidden' : 'lg:col-span-3'} shrink-0 w-[85vw] lg:w-full snap-center snap-always mt-0 lg:mt-4 bg-[#111111] rounded-[1.5rem] p-8 lg:p-12 relative overflow-hidden group shadow-2xl flex flex-col justify-center`}
                                 >
-                                    <div className="absolute -top-40 -right-40 w-96 h-96 bg-[#7F00FF]/20 rounded-full blur-[100px] pointer-events-none transition-transform duration-700 group-hover:scale-110" />
-                                    <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-[#7F00FF]/10 rounded-full blur-[80px] pointer-events-none transition-transform duration-700 group-hover:scale-110" />
+                                    {/* Masaüstü için ağır blur efektleri */}
+                                    <div className="absolute -top-40 -right-40 w-96 h-96 bg-[#7F00FF]/20 rounded-full blur-[100px] pointer-events-none max-lg:hidden transition-transform duration-700 group-hover:scale-110" />
+                                    <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-[#7F00FF]/10 rounded-full blur-[80px] pointer-events-none max-lg:hidden transition-transform duration-700 group-hover:scale-110" />
+                                    
+                                    {/* Mobil performansı için yüksek FPS veren gradient alternatifleri */}
+                                    <div className="absolute -top-40 -right-40 w-96 h-96 bg-[radial-gradient(circle,rgba(127,0,255,0.15)_0%,transparent_60%)] rounded-full pointer-events-none lg:hidden" />
+                                    <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-[radial-gradient(circle,rgba(127,0,255,0.08)_0%,transparent_60%)] rounded-full pointer-events-none lg:hidden" />
 
                                     <div className="relative z-10 flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
                                         <div className="max-w-3xl">
@@ -264,7 +288,7 @@ export default function Pricing() {
                         return (
                             <article
                                 key={pkg.uniqueId}
-                                className={`${pkg.isClone ? 'max-lg:flex lg:hidden' : 'flex'} flex-col shrink-0 w-[85vw] lg:w-auto snap-center`}
+                                className={`${pkg.isClone ? 'max-lg:flex lg:hidden' : 'flex'} flex-col shrink-0 w-[85vw] lg:w-auto snap-center snap-always`}
                                 style={{
                                     padding: '2.5rem',
                                     backgroundColor: pkg.isPopular ? '#111111' : '#F3F3F3',

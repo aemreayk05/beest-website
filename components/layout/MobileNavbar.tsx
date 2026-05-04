@@ -8,12 +8,12 @@ import { usePathname } from 'next/navigation';
 
 const MENU_ITEMS = [
     { label: 'Ana Sayfa', href: '/' },
-    { label: 'Hizmetler', href: '/hizmetler' },
+    { label: 'Hizmetler', href: '/#services' },
     { label: 'Neden Biz?', href: '/neden-biz' },
-    { label: 'Çalışmalarımız', href: '/projeler' },
+    { label: 'Çalışmalarımız', href: '/#projects' },
     { label: 'Çalışma Süreci', href: '/surec' },
-    { label: 'Paketler', href: '/fiyatlandirma' },
-    { label: 'İletişim', href: '/iletisim' },
+    { label: 'Paketler', href: '/#pricing' },
+    { label: 'İletişim', href: '/#contact' },
 ];
 
 export default function MobileNavbar() {
@@ -83,8 +83,30 @@ export default function MobileNavbar() {
                                 >
                                     <Link
                                         href={item.href}
+                                        onClick={(e) => {
+                                            setIsOpen(false);
+                                            if (item.href.includes('#') && pathname === '/') {
+                                                e.preventDefault();
+                                                const targetId = item.href.split('#')[1];
+                                                const element = document.getElementById(targetId);
+                                                if (element) {
+                                                    setTimeout(() => {
+                                                        const offset = 0;
+                                                        const bodyRect = document.body.getBoundingClientRect().top;
+                                                        const elementRect = element.getBoundingClientRect().top;
+                                                        const elementPosition = elementRect - bodyRect;
+                                                        const offsetPosition = elementPosition - offset;
+
+                                                        window.scrollTo({
+                                                            top: offsetPosition,
+                                                            behavior: 'smooth'
+                                                        });
+                                                    }, 400);
+                                                }
+                                            }
+                                        }}
                                         className={`text-4xl md:text-6xl font-black tracking-tight hover:text-[#7F00FF] transition-colors ${
-                                            pathname === item.href ? 'text-[#7F00FF]' : 'text-white'
+                                            (pathname === item.href || (item.href !== '/' && pathname === '/' && item.href.includes('#'))) ? 'text-white hover:text-[#7F00FF]' : 'text-white'
                                         }`}
                                     >
                                         {item.label}

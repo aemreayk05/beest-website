@@ -236,7 +236,7 @@ export default function Hizmetler() {
                         {HIZMETLER.map((h, idx) => (
                             <article 
                                 key={h.no} 
-                                className="snap-center w-[85vw] md:w-[60vw] shrink-0 flex flex-col bg-white rounded-3xl overflow-hidden"
+                                className="snap-center snap-always w-[85vw] md:w-[60vw] shrink-0 flex flex-col bg-white rounded-3xl overflow-hidden"
                                 style={{ boxShadow: '0 10px 40px -10px rgba(127,0,255,0.15)' }}
                             >
                                 <div className="relative w-full aspect-video bg-gray-100">
