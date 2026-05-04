@@ -2,7 +2,7 @@
 
 import { useRef, useEffect, useState } from 'react';
 import { motion, useScroll, useTransform, MotionValue, AnimatePresence } from 'framer-motion';
-import { Map, BarChart3, Target, ShieldCheck, BrainCircuit, ChevronDown } from 'lucide-react';
+import { Map, BarChart3, Target, ShieldCheck, BrainCircuit } from 'lucide-react';
 
 const veri = [
     {
