@@ -345,6 +345,8 @@ function DesktopNedenBiz({ reasons }: { reasons: WhyUsData[] }) {
 function MobileNedenBiz({ reasons }: { reasons: WhyUsData[] }) {
     const [activeIndex, setActiveIndex] = useState(0);
     const [direction, setDirection] = useState(1);
+    const [isVisible, setIsVisible] = useState(false);
+    const sectionRef = useRef<HTMLDivElement>(null);
 
     const nextSlide = () => {
         setDirection(1);
@@ -357,110 +359,153 @@ function MobileNedenBiz({ reasons }: { reasons: WhyUsData[] }) {
     };
 
     const variants = {
-        enter: (direction: number) => ({
-            x: direction > 0 ? '100%' : '-100%',
-            opacity: 0
-        }),
-        center: {
-            x: 0,
-            opacity: 1
-        },
-        exit: (direction: number) => ({
-            x: direction < 0 ? '100%' : '-100%',
-            opacity: 0
-        })
+        enter: (d: number) => ({ x: d > 0 ? '100%' : '-100%', opacity: 0 }),
+        center: { x: 0, opacity: 1 },
+        exit: (d: number) => ({ x: d < 0 ? '100%' : '-100%', opacity: 0 }),
     };
 
+    // Bölüm görünür olduğunda timer'ı başlat, kaybolduğunda durdur
     useEffect(() => {
-        const timer = setInterval(() => {
-            nextSlide();
-        }, 6000);
+        const el = sectionRef.current;
+        if (!el) return;
+        const observer = new IntersectionObserver(
+            ([entry]) => setIsVisible(entry.isIntersecting),
+            { threshold: 0.5 }
+        );
+        observer.observe(el);
+        return () => observer.disconnect();
+    }, []);
+
+    useEffect(() => {
+        if (!isVisible) return;
+        const timer = setInterval(() => nextSlide(), 7000);
         return () => clearInterval(timer);
-    }, [activeIndex]); // Re-start timer when slide changes
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [activeIndex, isVisible]);
 
     const currentItem = reasons[activeIndex];
     const Icon = IconMap[currentItem.iconName] || Star;
 
     return (
-        <div className="w-full h-[85vh] min-h-[500px] flex flex-col relative overflow-hidden bg-[#F3F3F3]">
-            {/* Story Progress Bars */}
-            <div className="absolute top-24 left-0 w-full px-6 z-50 flex gap-2">
-                {reasons.map((_, i) => {
-                    const isActive = i === activeIndex;
-                    const isPassed = i < activeIndex;
+        <div ref={sectionRef} className="w-full px-6 pb-10">
+            {/* Section Header */}
+            <div className="mb-6 mt-2">
+                <p className="text-[0.65rem] font-bold tracking-[0.18em] uppercase text-[#7F00FF] mb-3">
+                    Ayrıcalıklar
+                </p>
+                <h2 className="font-black leading-[0.92] tracking-[-0.03em] text-[#111111]"
+                    style={{ fontSize: 'clamp(2.6rem, 11vw, 3.4rem)' }}>
+                    Neden{' '}
+                    <span style={{
+                        backgroundImage: 'linear-gradient(90deg, #7F00FF, #b94fff)',
+                        WebkitBackgroundClip: 'text',
+                        WebkitTextFillColor: 'transparent',
+                        backgroundClip: 'text',
+                    }}>
+                        Beest?
+                    </span>
+                </h2>
+            </div>
 
-                    return (
-                        <div key={i} className="flex-1 h-1.5 bg-black/10 rounded-full overflow-hidden relative">
-                            {isActive ? (
-                                <motion.div 
-                                    key={`active-${activeIndex}`}
-                                    className="absolute top-0 left-0 h-full bg-[#7F00FF]"
-                                    initial={{ width: '0%' }}
-                                    animate={{ width: '100%' }}
-                                    transition={{ duration: 6, ease: 'linear' }}
-                                />
-                            ) : (
-                                <div 
-                                    className="absolute top-0 left-0 h-full bg-[#7F00FF]"
-                                    style={{ width: isPassed ? '100%' : '0%' }}
-                                />
-                            )}
+            {/* Story Card Container */}
+            <div
+                className="relative overflow-hidden rounded-[1.75rem]"
+                style={{
+                    height: '72vh',
+                    maxHeight: '600px',
+                    minHeight: '460px',
+                    background: '#111111',
+                    boxShadow: '0 24px 64px -16px rgba(0,0,0,0.42), 0 0 0 1px rgba(127,0,255,0.08)',
+                }}
+            >
+                {/* Ambient purple orb */}
+                <div
+                    className="absolute -top-20 -right-20 w-72 h-72 rounded-full pointer-events-none"
+                    style={{ background: 'radial-gradient(circle, rgba(127,0,255,0.15) 0%, transparent 70%)' }}
+                />
+
+                {/* Progress Bars */}
+                <div className="absolute top-5 left-0 w-full px-5 z-50 flex gap-1.5">
+                    {reasons.map((_, i) => {
+                        const isActive = i === activeIndex;
+                        const isPassed = i < activeIndex;
+                        return (
+                            <div key={i} className="flex-1 h-[3px] bg-white/30 rounded-full overflow-hidden relative">
+                                {isActive && isVisible ? (
+                                    <motion.div
+                                        key={`bar-${activeIndex}-${isVisible}`}
+                                        className="absolute top-0 left-0 h-full bg-[#7F00FF]"
+                                        initial={{ width: '0%' }}
+                                        animate={{ width: '100%' }}
+                                        transition={{ duration: 7, ease: 'linear' }}
+                                    />
+                                ) : (
+                                    <div
+                                        className="absolute top-0 left-0 h-full bg-[#7F00FF]"
+                                        style={{ width: isPassed ? '100%' : '0%' }}
+                                    />
+                                )}
+                            </div>
+                        );
+                    })}
+                </div>
+
+                {/* Tap zones — prev left-third / next right-two-thirds */}
+                <div className="absolute inset-0 z-40 flex">
+                    <div className="w-1/3 h-full cursor-pointer" onClick={prevSlide} />
+                    <div className="w-2/3 h-full cursor-pointer" onClick={nextSlide} />
+                </div>
+
+                {/* Slide Content */}
+                <AnimatePresence initial={false} custom={direction}>
+                    <motion.div
+                        key={activeIndex}
+                        custom={direction}
+                        variants={variants}
+                        initial="enter"
+                        animate="center"
+                        exit="exit"
+                        transition={{ type: 'spring', stiffness: 320, damping: 32 }}
+                        className="absolute inset-0 w-full h-full flex flex-col justify-center px-8 pt-14 pb-12"
+                    >
+                        {/* Background ghost icon */}
+                        <div className="absolute top-1/2 right-4 -translate-y-1/2 opacity-[0.04] text-white pointer-events-none">
+                            <Icon size={280} strokeWidth={1} />
                         </div>
-                    );
-                })}
-            </div>
 
-            {/* Click areas for Next/Prev */}
-            <div className="absolute inset-0 z-40 flex">
-                <div className="w-1/3 h-full" onClick={prevSlide} />
-                <div className="w-2/3 h-full" onClick={nextSlide} />
-            </div>
-
-            {/* Content Area */}
-            <AnimatePresence initial={false} custom={direction}>
-                <motion.div
-                    key={activeIndex}
-                    custom={direction}
-                    variants={variants}
-                    initial="enter"
-                    animate="center"
-                    exit="exit"
-                    transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-                    className="absolute inset-0 w-full h-full flex flex-col justify-center px-8"
-                >
-                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-[0.03] text-[#7F00FF] pointer-events-none">
-                        <Icon size={350} strokeWidth={1} />
-                    </div>
-
-                    <div className="relative z-10">
-                        <div className="flex items-center gap-4 mb-8">
-                            <span className="font-mono text-4xl font-black text-[#7F00FF]">
-                                {currentItem.no}
-                            </span>
-                            <div className="flex items-center gap-2 border border-[#7F00FF]/20 rounded-full px-4 py-1.5 bg-[#7F00FF]/5">
-                                <div className="w-2 h-2 rounded-full bg-[#7F00FF] shadow-[0_0_8px_#7F00FF] animate-pulse" />
-                                <span className="font-bold text-[0.7rem] tracking-[0.2em] uppercase text-[#7F00FF]">
+                        <div className="relative z-10 flex flex-col gap-5">
+                            {/* Tag pill */}
+                            <div className="flex items-center gap-2 border border-[#7F00FF]/30 rounded-full px-3.5 py-1.5 w-fit bg-[#7F00FF]/10">
+                                <div className="w-1.5 h-1.5 rounded-full bg-[#7F00FF] shadow-[0_0_6px_#7F00FF] animate-pulse" />
+                                <span className="font-bold text-[0.63rem] tracking-[0.22em] uppercase text-[#7F00FF]">
                                     {currentItem.tag}
                                 </span>
                             </div>
-                        </div>
-                        
-                        <h3 className="text-[2.5rem] leading-[1.05] font-black tracking-tight text-[#111111] mb-6">
-                            {currentItem.title}
-                        </h3>
-                        
-                        <p className="text-lg leading-relaxed font-medium text-black/70">
-                            {currentItem.desc}
-                        </p>
-                    </div>
-                </motion.div>
-            </AnimatePresence>
 
-            {/* Footer indicator */}
-            <div className="absolute bottom-12 left-0 w-full text-center z-50 pointer-events-none">
-                <p className="text-xs font-bold tracking-widest text-black/30 uppercase animate-pulse">
-                    İlerlemek için dokunun
-                </p>
+                            {/* Title */}
+                            <div>
+                                <h3
+                                    className="font-black leading-[1.08] tracking-tight text-white"
+                                    style={{ fontSize: 'clamp(1.75rem, 7vw, 2.4rem)' }}
+                                >
+                                    {currentItem.title}
+                                </h3>
+                            </div>
+
+                            {/* Description */}
+                            <p className="text-[0.95rem] leading-[1.65] font-medium text-white max-w-sm">
+                                {currentItem.desc}
+                            </p>
+                        </div>
+                    </motion.div>
+                </AnimatePresence>
+
+                {/* Bottom hint */}
+                <div className="absolute bottom-5 left-0 w-full flex items-center justify-center z-50 pointer-events-none">
+                    <p className="text-[0.58rem] font-bold tracking-[0.22em] uppercase text-white">
+                        Dokun · İlerle
+                    </p>
+                </div>
             </div>
         </div>
     );

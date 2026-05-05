@@ -27,7 +27,7 @@ const CARDS = [
         title: 'Neden Biz?',
         description: 'Fark yaratan yaklaşımımız.',
         icon: Award,
-        href: '/neden-biz',
+        href: '/#neden-biz',
         bgColor: 'bg-white',
         textColor: 'text-[#111111]',
         iconColor: 'text-[#7F00FF]',

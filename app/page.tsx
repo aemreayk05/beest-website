@@ -75,19 +75,8 @@ export default async function Home() {
         <BeestMarquee className="py-4 text-[#111111]" speed={50} />
       </div>
 
-      {/* Masaüstü Neden Biz */}
-      <div className="hidden lg:block">
-        <NedenBiz reasons={whyUsReasons} />
-      </div>
-
-      {/* Mobil Neden Biz Hızlı Erişim Kartı */}
-      <QuickAccessCard
-        titleLine1="Neden"
-        titleLine2="Beest?"
-        imageSrc="/neden_biz.jpeg"
-        href="/neden-biz"
-        className="max-lg:mb-6 max-lg:mt-2 relative z-20"
-      />
+      {/* Neden Biz — Desktop scroll-dial + Mobil inline story */}
+      <NedenBiz reasons={whyUsReasons} />
 
       <div className="hidden lg:block">
         <BeestMarquee className="py-2 opacity-30 text-[#111111]" text="BEEST: GROWTH PARTNERS • " outlineText={true} speed={60} />

@@ -9,7 +9,7 @@ import { usePathname } from 'next/navigation';
 const MENU_ITEMS = [
     { label: 'Ana Sayfa', href: '/' },
     { label: 'Hizmetler', href: '/#services' },
-    { label: 'Neden Biz?', href: '/neden-biz' },
+    { label: 'Neden Biz?', href: '/#neden-biz' },
     { label: 'Çalışmalarımız', href: '/#projects' },
     { label: 'Çalışma Süreci', href: '/surec' },
     { label: 'Paketler', href: '/#pricing' },
