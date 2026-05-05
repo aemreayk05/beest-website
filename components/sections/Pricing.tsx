@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useRef, useEffect } from 'react';
-import { Check, MoveHorizontal } from 'lucide-react';
+import { Check } from 'lucide-react';
 import PricingModal, { PackageType } from '../ui/PricingModal';
 
 const packages: PackageType[] = [
@@ -107,6 +107,7 @@ const customPackage: PackageType = {
 
 export default function Pricing() {
     const [selectedPackage, setSelectedPackage] = useState<PackageType | null>(null);
+    const [activeMobileIndex, setActiveMobileIndex] = useState(1);
     const scrollRef = useRef<HTMLDivElement>(null);
 
     const allPackages = [...packages, customPackage];
@@ -121,7 +122,7 @@ export default function Pricing() {
         if (typeof window !== 'undefined' && window.innerWidth < 1024 && scrollRef.current) {
             const container = scrollRef.current;
             // <style> tag is children[0]. displayPackages[5] is children[6].
-            const premiumCard = container.children[6] as HTMLElement; 
+            const premiumCard = container.children[6] as HTMLElement;
             if (premiumCard) {
                 setTimeout(() => {
                     container.scrollLeft = premiumCard.offsetLeft - (window.innerWidth / 2) + (premiumCard.clientWidth / 2);
@@ -136,7 +137,21 @@ export default function Pricing() {
         if (window.innerWidth >= 1024) return;
 
         const container = e.currentTarget;
-        
+
+        // Anlık dot index hesaplama
+        const card0el = container.children[1] as HTMLElement;
+        const card4el = container.children[5] as HTMLElement;
+        if (card0el && card4el) {
+            const setWidth = card4el.offsetLeft - card0el.offsetLeft;
+            const unitWidth = setWidth / 4;
+            if (unitWidth > 0) {
+                const viewportCenter = container.scrollLeft + container.clientWidth / 2;
+                const rawIndex = (viewportCenter - card0el.offsetLeft - card0el.clientWidth / 2) / unitWidth;
+                const normalized = ((Math.round(rawIndex) % 4) + 4) % 4;
+                setActiveMobileIndex(normalized);
+            }
+        }
+
         if (scrollTimeoutRef.current) {
             clearTimeout(scrollTimeoutRef.current);
         }
@@ -146,7 +161,7 @@ export default function Pricing() {
             const card0 = container.children[1] as HTMLElement;
             const card4 = container.children[5] as HTMLElement;
             if (!card0 || !card4) return;
-            
+
             // Gerçek set genişliği: 4 kartın aradaki boşluklarla birlikte tam pixel değeri
             const exactSetWidth = card4.offsetLeft - card0.offsetLeft;
 
@@ -190,7 +205,7 @@ export default function Pricing() {
                 backgroundColor: '#F3F3F3', // Dirty White
             }}
             aria-label="Hizmet Paketleri"
-            className="max-lg:!pt-12 max-lg:!mt-4"
+            className="w-full bg-[#F3F3F3] py-20 lg:py-40 relative overflow-hidden max-lg:!pt-6 max-lg:!pb-4 max-lg:!mt-0"
         >
             <div
                 style={{
@@ -206,6 +221,7 @@ export default function Pricing() {
                         marginBottom: '4rem',
                         textAlign: 'center',
                     }}
+                    className="max-lg:!mb-4"
                 >
                     <span
                         style={{
@@ -229,7 +245,15 @@ export default function Pricing() {
                             lineHeight: 1.1,
                         }}
                     >
-                        Net Vizyon, <span style={{ color: '#7F00FF' }}>Şeffaf Çözümler</span>.
+                        {/* Masaüstü: tek satır */}
+                        <span className="max-lg:hidden">
+                            Net Vizyon, <span style={{ color: '#7F00FF' }}>Şeffaf Çözümler</span>.
+                        </span>
+                        {/* Mobil: iki satır */}
+                        <span className="lg:hidden">
+                            Net Vizyon,<br />
+                            <span style={{ color: '#7F00FF' }}>Şeffaf Çözümler</span>.
+                        </span>
                     </h2>
                 </div>
 
@@ -239,7 +263,8 @@ export default function Pricing() {
                     className="flex lg:grid lg:grid-cols-3 gap-6 lg:gap-8 max-lg:overflow-x-auto max-lg:snap-x max-lg:snap-mandatory max-lg:scrollbar-hide max-lg:-mx-6 max-lg:px-6 max-lg:pt-6 max-lg:pb-8"
                     style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
                 >
-                    <style dangerouslySetInnerHTML={{ __html: `
+                    <style dangerouslySetInnerHTML={{
+                        __html: `
                         .max-lg\\:scrollbar-hide::-webkit-scrollbar { display: none; }
                     `}} />
                     {displayPackages.map((pkg) => {
@@ -254,7 +279,7 @@ export default function Pricing() {
                                     {/* Masaüstü için ağır blur efektleri */}
                                     <div className="absolute -top-40 -right-40 w-96 h-96 bg-[#7F00FF]/20 rounded-full blur-[100px] pointer-events-none max-lg:hidden transition-transform duration-700 group-hover:scale-110" />
                                     <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-[#7F00FF]/10 rounded-full blur-[80px] pointer-events-none max-lg:hidden transition-transform duration-700 group-hover:scale-110" />
-                                    
+
                                     {/* Mobil performansı için yüksek FPS veren gradient alternatifleri */}
                                     <div className="absolute -top-40 -right-40 w-96 h-96 bg-[radial-gradient(circle,rgba(127,0,255,0.15)_0%,transparent_60%)] rounded-full pointer-events-none lg:hidden" />
                                     <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-[radial-gradient(circle,rgba(127,0,255,0.08)_0%,transparent_60%)] rounded-full pointer-events-none lg:hidden" />
@@ -287,7 +312,7 @@ export default function Pricing() {
                         return (
                             <article
                                 key={pkg.uniqueId}
-                                className={`${pkg.isClone ? 'max-lg:flex lg:hidden' : 'flex'} flex-col shrink-0 w-[85vw] lg:w-auto snap-center snap-always`}
+                                className={`${pkg.isClone ? 'max-lg:flex lg:hidden' : 'flex'} flex-col shrink-0 w-[85vw] lg:w-auto snap-center snap-always ${!pkg.isPopular ? 'max-lg:!border-[3px] max-lg:!border-[rgba(17,17,17,0.2)]' : ''}`}
                                 style={{
                                     padding: '2.5rem',
                                     backgroundColor: pkg.isPopular ? '#111111' : '#F3F3F3',
@@ -334,17 +359,39 @@ export default function Pricing() {
                                     </div>
                                 )}
 
-                                <div style={{ marginBottom: '2rem' }}>
+                                <div style={{ marginBottom: '2rem' }} className="max-lg:!mb-2">
                                     <h3 style={{ fontSize: '2rem', fontWeight: 800, marginBottom: '0.5rem' }}>
                                         {pkg.name}
                                     </h3>
-                                    <p style={{ fontSize: '0.875rem', opacity: 0.7, minHeight: '3rem' }}>
+                                    <p style={{ fontSize: '0.875rem', opacity: 0.7 }} className="max-lg:hidden">
                                         {pkg.description}
                                     </p>
                                 </div>
 
-                                <div style={{ marginBottom: '2rem', fontSize: '2rem', fontWeight: 900 }}>
+                                <div style={{ marginBottom: '2rem', fontSize: '2rem', fontWeight: 900 }} className="hidden lg:block">
                                     {pkg.price}
+                                </div>
+
+                                <div className="lg:hidden mb-5">
+                                    <span
+                                        className="inline-flex items-center rounded-full border px-3.5 py-1.5 text-[0.68rem] font-bold tracking-[0.16em] uppercase"
+                                        style={
+                                            pkg.name === 'Premium'
+                                                ? {
+                                                    backgroundColor: '#7F00FF',
+                                                    borderColor: '#7F00FF',
+                                                    color: '#ffffff',
+                                                    boxShadow: '0 8px 18px -10px rgba(127,0,255,0.65)',
+                                                }
+                                                : {
+                                                    backgroundColor: 'rgba(127,0,255,0.08)',
+                                                    borderColor: 'rgba(127,0,255,0.38)',
+                                                    color: 'rgba(98,0,204,0.95)',
+                                                }
+                                        }
+                                    >
+                                        {pkg.price}
+                                    </span>
                                 </div>
 
                                 <ul style={{ listStyle: 'none', padding: 0, margin: 0, flexGrow: 1, marginBottom: '2.5rem' }}>
@@ -407,9 +454,22 @@ export default function Pricing() {
                     })}
                 </div>
 
-                <div className="flex items-center justify-center gap-2 mt-2 mb-6 text-black/40 lg:hidden pointer-events-none">
-                    <MoveHorizontal size={18} className="animate-[pulse_2s_ease-in-out_infinite]" />
-                    <span className="text-[0.65rem] font-bold tracking-widest uppercase opacity-70">Tüm paketleri görmek için kaydırın</span>
+                {/* Mobil galeri dot göstergesi */}
+                <div className="lg:hidden flex items-center justify-center gap-[7px] mt-4 mb-6 pointer-events-none" aria-hidden="true">
+                    {Array.from({ length: 4 }).map((_, i) => (
+                        <span
+                            key={i}
+                            className="rounded-full block transition-all duration-200"
+                            style={{
+                                width: i === activeMobileIndex ? '8px' : '6px',
+                                height: i === activeMobileIndex ? '8px' : '6px',
+                                backgroundColor: i === activeMobileIndex
+                                    ? '#7F00FF'
+                                    : 'rgba(17,17,17,0.22)',
+                                opacity: i === activeMobileIndex ? 1 : 0.55,
+                            }}
+                        />
+                    ))}
                 </div>
             </div>
 

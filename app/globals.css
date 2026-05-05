@@ -43,7 +43,7 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-  background: #F3F3F3;
+  background: transparent;
 }
 
 ::-webkit-scrollbar-thumb {
@@ -53,6 +53,31 @@ body {
 
 ::-webkit-scrollbar-thumb:hover {
   background: #7F00FF;
+}
+
+@media (max-width: 1023px) {
+  ::-webkit-scrollbar {
+    width: 3px;
+    height: 3px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: rgba(127, 0, 255, 0.42);
+    border-radius: 9999px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: rgba(127, 0, 255, 0.56);
+  }
+
+  html {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(127, 0, 255, 0.42) transparent;
+  }
 }
 
 @layer utilities {

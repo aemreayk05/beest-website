@@ -1,12 +1,48 @@
 'use client';
 
-import { Instagram, Linkedin, Check } from 'lucide-react';
-import { useState } from 'react';
+import { Instagram, Linkedin, Check, ArrowUpRight } from 'lucide-react';
+import { useEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 export default function Contact() {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [isSuccess, setIsSuccess] = useState(false);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [isShortViewport, setIsShortViewport] = useState(false);
+    const firstInputRef = useRef<HTMLInputElement>(null);
+    const modalOpenButtonRef = useRef<HTMLButtonElement>(null);
+
+    useEffect(() => {
+        const checkViewport = () => setIsShortViewport(window.innerHeight < 760);
+        checkViewport();
+        window.addEventListener('resize', checkViewport);
+        return () => window.removeEventListener('resize', checkViewport);
+    }, []);
+
+    useEffect(() => {
+        if (!isModalOpen) return;
+        const previousOverflow = document.body.style.overflow;
+        document.body.style.overflow = 'hidden';
+        firstInputRef.current?.focus();
+
+        const onKeyDown = (event: KeyboardEvent) => {
+            if (event.key === 'Escape') {
+                setIsModalOpen(false);
+            }
+        };
+
+        window.addEventListener('keydown', onKeyDown);
+        return () => {
+            document.body.style.overflow = previousOverflow;
+            window.removeEventListener('keydown', onKeyDown);
+        };
+    }, [isModalOpen]);
+
+    useEffect(() => {
+        if (!isModalOpen) {
+            modalOpenButtonRef.current?.focus();
+        }
+    }, [isModalOpen]);
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -43,6 +79,7 @@ export default function Contact() {
                 (e.target as HTMLFormElement).reset();
                 setTimeout(() => {
                     setIsSuccess(false);
+                    setIsModalOpen(false);
                 }, 4000);
             }
         } catch (error) {
@@ -55,7 +92,7 @@ export default function Contact() {
     return (
         <section
             id="contact"
-            className="w-full bg-[#F3F3F3] py-20 lg:py-40 relative overflow-hidden max-lg:!pt-12 max-lg:!mt-4"
+            className="w-full bg-[#F3F3F3] py-20 lg:py-40 relative overflow-hidden max-lg:!pt-6 max-lg:!pb-8 max-lg:!mt-0"
             aria-label="İletişim"
         >
             <div className="max-w-7xl mx-auto px-6 lg:px-12 grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-20">
@@ -73,7 +110,7 @@ export default function Contact() {
                         </h2>
                     </div>
 
-                    <address className="not-italic flex flex-col gap-8 mt-12 lg:mt-0">
+                    <address className="not-italic flex flex-col gap-8 mt-12 lg:mt-0 max-lg:!mt-3">
 
 
                         <div>
@@ -102,10 +139,26 @@ export default function Contact() {
                             </svg>
                         </a>
                     </div>
+
+                    {/* Mobil CTA: Formu adaptive modal ile aç */}
+                    <div className="lg:hidden mt-7 flex flex-col items-start">
+                        <button
+                            ref={modalOpenButtonRef}
+                            type="button"
+                            onClick={() => setIsModalOpen(true)}
+                            className="group inline-flex min-h-10 items-center gap-2 text-[0.95rem] font-bold tracking-wide text-[#111111] hover:text-[#7F00FF] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#7F00FF]/40 rounded-sm transition-colors duration-300"
+                        >
+                            <span className="relative">
+                                Mesaj Gönder
+                                <span className="absolute left-0 -bottom-[2px] h-px w-full bg-gradient-to-r from-[#7F00FF]/70 to-transparent transition-opacity duration-300 opacity-70 group-hover:opacity-100" />
+                            </span>
+                            <ArrowUpRight size={16} strokeWidth={2.1} className="transition-transform duration-300 group-hover:translate-x-[1px] group-hover:-translate-y-[1px]" />
+                        </button>
+                    </div>
                 </div>
 
                 {/* Sağ Taraf: İletişim Formu (Swiss Minimalist) */}
-                <div className="flex flex-col gap-10 lg:pl-10 lg:border-l border-black/10">
+                <div className="flex flex-col gap-10 lg:pl-10 lg:border-l border-black/10 max-lg:hidden">
                     <AnimatePresence mode="wait">
                         {isSuccess ? (
                             <motion.div
@@ -204,6 +257,152 @@ export default function Contact() {
                 </div>
 
             </div>
+
+            {/* Mobil Adaptive Modal (Bottom Sheet / Fullscreen) */}
+            <AnimatePresence>
+                {isModalOpen && (
+                    <motion.div
+                        className="lg:hidden fixed inset-0 z-[70]"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        aria-modal="true"
+                        role="dialog"
+                        aria-label="İletişim formu"
+                    >
+                        <button
+                            type="button"
+                            aria-label="Formu kapat"
+                            className="absolute inset-0 bg-black/45 backdrop-blur-[1px]"
+                            onClick={() => setIsModalOpen(false)}
+                        />
+
+                        <motion.div
+                            initial={{ y: '100%' }}
+                            animate={{ y: 0 }}
+                            exit={{ y: '100%' }}
+                            transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
+                            className={`absolute left-0 right-0 bg-[#F3F3F3] border-t border-black/10 ${
+                                isShortViewport
+                                    ? 'top-0 rounded-none'
+                                    : 'bottom-0 rounded-t-[1.4rem] max-h-[88vh]'
+                            } overflow-y-auto`}
+                        >
+                            <div className="px-6 pt-5 pb-6">
+                                <div className="flex items-center justify-between mb-5">
+                                    <div>
+                                        <p className="text-[0.62rem] font-bold tracking-[0.18em] uppercase text-[#7F00FF] mb-1">
+                                            İletişim Formu
+                                        </p>
+                                        <h3 className="text-xl font-black tracking-tight text-[#111111]">
+                                            Mesajını bırak
+                                        </h3>
+                                    </div>
+                                    <button
+                                        type="button"
+                                        onClick={() => setIsModalOpen(false)}
+                                        className="min-h-10 min-w-10 rounded-full border border-black/10 text-black/70 hover:text-[#7F00FF] hover:border-[#7F00FF]/30 transition-colors"
+                                        aria-label="Kapat"
+                                    >
+                                        ✕
+                                    </button>
+                                </div>
+
+                                <AnimatePresence mode="wait">
+                                    {isSuccess ? (
+                                        <motion.div
+                                            key="mobile-success"
+                                            initial={{ opacity: 0, y: 8 }}
+                                            animate={{ opacity: 1, y: 0 }}
+                                            exit={{ opacity: 0, y: -8 }}
+                                            className="flex flex-col items-center justify-center text-center py-12"
+                                        >
+                                            <div className="w-16 h-16 bg-[#7F00FF]/10 text-[#7F00FF] flex justify-center items-center rounded-full mb-4">
+                                                <Check size={32} strokeWidth={3} />
+                                            </div>
+                                            <h4 className="text-2xl font-bold mb-2 text-[#111111]">Mesajın Alındı</h4>
+                                            <p className="text-[#111111]/60 text-sm">En kısa sürede seninle iletişime geçeceğiz.</p>
+                                        </motion.div>
+                                    ) : (
+                                        <motion.form
+                                            key="mobile-form"
+                                            initial={{ opacity: 0 }}
+                                            animate={{ opacity: 1 }}
+                                            exit={{ opacity: 0 }}
+                                            onSubmit={handleSubmit}
+                                            className="flex flex-col gap-6"
+                                        >
+                                            <input type="text" name="bot-check" className="hidden" aria-hidden="true" tabIndex={-1} autoComplete="off" />
+
+                                            <div className="relative">
+                                                <label htmlFor="mobile-name" className="sr-only">Adınız</label>
+                                                <input
+                                                    ref={firstInputRef}
+                                                    type="text"
+                                                    id="mobile-name"
+                                                    name="name"
+                                                    required
+                                                    placeholder="Adınız *"
+                                                    className="w-full min-h-12 bg-transparent border-0 border-b border-black/20 pb-3 text-lg text-[#111111] font-medium placeholder-black/35 focus:outline-none focus:ring-0 focus:border-[#7F00FF] transition-colors duration-300"
+                                                />
+                                            </div>
+
+                                            <div className="relative">
+                                                <label htmlFor="mobile-email" className="sr-only">E-posta Adresiniz</label>
+                                                <input
+                                                    type="email"
+                                                    id="mobile-email"
+                                                    name="email"
+                                                    required
+                                                    placeholder="E-posta Adresiniz *"
+                                                    className="w-full min-h-12 bg-transparent border-0 border-b border-black/20 pb-3 text-lg text-[#111111] font-medium placeholder-black/35 focus:outline-none focus:ring-0 focus:border-[#7F00FF] transition-colors duration-300"
+                                                />
+                                            </div>
+
+                                            <div className="relative">
+                                                <label htmlFor="mobile-message" className="sr-only">Nasıl yardımcı olabiliriz?</label>
+                                                <textarea
+                                                    id="mobile-message"
+                                                    name="message"
+                                                    required
+                                                    rows={4}
+                                                    placeholder="Nasıl yardımcı olabiliriz? *"
+                                                    className="w-full bg-transparent border-0 border-b border-black/20 pb-3 text-lg text-[#111111] font-medium placeholder-black/35 focus:outline-none focus:ring-0 focus:border-[#7F00FF] transition-colors duration-300 resize-none"
+                                                />
+                                            </div>
+
+                                            <button
+                                                type="submit"
+                                                disabled={isSubmitting}
+                                                className="mt-1 min-h-12 w-full rounded-full bg-[#111111] text-white font-bold tracking-wide hover:bg-[#7F00FF] transition-colors duration-300 disabled:opacity-70 flex justify-center items-center"
+                                            >
+                                                {isSubmitting ? (
+                                                    <motion.div
+                                                        animate={{ rotate: 360 }}
+                                                        transition={{ repeat: Infinity, duration: 1, ease: 'linear' }}
+                                                        className="w-5 h-5 border-2 border-white/20 border-t-white rounded-full"
+                                                    />
+                                                ) : (
+                                                    'Talebi Gönder'
+                                                )}
+                                            </button>
+
+                                            <a
+                                                href="https://wa.me/905373748454"
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                className="min-h-10 inline-flex items-center justify-center text-sm font-semibold text-black/60 hover:text-[#7F00FF] transition-colors"
+                                            >
+                                                WhatsApp ile devam et
+                                            </a>
+                                        </motion.form>
+                                    )}
+                                </AnimatePresence>
+                            </div>
+                        </motion.div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
         </section>
     );
 }

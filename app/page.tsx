@@ -112,7 +112,9 @@ export default async function Home() {
 
       <Pricing />
       
-      <BeestMarquee className="py-6 lg:py-8 bg-[#111111] text-[#7F00FF]" text="READY TO BUILD WITH BEEST? • " speed={60} />
+      <div className="hidden lg:block">
+        <BeestMarquee className="py-6 lg:py-8 bg-[#111111] text-[#7F00FF]" text="READY TO BUILD WITH BEEST? • " speed={60} />
+      </div>
       
       <Contact />
     </main>
