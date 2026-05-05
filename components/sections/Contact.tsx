@@ -11,6 +11,7 @@ export default function Contact() {
     const [isShortViewport, setIsShortViewport] = useState(false);
     const firstInputRef = useRef<HTMLInputElement>(null);
     const modalOpenButtonRef = useRef<HTMLButtonElement>(null);
+    const modalWasOpenedRef = useRef(false);
 
     useEffect(() => {
         const checkViewport = () => setIsShortViewport(window.innerHeight < 760);
@@ -39,7 +40,9 @@ export default function Contact() {
     }, [isModalOpen]);
 
     useEffect(() => {
-        if (!isModalOpen) {
+        if (isModalOpen) {
+            modalWasOpenedRef.current = true;
+        } else if (modalWasOpenedRef.current) {
             modalOpenButtonRef.current?.focus();
         }
     }, [isModalOpen]);
