@@ -1,65 +1,103 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { motion } from 'framer-motion';
-import { ArrowRight, Award, Layers } from 'lucide-react';
-
-const iconMap = {
-    Award,
-    Layers,
-};
+import { ArrowUpRight } from 'lucide-react';
 
 interface QuickAccessCardProps {
-    title: string;
-    description: string;
-    iconName: keyof typeof iconMap;
+    titleLine1: string;
+    titleLine2: string;
+    imageSrc: string;
     href: string;
-    bgColor?: string;
-    textColor?: string;
-    iconColor?: string;
     className?: string;
+    outlineLine?: 1 | 2; // Hangi satırın outline olacağını belirler
 }
 
 export default function QuickAccessCard({
-    title,
-    description,
-    iconName,
+    titleLine1,
+    titleLine2,
+    imageSrc,
     href,
-    bgColor = 'bg-white',
-    textColor = 'text-[#111111]',
-    iconColor = 'text-[#7F00FF]',
-    className = ''
+    className = '',
+    outlineLine = 2
 }: QuickAccessCardProps) {
-    const Icon = iconMap[iconName];
+    const outlineStyle = {
+        WebkitTextStroke: '1.5px white',
+        color: 'transparent',
+    };
+
+    const solidStyle = {
+        color: 'white',
+    };
+
     return (
-        <div className={`w-full px-6 py-4 lg:hidden ${className}`}>
+        <div className={`w-full px-6 py-3 lg:hidden ${className}`}>
             <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-50px" }}
-                transition={{ duration: 0.5 }}
+                viewport={{ once: true, margin: '-40px' }}
+                transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
             >
-                <Link href={href} className="block group">
-                    <div className={`relative overflow-hidden rounded-[2rem] p-8 flex flex-col gap-6 shadow-[0_10px_30px_-10px_rgba(17,17,17,0.08)] ${bgColor}`}>
-                        <div className="flex justify-between items-start">
-                            <div className={`w-12 h-12 rounded-full flex items-center justify-center bg-black/5 ${iconColor}`}>
-                                <Icon size={24} strokeWidth={1.5} />
+                <Link href={href} className="block group" aria-label={`${titleLine1} ${titleLine2} sayfasına git`}>
+                    <div
+                        className="relative overflow-hidden rounded-[2rem] flex flex-col justify-end"
+                        style={{
+                            height: '70svh',
+                            boxShadow: '0 15px 50px -12px rgba(0,0,0,0.5)',
+                        }}
+                    >
+                        {/* ── ARKA PLAN GÖRSELİ ── */}
+                        <Image
+                            src={imageSrc}
+                            alt={`${titleLine1} ${titleLine2} arka plan görseli`}
+                            fill
+                            className="object-cover transition-transform duration-1000 group-hover:scale-110"
+                            sizes="(max-width: 768px) 100vw, 50vw"
+                            priority
+                        />
+
+                        {/* ── GÜÇLÜ SİNEMATİK OVERLAY ── */}
+                        <div
+                            className="absolute inset-0 pointer-events-none"
+                            style={{
+                                background: 'linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.4) 40%, transparent 100%)',
+                            }}
+                            aria-hidden="true"
+                        />
+
+                        {/* ── İÇERİK (Direct Overlay) ── */}
+                        <div className="relative z-10 px-8 pb-10 flex flex-col gap-6">
+                            {/* Başlık — Editorial Swiss Style */}
+                            <div className="flex flex-col">
+                                <h3
+                                    className="font-black leading-[0.85] tracking-[-0.04em] uppercase"
+                                    style={{ fontSize: 'clamp(3.5rem, 15vw, 5rem)' }}
+                                >
+                                    <span style={outlineLine === 1 ? outlineStyle : solidStyle}>
+                                        {titleLine1}
+                                    </span>
+                                    <br />
+                                    <span 
+                                        className="inline-block"
+                                        style={{ 
+                                            ...(outlineLine === 2 ? outlineStyle : solidStyle),
+                                            marginTop: '0.1em'
+                                        }}
+                                    >
+                                        {titleLine2}
+                                    </span>
+                                </h3>
                             </div>
-                            <div className={`w-10 h-10 rounded-full flex items-center justify-center border border-black/10 transition-transform duration-300 group-hover:scale-110 group-hover:bg-[#7F00FF] group-hover:border-transparent ${textColor} group-hover:text-white`}>
-                                <ArrowRight size={20} strokeWidth={1.5} className={bgColor === 'bg-[#7F00FF]' ? 'text-white' : ''} />
+
+                            {/* Ok Butonu ve Aksan Çizgisi */}
+                            <div className="flex items-center justify-between mt-2">
+                                <div className="h-[2px] w-12 bg-white/30 rounded-full" />
+                                <div className="w-14 h-14 rounded-full flex items-center justify-center border-2 border-white text-white transition-all duration-500 group-hover:bg-white group-hover:text-black group-hover:scale-110">
+                                    <ArrowUpRight size={24} strokeWidth={2.5} />
+                                </div>
                             </div>
                         </div>
-                        
-                        <div>
-                            <h3 className={`text-2xl font-black mb-1 ${textColor}`}>
-                                {title}
-                            </h3>
-                            <p className={`text-sm opacity-60 font-medium ${textColor}`}>
-                                {description}
-                            </p>
-                        </div>
-                        
-                        <div className="absolute inset-0 border-[2px] border-transparent rounded-[2rem] transition-colors duration-500 group-hover:border-[#7F00FF]/20 pointer-events-none" />
                     </div>
                 </Link>
             </motion.div>

@@ -108,10 +108,10 @@ function useAktifIndex(containerRef: React.RefObject<HTMLDivElement>, dataLength
 // ─── Ana bileşen ──────────────────────────────────────────────────────────────
 export default function Hizmetler({ services = [] }: { services?: ServiceData[] }) {
     const containerRef = useRef<HTMLDivElement>(null);
-    
+
     // Fallback: Eğer Sanity'den veri gelmezse veya boşsa statik HIZMETLER dizisini kullan.
     const displayServices = services && services.length > 0 ? services : (HIZMETLER as unknown as ServiceData[]);
-    
+
     const aktifIndex = useAktifIndex(containerRef, displayServices.length);
     const hizmet = displayServices[aktifIndex] || displayServices[0];
 
@@ -123,10 +123,10 @@ export default function Hizmetler({ services = [] }: { services?: ServiceData[] 
             className="relative bg-[#F3F3F3] max-lg:!h-auto max-lg:!mt-4"
             aria-label="Beest Hizmet Ekosistemi"
         >
-            <div className="sticky top-0 h-screen flex items-center z-10 max-lg:!relative max-lg:!h-auto max-lg:!items-start max-lg:pb-6 max-lg:!pt-12">
+            <div className="sticky top-0 h-screen flex items-center z-10 max-lg:!relative max-lg:!h-auto max-lg:!items-start max-lg:pb-6 max-lg:!pt-4">
                 {/* İki kolon: Mobil -> Tek Sütun (Sağ kart gizli), Desktop -> İki Sütun */}
                 <div
-                    className="w-full max-w-7xl mx-auto px-6 lg:px-12 flex flex-col lg:flex-row gap-12 lg:gap-20 items-center"
+                    className="w-full max-w-7xl mx-auto px-6 lg:px-12 flex flex-col lg:flex-row gap-3 lg:gap-20 items-center"
                 >
                     {/* ── Sol: Başlık + Hizmet listesi ── */}
                     <div className="w-full lg:w-[45%]">
@@ -138,7 +138,7 @@ export default function Hizmetler({ services = [] }: { services?: ServiceData[] 
                                 letterSpacing: '0.18em',
                                 textTransform: 'uppercase',
                                 color: '#7F00FF',
-                                marginBottom: '1.25rem',
+                                marginBottom: '1.0rem',
                             }}
                         >
                             Hizmetlerimiz
@@ -152,7 +152,7 @@ export default function Hizmetler({ services = [] }: { services?: ServiceData[] 
                                 lineHeight: 1.1,
                                 letterSpacing: '-0.02em',
                                 color: '#111111',
-                                marginBottom: '2.5rem',
+                                marginBottom: '1.25rem',
                             }}
                         >
                             Beest ile markanızı bir{' '}
@@ -243,12 +243,13 @@ export default function Hizmetler({ services = [] }: { services?: ServiceData[] 
 
                     {/* ── Sadece Mobil: Yatay Kaydırmalı Kartlar (Apple-Style) ── */}
                     <div className="lg:hidden w-full w-screen -ml-6 px-6 overflow-x-auto snap-x snap-mandatory flex gap-6 pb-8" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
-                        <style dangerouslySetInnerHTML={{ __html: `
+                        <style dangerouslySetInnerHTML={{
+                            __html: `
                             .lg\\:hidden::-webkit-scrollbar { display: none; }
                         `}} />
                         {HIZMETLER.map((h, idx) => (
-                            <article 
-                                key={h.no} 
+                            <article
+                                key={h.no}
                                 className="snap-center snap-always w-[85vw] md:w-[60vw] shrink-0 flex flex-col bg-white rounded-3xl overflow-hidden"
                                 style={{ boxShadow: '0 10px 40px -10px rgba(127,0,255,0.15)' }}
                             >

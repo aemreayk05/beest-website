@@ -71,7 +71,9 @@ export default async function Home() {
       
       <Hizmetler services={services} />
       
-      <BeestMarquee className="py-4 text-[#111111]" speed={50} />
+      <div className="hidden lg:block">
+        <BeestMarquee className="py-4 text-[#111111]" speed={50} />
+      </div>
 
       {/* Masaüstü Neden Biz */}
       <div className="hidden lg:block">
@@ -80,11 +82,11 @@ export default async function Home() {
 
       {/* Mobil Neden Biz Hızlı Erişim Kartı */}
       <QuickAccessCard
-        title="Neden Biz?"
-        description="Fark yaratan yaklaşımımız."
-        iconName="Award"
+        titleLine1="Neden"
+        titleLine2="Beest?"
+        imageSrc="/neden_biz.jpeg"
         href="/neden-biz"
-        className="max-lg:mb-6 max-lg:mt-4 relative z-20"
+        className="max-lg:mb-6 max-lg:mt-2 relative z-20"
       />
 
       <div className="hidden lg:block">
@@ -100,13 +102,11 @@ export default async function Home() {
 
       {/* Mobil Çalışma Süreci Hızlı Erişim Kartı */}
       <QuickAccessCard
-        title="Çalışma Sürecimiz"
-        description="Fikirden ürüne giden yol."
-        iconName="Layers"
+        titleLine1="Yol"
+        titleLine2="Haritası"
+        outlineLine={1}
+        imageSrc="/calisma_surecimiz.jpeg"
         href="/surec"
-        bgColor="bg-[#111111]"
-        textColor="text-white"
-        iconColor="text-[#7F00FF]"
         className="max-lg:my-6 relative z-20"
       />
 

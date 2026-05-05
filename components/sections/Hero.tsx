@@ -38,7 +38,7 @@ export default function Hero() {
     };
 
     // SSR'da animasyonun hemen başlamaması için default 6.0s beklet, sonra duruma göre karar ver.
-    const d = !mounted ? 6.0 : (isDesktop ? 6.0 : 0.5);
+    const d = !mounted ? 6.0 : (isDesktop ? 6.0 : 1.5);
 
     return (
         <section
@@ -84,10 +84,11 @@ export default function Hero() {
             >
                 {/* ① Logo */}
                 <motion.div
+                    key={`logo-${d}`}
                     initial={{ opacity: 0, y: 18 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: d, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-                    style={{ marginBottom: '1.5rem' }} // Çizgi kalkınca butonlarla arasındaki nefes boşluğu düzeltildi
+                    style={{ marginBottom: '1.5rem' }}
                 >
                     <Image
                         src="/beest_logo.svg"
@@ -101,6 +102,7 @@ export default function Hero() {
 
                 {/* ③ CTA Butonları */}
                 <motion.div
+                    key={`cta-${d}`}
                     initial={{ opacity: 0, y: 16 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: d + 0.75, duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
@@ -173,6 +175,7 @@ export default function Hero() {
 
             {/* ── Scroll Indicator ─────────────────────────────────────────── */}
             <motion.button
+                key={`scroll-${d}`}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: d + 1.5, duration: 0.8 }}

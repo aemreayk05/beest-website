@@ -1,6 +1,7 @@
 'use client';
 
 import { useRef, useState, useEffect } from 'react';
+import Link from 'next/link';
 import ProjectCard from '../ui/ProjectCard';
 
 export type ProjectData = {
@@ -129,8 +130,8 @@ export default function Projects({ projects = [] }: { projects?: ProjectData[] }
                         />
                     ))}
 
-                    {/* Sonda bitiş mesajı kartı */}
-                    <div className="flex flex-col items-center justify-center w-[85vw] md:w-[60vw] lg:w-[30vw] shrink-0 bg-white rounded-[2rem] p-10 text-center shadow-[0_10px_40px_-10px_rgba(127,0,255,0.08)]">
+                    {/* Sonda bitiş mesajı kartı (Sadece Masaüstü) */}
+                    <div className="hidden lg:flex flex-col items-center justify-center lg:w-[30vw] shrink-0 bg-white rounded-[2rem] p-10 text-center shadow-[0_10px_40px_-10px_rgba(127,0,255,0.08)]">
                         <h4 className="text-2xl font-bold text-[#111111] mb-6">Sıradaki neden<br />sizin projeniz olmasın?</h4>
                         <a
                             href="#contact"
@@ -138,6 +139,35 @@ export default function Projects({ projects = [] }: { projects?: ProjectData[] }
                         >
                             Konuşalım
                         </a>
+                    </div>
+
+                    {/* Mobil Tümünü Gör Butonu */}
+                    <div className="lg:hidden w-full px-6 mt-4 text-center">
+                        <Link
+                            href="/blog"
+                            style={{
+                                padding: '0.875rem 2rem',
+                                borderRadius: '9999px',
+                                border: '1px solid rgba(17,17,17,0.2)',
+                                color: '#111111',
+                                fontWeight: 600,
+                                fontSize: '0.875rem',
+                                letterSpacing: '0.04em',
+                                textDecoration: 'none',
+                                transition: 'border-color 0.2s ease, color 0.2s ease',
+                                display: 'inline-block',
+                            }}
+                            onMouseEnter={(e) => {
+                                (e.currentTarget as HTMLAnchorElement).style.transform = 'scale(1.05)';
+                                (e.currentTarget as HTMLAnchorElement).style.boxShadow = '0 12px 32px -8px rgba(127,0,255,0.6)';
+                            }}
+                            onMouseLeave={(e) => {
+                                (e.currentTarget as HTMLAnchorElement).style.transform = 'scale(1)';
+                                (e.currentTarget as HTMLAnchorElement).style.boxShadow = '0 8px 24px -8px rgba(127,0,255,0.4)';
+                            }}
+                        >
+                            TÜMÜNÜ GÖR
+                        </Link>
                     </div>
                 </div>
 
