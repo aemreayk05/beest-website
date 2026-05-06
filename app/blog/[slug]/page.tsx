@@ -114,7 +114,7 @@ export default async function BlogDetailPage({ params }: { params: { slug: strin
         </nav>
 
         {/* ── BAŞLIK ALANI ────────────────────────────────────────── */}
-        <header className="max-w-4xl mx-auto px-6 lg:px-12 pt-10 pb-12">
+        <header className="max-w-4xl mx-auto px-6 lg:px-12 pt-10 pb-8">
           <div className="flex items-center gap-3 mb-6">
             <a
               href={`/kategori/${post.category.slug.current}`}
@@ -131,13 +131,13 @@ export default async function BlogDetailPage({ params }: { params: { slug: strin
             {post.title}
           </h1>
 
-          <p className="text-xl font-medium text-black/60 leading-relaxed mb-10">
+          <p className="text-xl font-medium text-black/60 leading-relaxed mb-8">
             {post.excerpt}
           </p>
 
           {/* Yazar Bilgisi */}
           {post.author && (
-            <div className="flex items-center gap-4 pb-10 border-b border-black/10">
+            <div className="flex items-center gap-4 pb-8 border-b border-black/10">
               {post.author.image ? (
                 <div className="relative w-12 h-12 rounded-full overflow-hidden shrink-0">
                   <Image
@@ -164,17 +164,24 @@ export default async function BlogDetailPage({ params }: { params: { slug: strin
 
         {/* ── KAPAK GÖRSELİ ───────────────────────────────────────── */}
         {post.coverImage && (
-          <div className="max-w-6xl mx-auto px-6 lg:px-12 mb-16">
-            <div className="relative w-full aspect-[16/9] rounded-[2rem] overflow-hidden">
-              <Image
-                src={post.coverImage}
-                alt={post.coverImageAlt || post.title}
-                fill
-                priority
-                className="object-cover"
-                sizes="(max-width: 768px) 100vw, 80vw"
-              />
-            </div>
+          <div className="max-w-4xl mx-auto px-6 lg:px-12 mb-10">
+            <figure>
+              <div className="relative w-full aspect-[16/9] rounded-[2rem] overflow-hidden">
+                <Image
+                  src={post.coverImage}
+                  alt={post.coverImageAlt || post.title}
+                  fill
+                  priority
+                  className="object-cover"
+                  sizes="(max-width: 768px) 100vw, 56rem"
+                />
+              </div>
+              {post.coverImageAlt && (
+                <figcaption className="mt-3 text-center text-xs font-medium text-black/40">
+                  {post.coverImageAlt}
+                </figcaption>
+              )}
+            </figure>
           </div>
         )}
 

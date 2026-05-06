@@ -22,7 +22,7 @@ export default function BlogCTA() {
                 
                 <div className="flex flex-col sm:flex-row gap-4 shrink-0">
                     <Link
-                        href="#contact"
+                        href="/#contact"
                         className="px-8 py-4 rounded-full bg-[#7F00FF] text-white font-bold text-sm tracking-widest uppercase hover:bg-[#6a00d6] hover:scale-105 transition-all duration-300 shadow-[0_10px_30px_-10px_rgba(127,0,255,0.6)] text-center"
                     >
                         Teklif Al

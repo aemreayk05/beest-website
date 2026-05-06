@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import Image from 'next/image';
+import Link from 'next/link';
 import { getPosts, getCategories } from '@/sanity/lib/queries';
 import BlogCard from '@/components/blog/BlogCard';
 import { BlogPostListItem, Category } from '@/types/blog';
@@ -31,12 +32,12 @@ export default async function BlogPage() {
 
   return (
     <main className="bg-[#F3F3F3] min-h-screen">
-      {/* ── HERO ─────────────────────────────────────────────────── */}
-      <section className="relative w-full pt-32 pb-24 px-6 lg:px-12 overflow-hidden">
+      <div className="relative max-w-7xl mx-auto px-6 lg:px-12 overflow-hidden">
         {/* Arkaplan Işık Orb */}
         <div className="absolute top-0 right-0 w-[600px] h-[600px] rounded-full bg-[#7F00FF]/5 blur-[120px] pointer-events-none" />
 
-        <div className="max-w-7xl mx-auto">
+        {/* ── HERO ────────────────────────────────────────────────── */}
+        <section className="pt-32 pb-10 lg:pb-12">
           <span className="text-[0.65rem] font-bold tracking-[0.18em] uppercase text-[#7F00FF] mb-4 block">
             Beest Blog
           </span>
@@ -50,16 +51,17 @@ export default async function BlogPage() {
           <p className="text-lg md:text-xl font-medium text-black/60 max-w-xl leading-relaxed">
             SEO, web tasarımı, dijital pazarlama ve büyüme stratejileri üzerine derinlemesine yazılar.
           </p>
-        </div>
-      </section>
+        </section>
 
-      <div className="max-w-7xl mx-auto px-6 lg:px-12 pb-32">
         {/* ── KATEGORİ FİLTRELERİ ─────────────────────────────────── */}
         {categories.length > 0 && (
-          <div className="flex flex-wrap gap-3 mb-16">
-            <span className="px-5 py-2 rounded-full bg-[#111111] text-white text-sm font-bold tracking-wide">
+          <div className="flex flex-wrap gap-3 mb-10 lg:mb-10">
+            <Link
+              href="/blog"
+              className="px-5 py-2 rounded-full bg-[#111111] text-white text-sm font-bold tracking-wide hover:bg-[#7F00FF] transition-colors duration-300"
+            >
               Tümü
-            </span>
+            </Link>
             {categories.map((cat) => (
               <a
                 key={cat._id}
@@ -72,10 +74,11 @@ export default async function BlogPage() {
           </div>
         )}
 
+      <div className="pb-24">
         {/* ── ÖNCÜLENEN YAZILAR ─────────────────────────────────── */}
         {featuredPosts.length > 0 && (
-          <section className="mb-20">
-            <div className="flex items-center gap-4 mb-8">
+          <section className="mb-12">
+            <div className="flex items-center gap-4 mb-6">
               <div className="w-8 h-[2px] bg-[#7F00FF]" />
               <span className="text-[0.65rem] font-bold tracking-[0.18em] uppercase text-[#7F00FF]">
                 Öne Çıkan Yazılar
@@ -170,6 +173,7 @@ export default async function BlogPage() {
             </p>
           </div>
         ) : null}
+      </div>
       </div>
     </main>
   );

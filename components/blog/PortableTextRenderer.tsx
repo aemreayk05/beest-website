@@ -52,12 +52,12 @@ const customComponents: PortableTextComponents = {
   },
   list: {
     bullet: ({ children }) => (
-      <ul className="list-disc list-inside text-lg text-black/70 font-medium leading-[1.8] mb-8 space-y-2 pl-4 marker:text-[#7F00FF]">
+      <ul className="list-disc list-outside text-lg text-black/70 font-medium leading-[1.8] mb-8 space-y-2 ml-5 marker:text-[#7F00FF]">
         {children}
       </ul>
     ),
     number: ({ children }) => (
-      <ol className="list-decimal list-inside text-lg text-black/70 font-medium leading-[1.8] mb-8 space-y-2 pl-4 marker:text-[#7F00FF] marker:font-bold">
+      <ol className="list-decimal list-outside text-lg text-black/70 font-medium leading-[1.8] mb-8 space-y-2 ml-5 marker:text-[#7F00FF] marker:font-bold">
         {children}
       </ol>
     ),
