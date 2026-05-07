@@ -84,7 +84,7 @@ export default function MobileNavbar() {
                             className="font-black tracking-tight text-[#111111] text-lg leading-none select-none"
                             style={{ letterSpacing: '-0.03em' }}
                         >
-                            beest<span style={{ color: '#7F00FF' }}>.</span>
+                            Beest<span style={{ color: '#7F00FF' }}>.</span>
                         </Link>
 
                         {/* Hamburger */}

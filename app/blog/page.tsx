@@ -37,7 +37,7 @@ export default async function BlogPage() {
         <div className="absolute top-0 right-0 w-[600px] h-[600px] rounded-full bg-[#7F00FF]/5 blur-[120px] pointer-events-none" />
 
         {/* ── HERO ────────────────────────────────────────────────── */}
-        <section className="pt-32 pb-10 lg:pb-12">
+        <section className="pt-20 lg:pt-20 pb-10 lg:pb-12">
           <span className="text-[0.65rem] font-bold tracking-[0.18em] uppercase text-[#7F00FF] mb-4 block">
             Beest Blog
           </span>

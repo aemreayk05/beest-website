@@ -2,7 +2,7 @@ import Link from 'next/link';
 
 export default function BlogCTA() {
     return (
-        <section className="my-20 p-8 md:p-16 rounded-[2rem] bg-gradient-to-br from-[#111111] to-[#1a1a1a] text-center md:text-left relative overflow-hidden group">
+        <section className="my-10 md:my-20 p-8 md:p-16 rounded-[2rem] bg-gradient-to-br from-[#111111] to-[#1a1a1a] text-center md:text-left relative overflow-hidden group">
             {/* Arkaplan Işık Efekti */}
             <div className="absolute top-[-50%] right-[-10%] w-[300px] h-[300px] rounded-full bg-[#7F00FF]/30 blur-[100px] pointer-events-none transition-transform duration-1000 group-hover:scale-150" />
             
