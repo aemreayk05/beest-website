@@ -1,7 +1,6 @@
 'use client';
 
 import dynamic from 'next/dynamic';
-import Image from 'next/image';
 import { ArrowDown } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
@@ -38,7 +37,7 @@ export default function Hero() {
     };
 
     // SSR'da animasyonun hemen başlamaması için default 6.0s beklet, sonra duruma göre karar ver.
-    const d = !mounted ? 6.0 : (isDesktop ? 6.0 : 1.5);
+    const d = !mounted ? 6.0 : (isDesktop ? 5.0 : 1.5);
 
     return (
         <section
@@ -60,7 +59,6 @@ export default function Hero() {
                     ) : (
                         <video
                             autoPlay loop muted playsInline
-                            poster="/media/hero_video_poster.jpg"
                             style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                         >
                             <source src="/media/hero_video.webm" type="video/webm" />
@@ -82,21 +80,24 @@ export default function Hero() {
                     paddingBottom: '6.5rem', // Butonların kaydır animasyonu ile çakışmaması için artırıldı
                 }}
             >
-                {/* ① Logo */}
+                {/* ① Logo — masaüstünde opacity+slide animasyonu; mobilde LCP için opacity:1 sabit */}
                 <motion.div
                     key={`logo-${d}`}
-                    initial={{ opacity: 0, y: 18 }}
-                    animate={{ opacity: 1, y: 0 }}
+                    initial={isDesktop ? { opacity: 0, y: 18 } : { y: 18 }}
+                    animate={isDesktop ? { opacity: 1, y: 0 } : { y: 0 }}
                     transition={{ delay: d, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
                     style={{ marginBottom: '1.5rem' }}
                 >
-                    <Image
+                    {/* SVG logo için düz img kullanıyoruz; Next/Image CSS resize uyarısını engeller. */}
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
                         src="/beest_logo.svg"
                         alt="Beest Logo"
                         width={220}
                         height={68}
                         style={{ width: 'clamp(200px, 20vw, 220px)', height: 'auto', display: 'block' }}
-                        priority
+                        decoding="async"
+                        fetchPriority="high"
                     />
                 </motion.div>
 

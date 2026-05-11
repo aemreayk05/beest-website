@@ -44,6 +44,7 @@ const PROJELER: ProjectData[] = [
 export default function Projects({ projects = [] }: { projects?: ProjectData[] }) {
     const sectionRef = useRef<HTMLElement>(null);
     const [progress, setProgress] = useState(0);
+    const [isDesktop, setIsDesktop] = useState(false);
 
     const displayProjects = projects && projects.length > 0 ? projects : PROJELER;
 
@@ -53,7 +54,9 @@ export default function Projects({ projects = [] }: { projects?: ProjectData[] }
         if (!el) return;
 
         // Performans Optimizasyonu: Masaüstü logici (>= 1024px) geçerli değilse döngüye girip hesaplama yapma
-        if (window.innerWidth < 1024) return;
+        const desktop = window.innerWidth >= 1024;
+        setIsDesktop(desktop);
+        if (!desktop) return;
 
         let rafId: number;
         let lastProgress = 0;
@@ -117,7 +120,7 @@ export default function Projects({ projects = [] }: { projects?: ProjectData[] }
                 */}
                 <div
                     className="flex flex-col lg:flex-row gap-6 lg:gap-10 px-6 lg:px-[10vw] items-center lg:w-max will-change-transform"
-                    style={typeof window !== 'undefined' && window.innerWidth >= 1024 ? transformStyle : {}}
+                    style={isDesktop ? transformStyle : undefined}
                 >
                     {displayProjects.map((project) => (
                         <ProjectCard
