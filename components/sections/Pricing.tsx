@@ -10,7 +10,7 @@ const packages: PackageType[] = [
         description: 'Dijital dünyada profesyonel bir başlangıç yapmak isteyen işletmeler için.',
         price: 'Başlangıç',
         pricingDetails: {
-            setupFee: '₺15.000',
+            setupFee: '₺23.000',
         },
         features: [
             'Kurumsal Web Sitesi Kurulumu (5 Sayfa)',
@@ -35,8 +35,8 @@ const packages: PackageType[] = [
         description: 'Web sitesini müşteri kazanan güçlü bir dijital kanala dönüştürmek isteyen işletmeler için.',
         price: 'Tavsiye Edilen',
         pricingDetails: {
-            setupFee: '₺25.000',
-            monthlyFee: '₺5.000',
+            setupFee: '₺44.000',
+            monthlyFee: '₺6.000',
             monthlyDesc: 'Aylık SEO Ödemesi',
         },
         features: [
@@ -63,8 +63,8 @@ const packages: PackageType[] = [
         description: 'Dijitalde sektör liderliği ve üst segment marka algısı hedefleyen işletmeler için tasarlanmıştır.',
         price: 'Profesyonel',
         pricingDetails: {
-            setupFee: '₺45.000',
-            monthlyFee: '₺10.000',
+            setupFee: '₺68.000',
+            monthlyFee: '₺12.000',
             monthlyDesc: 'İleri Seviye SEO',
         },
         features: [

@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X } from 'lucide-react';
 import { usePathname } from 'next/navigation';
@@ -18,52 +19,54 @@ const MENU_ITEMS = [
     { label: 'İletişim', href: '/#contact' },
 ];
 
-export default function MobileNavbar() {
+const DESKTOP_NAV_ITEMS = [
+    { label: 'Ana Sayfa', href: '/' },
+    { label: 'Hizmetler', href: '/#services' },
+    { label: 'Paketler', href: '/#pricing' },
+    { label: 'İletişim', href: '/#contact' },
+];
+
+function isMenuItemActive(pathname: string, href: string): boolean {
+    if (href === '/blog') {
+        return isBlogRoute(pathname);
+    }
+    return pathname === href;
+}
+
+export default function BlogNavbar() {
     const [isOpen, setIsOpen] = useState(false);
     const [scrolled, setScrolled] = useState(false);
     const pathname = usePathname();
-    const isAdmin = pathname.startsWith('/admin');
-    const isHomePage = pathname === '/';
 
-    // Scroll pozisyonunu izle — glass yoğunluğunu artır + ana sayfada gizle
     useEffect(() => {
         const handleScroll = () => setScrolled(window.scrollY > 40);
-        // Sayfa değişince sıfırla
         setScrolled(window.scrollY > 40);
         window.addEventListener('scroll', handleScroll, { passive: true });
         return () => window.removeEventListener('scroll', handleScroll);
     }, [pathname]);
 
-    // Sayfa değiştiğinde menüyü kapat
     useEffect(() => {
         setIsOpen(false);
     }, [pathname]);
 
-    // Menü açıkken scroll'u kilitle
     useEffect(() => {
         document.body.style.overflow = isOpen ? 'hidden' : 'auto';
         return () => { document.body.style.overflow = 'auto'; };
     }, [isOpen]);
 
-    if (isAdmin || isBlogRoute(pathname)) return null;
+    if (!isBlogRoute(pathname)) return null;
 
     return (
-        <div className="lg:hidden">
-            {/* ── Glass Navbar Bar ── */}
+        <>
             <motion.header
                 className="fixed top-0 left-0 w-full z-50"
                 initial={{ y: -80, opacity: 0 }}
-                animate={{
-                    y: isHomePage && !scrolled ? -80 : 0,
-                    opacity: isHomePage && !scrolled ? 0 : 1,
-                }}
+                animate={{ y: 0, opacity: 1 }}
                 transition={{ duration: 0.45, ease: [0.76, 0, 0.24, 1] }}
             >
-                {/* Glass strip */}
                 <div
                     className="relative overflow-hidden"
                     style={{
-                        /* Glass katmanı */
                         background: scrolled
                             ? 'rgba(243,243,243,0.72)'
                             : 'rgba(243,243,243,0.45)',
@@ -78,20 +81,43 @@ export default function MobileNavbar() {
                         transition: 'background 0.4s ease, border 0.4s ease, box-shadow 0.4s ease',
                     }}
                 >
-                    <div className="flex items-center justify-between px-4 h-[52px]">
-                        {/* Logo */}
-                        <Link
-                            href="/"
-                            className="font-black tracking-tight text-[#111111] text-lg leading-none select-none"
-                            style={{ letterSpacing: '-0.03em' }}
-                        >
-                            Beest<span style={{ color: '#7F00FF' }}>.</span>
+                    <div className="flex items-center justify-between px-4 lg:px-6 h-[52px] max-w-7xl mx-auto w-full">
+                        <Link href="/" className="flex items-center select-none" aria-label="Ana sayfa">
+                            <Image
+                                src="/favicon.svg"
+                                alt="Beest Studio"
+                                width={44}
+                                height={44}
+                                className="h-11 w-11"
+                                priority
+                            />
                         </Link>
 
-                        {/* Hamburger */}
+                        <nav
+                            className="hidden lg:flex items-center gap-6 xl:gap-8"
+                            aria-label="Blog navigasyonu"
+                        >
+                            {DESKTOP_NAV_ITEMS.map((item) => {
+                                const active = pathname === item.href;
+                                return (
+                                    <Link
+                                        key={item.href}
+                                        href={item.href}
+                                        className={`text-sm font-bold tracking-wide transition-colors duration-200 ${
+                                            active
+                                                ? 'text-[#7F00FF]'
+                                                : 'text-[#111111]/70 hover:text-[#7F00FF]'
+                                        }`}
+                                    >
+                                        {item.label}
+                                    </Link>
+                                );
+                            })}
+                        </nav>
+
                         <button
                             onClick={() => setIsOpen(true)}
-                            className="flex items-center justify-center w-9 h-9 rounded-xl transition-colors"
+                            className="lg:hidden flex items-center justify-center w-9 h-9 rounded-xl transition-colors"
                             style={{ color: '#111111' }}
                             aria-label="Menüyü Aç"
                         >
@@ -99,7 +125,6 @@ export default function MobileNavbar() {
                         </button>
                     </div>
 
-                    {/* Subtle purple glow line — bottom */}
                     <div
                         style={{
                             position: 'absolute',
@@ -115,7 +140,6 @@ export default function MobileNavbar() {
                 </div>
             </motion.header>
 
-            {/* ── Full-Screen Menu Overlay ── */}
             <AnimatePresence>
                 {isOpen && (
                     <motion.div
@@ -125,15 +149,13 @@ export default function MobileNavbar() {
                         transition={{ duration: 0.5, ease: [0.76, 0, 0.24, 1] }}
                         className="fixed inset-0 z-[60] bg-[#111111] text-white flex flex-col px-6 py-10"
                     >
-                        {/* Ambient glow */}
-                        <div
+                        <motion.div
                             className="pointer-events-none absolute -top-32 -right-32 w-80 h-80 rounded-full"
                             style={{
                                 background: 'radial-gradient(circle, rgba(127,0,255,0.18) 0%, transparent 70%)',
                             }}
                         />
 
-                        {/* Kapatma Butonu */}
                         <div className="flex justify-end items-center mb-16 relative z-10">
                             <button
                                 onClick={() => setIsOpen(false)}
@@ -144,53 +166,53 @@ export default function MobileNavbar() {
                             </button>
                         </div>
 
-                        {/* Menü Linkleri */}
                         <nav className="flex flex-col gap-7 flex-1 justify-center pb-20 relative z-10">
-                            {MENU_ITEMS.map((item, index) => (
-                                <motion.div
-                                    key={item.href}
-                                    initial={{ opacity: 0, x: -24 }}
-                                    animate={{ opacity: 1, x: 0 }}
-                                    transition={{ delay: 0.15 + index * 0.07, duration: 0.45, ease: [0.76, 0, 0.24, 1] }}
-                                >
-                                    <Link
-                                        href={item.href}
-                                        onClick={(e) => {
-                                            setIsOpen(false);
-                                            if (item.href.includes('#') && pathname === '/') {
-                                                e.preventDefault();
-                                                const targetId = item.href.split('#')[1];
-                                                const element = document.getElementById(targetId);
-                                                if (element) {
-                                                    setTimeout(() => {
-                                                        const bodyRect = document.body.getBoundingClientRect().top;
-                                                        const elementRect = element.getBoundingClientRect().top;
-                                                        window.scrollTo({
-                                                            top: elementRect - bodyRect,
-                                                            behavior: 'smooth',
-                                                        });
-                                                    }, 400);
-                                                }
-                                            }
-                                        }}
-                                        className={`group flex items-center gap-3 text-3xl font-black tracking-tight transition-colors duration-200 ${
-                                            pathname === item.href ? 'text-[#7F00FF]' : 'text-white hover:text-[#7F00FF]'
-                                        }`}
+                            {MENU_ITEMS.map((item, index) => {
+                                const active = isMenuItemActive(pathname, item.href);
+                                return (
+                                    <motion.div
+                                        key={item.href}
+                                        initial={{ opacity: 0, x: -24 }}
+                                        animate={{ opacity: 1, x: 0 }}
+                                        transition={{ delay: 0.15 + index * 0.07, duration: 0.45, ease: [0.76, 0, 0.24, 1] }}
                                     >
-                                        {/* Accent dot */}
-                                        <span
-                                            className="block w-1.5 h-1.5 rounded-full flex-shrink-0 transition-all duration-300"
-                                            style={{
-                                                background: pathname === item.href ? '#7F00FF' : 'rgba(255,255,255,0.2)',
+                                        <Link
+                                            href={item.href}
+                                            onClick={(e) => {
+                                                setIsOpen(false);
+                                                if (item.href.includes('#') && pathname === '/') {
+                                                    e.preventDefault();
+                                                    const targetId = item.href.split('#')[1];
+                                                    const element = document.getElementById(targetId);
+                                                    if (element) {
+                                                        setTimeout(() => {
+                                                            const bodyRect = document.body.getBoundingClientRect().top;
+                                                            const elementRect = element.getBoundingClientRect().top;
+                                                            window.scrollTo({
+                                                                top: elementRect - bodyRect,
+                                                                behavior: 'smooth',
+                                                            });
+                                                        }, 400);
+                                                    }
+                                                }
                                             }}
-                                        />
-                                        {item.label}
-                                    </Link>
-                                </motion.div>
-                            ))}
+                                            className={`group flex items-center gap-3 text-3xl font-black tracking-tight transition-colors duration-200 ${
+                                                active ? 'text-[#7F00FF]' : 'text-white hover:text-[#7F00FF]'
+                                            }`}
+                                        >
+                                            <span
+                                                className="block w-1.5 h-1.5 rounded-full flex-shrink-0 transition-all duration-300"
+                                                style={{
+                                                    background: active ? '#7F00FF' : 'rgba(255,255,255,0.2)',
+                                                }}
+                                            />
+                                            {item.label}
+                                        </Link>
+                                    </motion.div>
+                                );
+                            })}
                         </nav>
 
-                        {/* Alt Bilgi */}
                         <motion.div
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
@@ -208,6 +230,6 @@ export default function MobileNavbar() {
                     </motion.div>
                 )}
             </AnimatePresence>
-        </div>
+        </>
     );
 }

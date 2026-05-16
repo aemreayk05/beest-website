@@ -1,12 +1,33 @@
 'use client';
 
 import { Instagram, Linkedin, Check } from 'lucide-react';
+import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+
+function WhatsAppIcon({ size = 24 }: { size?: number }) {
+    return (
+        <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width={size}
+            height={size}
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth={1.5}
+            strokeLinecap="round"
+            strokeLinejoin="round"
+        >
+            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z" />
+            <path d="M11.996 21.999c-1.637 0-3.238-.432-4.646-1.25L2.5 21.5l.771-4.807A9.957 9.957 0 0 1 2 11.996C2 6.48 6.482 2 12.004 2 17.52 2 22 6.48 22 11.996c0 5.518-4.482 9.998-10.004 10.003z" />
+        </svg>
+    );
+}
 
 export default function Contact() {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [isSuccess, setIsSuccess] = useState(false);
+    const [submitError, setSubmitError] = useState<string | null>(null);
     const successHeadingRef = useRef<HTMLHeadingElement>(null);
 
     useEffect(() => {
@@ -17,6 +38,7 @@ export default function Contact() {
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setIsSubmitting(true);
+        setSubmitError(null);
 
         const formData = new FormData(e.currentTarget);
         const name = formData.get('name') as string;
@@ -41,17 +63,30 @@ export default function Contact() {
 
             if (response.ok) {
                 setIsSuccess(true);
+                setSubmitError(null);
                 (e.target as HTMLFormElement).reset();
                 setTimeout(() => setIsSuccess(false), 4000);
+            } else {
+                const body = await response.json().catch(() => ({}));
+                setSubmitError(
+                    typeof body.message === 'string'
+                        ? body.message
+                        : 'Gönderim başarısız. Lütfen tekrar deneyin.'
+                );
             }
         } catch (error) {
             console.error('Ağ hatası:', error);
+            setSubmitError(
+                'Bağlantı hatası. Lütfen tekrar deneyin veya WhatsApp üzerinden yazın.'
+            );
         } finally {
             setIsSubmitting(false);
         }
     };
 
     const whatsappHref = 'https://wa.me/905373748454';
+    const instagramHref = 'https://www.instagram.com/beeststudio/';
+    const linkedinHref = 'https://www.linkedin.com/company/beest-studio/';
 
     return (
         <section
@@ -129,29 +164,33 @@ export default function Contact() {
                                     >
                                         +90 537 374 84 54
                                     </a>
-                                    <a
-                                        href={whatsappHref}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="inline-block mt-3 text-sm font-semibold text-[#7F00FF] hover:text-[#6200cc] transition-colors"
-                                    >
-                                        WhatsApp ile yaz
-                                    </a>
-
                                     <div className="flex items-center gap-5 mt-5 pt-4 border-t border-black/5">
                                         <a
-                                            href="#"
+                                            href={instagramHref}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
                                             aria-label="Instagram"
                                             className="text-[#111111] hover:text-[#7F00FF] transition-colors"
                                         >
                                             <Instagram size={22} strokeWidth={1.5} />
                                         </a>
                                         <a
-                                            href="#"
+                                            href={linkedinHref}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
                                             aria-label="LinkedIn"
                                             className="text-[#111111] hover:text-[#7F00FF] transition-colors"
                                         >
                                             <Linkedin size={22} strokeWidth={1.5} />
+                                        </a>
+                                        <a
+                                            href={whatsappHref}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            aria-label="WhatsApp"
+                                            className="text-[#111111] hover:text-[#7F00FF] transition-colors"
+                                        >
+                                            <WhatsAppIcon size={22} />
                                         </a>
                                     </div>
                                 </div>
@@ -209,6 +248,12 @@ export default function Contact() {
                                             />
                                         </div>
 
+                                        {submitError && (
+                                            <p role="alert" className="text-sm text-red-600/90 font-medium" aria-live="polite">
+                                                {submitError}
+                                            </p>
+                                        )}
+
                                         <button
                                             type="submit"
                                             disabled={isSubmitting}
@@ -225,7 +270,11 @@ export default function Contact() {
                                             )}
                                         </button>
                                         <p className="text-[0.65rem] text-black/40 leading-snug">
-                                            Verileriniz gizlilik politikamıza uygun olarak işlenmektedir.
+                                            Verileriniz{' '}
+                                            <Link href="/gizlilik" className="underline hover:text-[#7F00FF] transition-colors">
+                                                gizlilik politikamıza
+                                            </Link>{' '}
+                                            uygun olarak işlenmektedir.
                                         </p>
                                     </form>
                                 </div>
@@ -270,14 +319,18 @@ export default function Contact() {
 
                     <div className="flex items-center gap-6 mt-12">
                         <a
-                            href="#"
+                            href={instagramHref}
+                            target="_blank"
+                            rel="noopener noreferrer"
                             aria-label="Instagram"
                             className="text-[#111111] hover:text-[#7F00FF] transition-colors duration-300 hover:-translate-y-1 transform"
                         >
                             <Instagram size={24} strokeWidth={1.5} />
                         </a>
                         <a
-                            href="#"
+                            href={linkedinHref}
+                            target="_blank"
+                            rel="noopener noreferrer"
                             aria-label="LinkedIn"
                             className="text-[#111111] hover:text-[#7F00FF] transition-colors duration-300 hover:-translate-y-1 transform"
                         >
@@ -290,20 +343,7 @@ export default function Contact() {
                             aria-label="WhatsApp"
                             className="text-[#111111] hover:text-[#7F00FF] transition-colors duration-300 hover:-translate-y-1 transform"
                         >
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                width="24"
-                                height="24"
-                                viewBox="0 0 24 24"
-                                fill="none"
-                                stroke="currentColor"
-                                strokeWidth="1.5"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                            >
-                                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z" />
-                                <path d="M11.996 21.999c-1.637 0-3.238-.432-4.646-1.25L2.5 21.5l.771-4.807A9.957 9.957 0 0 1 2 11.996C2 6.48 6.482 2 12.004 2 17.52 2 22 6.48 22 11.996c0 5.518-4.482 9.998-10.004 10.003z" />
-                            </svg>
+                            <WhatsAppIcon size={24} />
                         </a>
                     </div>
                 </div>
@@ -383,6 +423,12 @@ export default function Contact() {
                                     />
                                 </div>
 
+                                {submitError && (
+                                    <p role="alert" className="text-sm text-red-600/90 font-medium" aria-live="polite">
+                                        {submitError}
+                                    </p>
+                                )}
+
                                 <button
                                     type="submit"
                                     disabled={isSubmitting}
@@ -399,7 +445,11 @@ export default function Contact() {
                                     )}
                                 </button>
                                 <p className="text-xs text-black/40 mt-2">
-                                    Verileriniz gizlilik politikamıza uygun olarak işlenmektedir.
+                                    Verileriniz{' '}
+                                    <Link href="/gizlilik" className="underline hover:text-[#7F00FF] transition-colors">
+                                        gizlilik politikamıza
+                                    </Link>{' '}
+                                    uygun olarak işlenmektedir.
                                 </p>
                             </motion.form>
                         )}

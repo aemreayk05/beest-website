@@ -80,6 +80,10 @@ export default function Hero() {
                     paddingBottom: '6.5rem', // Butonların kaydır animasyonu ile çakışmaması için artırıldı
                 }}
             >
+                <h1 className="sr-only">
+                    Beest Studio — Premium dijital deneyimler, web tasarımı ve SEO
+                </h1>
+
                 {/* ① Logo — masaüstünde opacity+slide animasyonu; mobilde LCP için opacity:1 sabit */}
                 <motion.div
                     key={`logo-${d}`}

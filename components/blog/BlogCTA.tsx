@@ -6,7 +6,7 @@ export default function BlogCTA() {
             {/* Arkaplan Işık Efekti */}
             <div className="absolute top-[-50%] right-[-10%] w-[300px] h-[300px] rounded-full bg-[#7F00FF]/30 blur-[100px] pointer-events-none transition-transform duration-1000 group-hover:scale-150" />
             
-            <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-10">
+            <div className="relative z-10 flex flex-col items-center md:items-start gap-8 md:gap-10">
                 <div className="max-w-xl">
                     <span className="inline-flex items-center gap-2 border border-white/10 rounded-full px-3 py-1 bg-white/5 mb-6">
                         <div className="w-1.5 h-1.5 rounded-full bg-[#7F00FF] shadow-[0_0_8px_#7F00FF] animate-pulse" />

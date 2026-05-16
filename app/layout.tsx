@@ -3,8 +3,10 @@ import "./globals.css";
 import SmoothScroll from "@/components/SmoothScroll";
 import Footer from "@/components/layout/Footer";
 import LoadingScreen from "@/components/layout/LoadingScreen";
+import BlogNavbar from "@/components/layout/BlogNavbar";
 import MobileNavbar from "@/components/layout/MobileNavbar";
 import DesktopBlogButton from "@/components/layout/DesktopBlogButton";
+import LaunchCampaignRoot from "@/components/marketing/LaunchCampaignRoot";
 export const metadata: Metadata = {
   metadataBase: new URL('https://beeststudio.com'),
   title: "Beest Studio — Premium Dijital Deneyimler",
@@ -51,7 +53,7 @@ const structuredData = {
   },
   "contactPoint": {
     "@type": "ContactPoint",
-    "telephone": "+90-212-000-00-00",
+    "telephone": "+90-537-374-84-54",
     "contactType": "customer service",
     "email": "hello@beeststudio.com"
   }
@@ -71,9 +73,11 @@ export default function RootLayout({
         />
       </head>
       <body className="bg-dirty-white text-jet-black antialiased flex flex-col min-h-screen">
+        <BlogNavbar />
         <MobileNavbar />
         <DesktopBlogButton />
         <LoadingScreen />
+        <LaunchCampaignRoot />
         <SmoothScroll>
           <div className="flex-grow">
             {children}

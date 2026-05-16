@@ -26,18 +26,18 @@ export default function Footer() {
                     <div className="mt-4 h-px w-24 bg-gradient-to-r from-transparent via-[#7F00FF]/50 to-transparent" />
 
                     <nav className="mt-4 flex items-center justify-center gap-5 text-[0.78rem] font-semibold text-black/60">
-                        <a
-                            href="#"
+                        <Link
+                            href="/gizlilik"
                             className="min-h-10 inline-flex items-center hover:text-[#7F00FF] transition-colors duration-300"
                         >
                             Gizlilik Politikası
-                        </a>
-                        <a
-                            href="#"
+                        </Link>
+                        <Link
+                            href="/kullanim-sartlari"
                             className="min-h-10 inline-flex items-center hover:text-[#7F00FF] transition-colors duration-300"
                         >
                             Kullanım Şartları
-                        </a>
+                        </Link>
                     </nav>
 
                     <p className="mt-1 text-[0.72rem] font-semibold tracking-wide text-black/35">
@@ -74,8 +74,8 @@ export default function Footer() {
                 <div className="max-w-7xl mx-auto w-full flex flex-col md:flex-row items-center justify-between pt-8 border-t border-black/10 text-sm text-black/40 font-semibold text-center md:text-left">
                     <p>&copy; {new Date().getFullYear()} Beest Studio. Tüm hakları saklıdır.</p>
                     <div className="flex items-center justify-center gap-6 mt-4 md:mt-0">
-                        <a href="#" className="hover:text-[#7F00FF] transition-colors duration-300">Gizlilik Politikası</a>
-                        <a href="#" className="hover:text-[#7F00FF] transition-colors duration-300">Kullanım Şartları</a>
+                        <Link href="/gizlilik" className="hover:text-[#7F00FF] transition-colors duration-300">Gizlilik Politikası</Link>
+                        <Link href="/kullanim-sartlari" className="hover:text-[#7F00FF] transition-colors duration-300">Kullanım Şartları</Link>
                     </div>
                 </div>
             </div>

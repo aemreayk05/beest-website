@@ -2,12 +2,12 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { isBlogRoute } from '@/lib/isBlogRoute';
 
 export default function DesktopBlogButton() {
     const pathname = usePathname();
 
-    // Admin panelinde ve /blog sayfalarında gösterme
-    if (pathname.startsWith('/admin') || pathname.startsWith('/blog')) return null;
+    if (pathname.startsWith('/admin') || isBlogRoute(pathname)) return null;
 
     return (
         /* Hamburger ile aynı teknik:

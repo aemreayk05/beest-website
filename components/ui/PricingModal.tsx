@@ -42,6 +42,12 @@ export default function PricingModal({ isOpen, onClose, pkg, onNext, onPrev }: P
         };
     }, [isOpen]);
 
+    useEffect(() => {
+        window.dispatchEvent(
+            new CustomEvent('beest:pricing-modal', { detail: { open: isOpen } })
+        );
+    }, [isOpen]);
+
     // Handle ESC and Arrow keys
     useEffect(() => {
         const handleKeyDown = (e: KeyboardEvent) => {
@@ -55,15 +61,18 @@ export default function PricingModal({ isOpen, onClose, pkg, onNext, onPrev }: P
 
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [isSuccess, setIsSuccess] = useState(false);
+    const [submitError, setSubmitError] = useState<string | null>(null);
 
     // Reset success state when package changes
     useEffect(() => {
         setIsSuccess(false);
+        setSubmitError(null);
     }, [pkg]);
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setIsSubmitting(true);
+        setSubmitError(null);
 
         const formData = new FormData(e.currentTarget);
         const data = {
@@ -86,15 +95,24 @@ export default function PricingModal({ isOpen, onClose, pkg, onNext, onPrev }: P
 
             if (response.ok) {
                 setIsSuccess(true);
+                setSubmitError(null);
                 setTimeout(() => {
                     setIsSuccess(false);
                     onClose();
                 }, 3000);
             } else {
-                console.error('Form gönderim hatası');
+                const body = await response.json().catch(() => ({}));
+                setSubmitError(
+                    typeof body.message === 'string'
+                        ? body.message
+                        : 'Gönderim başarısız. Lütfen tekrar deneyin.'
+                );
             }
         } catch (error) {
             console.error('Ağ hatası:', error);
+            setSubmitError(
+                'Bağlantı hatası. Lütfen tekrar deneyin veya WhatsApp üzerinden yazın.'
+            );
         } finally {
             setIsSubmitting(false);
         }
@@ -296,6 +314,12 @@ export default function PricingModal({ isOpen, onClose, pkg, onNext, onPrev }: P
                                             className="w-full bg-transparent border-0 border-b border-black/20 pb-3 text-lg md:text-xl text-[#111111] font-medium placeholder-black/30 focus:outline-none focus:ring-0 focus:border-[#7F00FF] transition-colors duration-300 resize-none"
                                         ></textarea>
                                     </div>
+                                    {submitError && (
+                                        <p role="alert" className="text-sm text-red-600/90 font-medium" aria-live="polite">
+                                            {submitError}
+                                        </p>
+                                    )}
+
                                     <button
                                         type="submit"
                                         disabled={isSubmitting}

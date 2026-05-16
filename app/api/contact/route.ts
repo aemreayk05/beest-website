@@ -3,6 +3,13 @@ import nodemailer from 'nodemailer';
 
 export async function POST(request: Request) {
     try {
+        if (!process.env.SMTP_HOST || !process.env.SMTP_USER || !process.env.SMTP_PASS) {
+            return NextResponse.json(
+                { message: 'E-posta servisi yapılandırılmamış. Lütfen daha sonra tekrar deneyin.' },
+                { status: 503 }
+            );
+        }
+
         // CORS Origin Check (Basic Security)
         // Note: Next.js API routes are public by default, but we can verify origin if needed.
         // Vercel'de veya localde çalışırken izin verilen origin'leri kontrol edebilirsiniz

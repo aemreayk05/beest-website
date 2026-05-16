@@ -52,18 +52,15 @@ export default function LoadingScreen() {
                 }`}
         >
             <div className="flex flex-col items-center">
-                {/* Logo / Marka (Optik Ortalama için çok hafif sola kaydırıldı) */}
                 <div className="mb-4 translate-y-3 flex justify-center items-center w-full">
-                    <div className="-translate-x-2 md:-translate-x-3">
-                        <Image
-                            src="/beest_logo_white.svg"
-                            alt="Beest Studio"
-                            width={180}
-                            height={55}
-                            className="w-32 md:w-40 h-auto opacity-90"
-                            priority
-                        />
-                    </div>
+                    <Image
+                        src="/beest_logo_white.svg"
+                        alt="Beest Studio"
+                        width={180}
+                        height={55}
+                        className="w-32 md:w-40 h-auto opacity-90"
+                        priority
+                    />
                 </div>
 
                 {/* Progress Yüzdesi */}
