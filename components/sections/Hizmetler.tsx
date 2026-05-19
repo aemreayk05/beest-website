@@ -3,6 +3,7 @@
 import { useRef, useState, useEffect } from 'react';
 import Image from 'next/image';
 import { Check } from 'lucide-react';
+import { SITE_SECTIONS } from '@/lib/siteSections';
 
 // ─── Veri ─────────────────────────────────────────────────────────────────────
 const HIZMETLER = [
@@ -117,7 +118,7 @@ export default function Hizmetler({ services = [] }: { services?: ServiceData[] 
 
     return (
         <section
-            id="services"
+            id={SITE_SECTIONS.hizmetler}
             ref={containerRef}
             style={{ height: '200vh' }}
             className="relative bg-[#F3F3F3] max-lg:!h-auto max-lg:!mt-4"

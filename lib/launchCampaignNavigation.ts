@@ -1,4 +1,6 @@
-export type LaunchCampaignSection = 'pricing' | 'contact';
+import type { LaunchCampaignSection } from '@/lib/siteSections';
+
+export type { LaunchCampaignSection } from '@/lib/siteSections';
 
 export function scrollToHomeSection(section: LaunchCampaignSection): void {
     if (typeof window === 'undefined') return;
@@ -13,7 +15,7 @@ export function scrollToHomeSection(section: LaunchCampaignSection): void {
     }
 }
 
-/** Ana sayfadaki #pricing veya #contact bölümüne git */
+/** Ana sayfadaki #paketler veya #iletisim bölümüne git */
 export function goToHomeSection(
     section: LaunchCampaignSection,
     pathname: string,

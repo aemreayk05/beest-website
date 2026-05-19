@@ -3,6 +3,7 @@
 import { useRef, useEffect, useState } from 'react';
 import { motion, useScroll, useTransform, MotionValue, AnimatePresence } from 'framer-motion';
 import { Map, BarChart3, Target, ShieldCheck, BrainCircuit, Star, Zap, Activity, LucideProps } from 'lucide-react';
+import { SITE_SECTIONS } from '@/lib/siteSections';
 
 export type WhyUsData = {
     _id?: string;
@@ -515,7 +516,7 @@ export default function NedenBiz({ reasons = [] }: { reasons?: WhyUsData[] }) {
     const displayReasons = reasons && reasons.length > 0 ? reasons : veri;
 
     return (
-        <section id="neden-biz" className="w-full bg-[#F3F3F3]">
+        <section id={SITE_SECTIONS.nedenBiz} className="w-full bg-[#F3F3F3]">
             <div className="hidden lg:block">
                 <DesktopNedenBiz reasons={displayReasons} />
             </div>

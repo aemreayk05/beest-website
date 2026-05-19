@@ -6,16 +6,17 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import { isBlogRoute } from '@/lib/isBlogRoute';
+import { homeHash, SITE_SECTIONS } from '@/lib/siteSections';
 
 const MENU_ITEMS = [
     { label: 'Ana Sayfa', href: '/' },
-    { label: 'Hizmetler', href: '/#services' },
-    { label: 'Neden Biz?', href: '/#neden-biz' },
-    { label: 'Çalışmalarımız', href: '/#projects' },
+    { label: 'Hizmetler', href: homeHash(SITE_SECTIONS.hizmetler) },
+    { label: 'Neden Biz?', href: homeHash(SITE_SECTIONS.nedenBiz) },
+    { label: 'Çalışmalarımız', href: homeHash(SITE_SECTIONS.projeler) },
     { label: 'Çalışma Süreci', href: '/surec' },
-    { label: 'Paketler', href: '/#pricing' },
+    { label: 'Paketler', href: homeHash(SITE_SECTIONS.paketler) },
     { label: 'Blog', href: '/blog' },
-    { label: 'İletişim', href: '/#contact' },
+    { label: 'İletişim', href: homeHash(SITE_SECTIONS.iletisim) },
 ];
 
 export default function MobileNavbar() {
@@ -203,7 +204,7 @@ export default function MobileNavbar() {
                             >
                                 hello@beeststudio.com
                             </a>
-                            <span className="text-xs text-white/20 font-mono">© 2025</span>
+                            <span className="text-xs text-white/20 font-mono">© 2026</span>
                         </motion.div>
                     </motion.div>
                 )}

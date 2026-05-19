@@ -6,6 +6,7 @@ import LaunchCampaignModal from '@/components/marketing/LaunchCampaignModal';
 import { useLaunchCampaignTrigger } from '@/hooks/useLaunchCampaignTrigger';
 import { isLaunchCampaignRoute } from '@/lib/isLaunchCampaignRoute';
 import { goToHomeSection } from '@/lib/launchCampaignNavigation';
+import { SITE_SECTIONS } from '@/lib/siteSections';
 import { trackLaunchCampaignEvent } from '@/lib/launchCampaignAnalytics';
 
 export default function LaunchCampaignRoot() {
@@ -52,13 +53,13 @@ export default function LaunchCampaignRoot() {
     const handlePrimaryCta = useCallback(() => {
         trackLaunchCampaignEvent('launch_modal_primary_cta_clicked');
         setIsOpen(false);
-        goToHomeSection('pricing', pathname, router.push);
+        goToHomeSection(SITE_SECTIONS.paketler, pathname, router.push);
     }, [pathname, router]);
 
     const handleSecondaryCta = useCallback(() => {
         trackLaunchCampaignEvent('launch_modal_secondary_cta_clicked');
         setIsOpen(false);
-        goToHomeSection('contact', pathname, router.push);
+        goToHomeSection(SITE_SECTIONS.iletisim, pathname, router.push);
     }, [pathname, router]);
 
     if (!mounted || !routeAllowed) return null;

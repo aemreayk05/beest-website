@@ -7,23 +7,24 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import { isBlogRoute } from '@/lib/isBlogRoute';
+import { homeHash, SITE_SECTIONS } from '@/lib/siteSections';
 
 const MENU_ITEMS = [
     { label: 'Ana Sayfa', href: '/' },
-    { label: 'Hizmetler', href: '/#services' },
-    { label: 'Neden Biz?', href: '/#neden-biz' },
-    { label: 'Çalışmalarımız', href: '/#projects' },
+    { label: 'Hizmetler', href: homeHash(SITE_SECTIONS.hizmetler) },
+    { label: 'Neden Biz?', href: homeHash(SITE_SECTIONS.nedenBiz) },
+    { label: 'Çalışmalarımız', href: homeHash(SITE_SECTIONS.projeler) },
     { label: 'Çalışma Süreci', href: '/surec' },
-    { label: 'Paketler', href: '/#pricing' },
+    { label: 'Paketler', href: homeHash(SITE_SECTIONS.paketler) },
     { label: 'Blog', href: '/blog' },
-    { label: 'İletişim', href: '/#contact' },
+    { label: 'İletişim', href: homeHash(SITE_SECTIONS.iletisim) },
 ];
 
 const DESKTOP_NAV_ITEMS = [
     { label: 'Ana Sayfa', href: '/' },
-    { label: 'Hizmetler', href: '/#services' },
-    { label: 'Paketler', href: '/#pricing' },
-    { label: 'İletişim', href: '/#contact' },
+    { label: 'Hizmetler', href: homeHash(SITE_SECTIONS.hizmetler) },
+    { label: 'Paketler', href: homeHash(SITE_SECTIONS.paketler) },
+    { label: 'İletişim', href: homeHash(SITE_SECTIONS.iletisim) },
 ];
 
 function isMenuItemActive(pathname: string, href: string): boolean {

@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { motion } from 'framer-motion';
+import { homeHash, SITE_SECTIONS } from '@/lib/siteSections';
 import { Layers, MonitorSmartphone, Award, Tag, Mail, ArrowRight } from 'lucide-react';
 
 const CARDS = [
@@ -27,7 +28,7 @@ const CARDS = [
         title: 'Neden Biz?',
         description: 'Fark yaratan yaklaşımımız.',
         icon: Award,
-        href: '/#neden-biz',
+        href: homeHash(SITE_SECTIONS.nedenBiz),
         bgColor: 'bg-white',
         textColor: 'text-[#111111]',
         iconColor: 'text-[#7F00FF]',

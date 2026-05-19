@@ -4,6 +4,7 @@ import dynamic from 'next/dynamic';
 import { ArrowDown } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import { SITE_SECTIONS } from '@/lib/siteSections';
 
 const Spline = dynamic(() => import('@splinetool/react-spline'), {
     ssr: false,
@@ -111,30 +112,17 @@ export default function Hero() {
                     initial={{ opacity: 0, y: 16 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: d + 0.75, duration: 0.65, ease: [0.22, 1, 0.36, 1] }}
-                    style={{
-                        display: 'flex',
-                        flexWrap: 'wrap',
-                        gap: '0.875rem',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        padding: '0 1.5rem',
-                    }}
+                    className="box-border flex w-full max-w-full flex-wrap items-center justify-center gap-3.5 px-6 max-[400px]:flex-nowrap max-[400px]:gap-[clamp(0.625rem,3vw,0.875rem)] max-[400px]:px-[clamp(0.5rem,3vw,1.25rem)]"
                 >
                     <a
-                        href="#projects"
-                        onClick={(e) => handleScroll(e, 'projects')}
+                        href={`#${SITE_SECTIONS.projeler}`}
+                        onClick={(e) => handleScroll(e, SITE_SECTIONS.projeler)}
+                        className="inline-block whitespace-nowrap rounded-full py-3.5 px-8 text-center text-sm font-semibold tracking-wide no-underline max-[400px]:min-w-0 max-[400px]:shrink max-[400px]:py-[clamp(0.625rem,2.25vw,0.875rem)] max-[400px]:px-[clamp(0.75rem,5vw,1.375rem)] max-[400px]:text-[clamp(0.6875rem,3.2vw,0.875rem)]"
                         style={{
-                            padding: '0.875rem 2rem',
-                            borderRadius: '9999px',
                             background: '#7F00FF',
                             color: '#ffffff',
-                            fontWeight: 600,
-                            fontSize: '0.875rem',
-                            letterSpacing: '0.04em',
-                            textDecoration: 'none',
                             boxShadow: '0 8px 24px -8px rgba(127,0,255,0.4)',
                             transition: 'transform 0.2s ease, box-shadow 0.2s ease',
-                            display: 'inline-block',
                         }}
                         aria-label="Projelerimizi görüntüle"
                         onMouseEnter={(e) => {
@@ -149,19 +137,11 @@ export default function Hero() {
                         Çalışmalarımız
                     </a>
                     <a
-                        href="#contact"
-                        onClick={(e) => handleScroll(e, 'contact')}
+                        href={`#${SITE_SECTIONS.iletisim}`}
+                        onClick={(e) => handleScroll(e, SITE_SECTIONS.iletisim)}
+                        className="inline-block whitespace-nowrap rounded-full border border-[rgba(17,17,17,0.2)] py-3.5 px-8 text-center text-sm font-semibold tracking-wide text-[#111111] no-underline max-[400px]:min-w-0 max-[400px]:shrink max-[400px]:py-[clamp(0.625rem,2.25vw,0.875rem)] max-[400px]:px-[clamp(0.75rem,5vw,1.375rem)] max-[400px]:text-[clamp(0.6875rem,3.2vw,0.875rem)]"
                         style={{
-                            padding: '0.875rem 2rem',
-                            borderRadius: '9999px',
-                            border: '1px solid rgba(17,17,17,0.2)',
-                            color: '#111111',
-                            fontWeight: 600,
-                            fontSize: '0.875rem',
-                            letterSpacing: '0.04em',
-                            textDecoration: 'none',
                             transition: 'border-color 0.2s ease, color 0.2s ease',
-                            display: 'inline-block',
                         }}
                         aria-label="Bize ulaşın"
                         onMouseEnter={(e) => {
@@ -184,7 +164,7 @@ export default function Hero() {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: d + 1.5, duration: 0.8 }}
-                onClick={(e) => handleScroll(e, 'services')}
+                onClick={(e) => handleScroll(e, SITE_SECTIONS.hizmetler)}
                 aria-label="Hizmetlere kaydır"
                 style={{
                     position: 'absolute',

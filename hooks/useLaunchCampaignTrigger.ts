@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useCallback } from 'react';
 import { usePathname } from 'next/navigation';
+import { SITE_SECTIONS } from '@/lib/siteSections';
 
 const OPEN_DELAY_MS = 1000;
 const SCROLL_FALLBACK_THRESHOLD = 0.45;
@@ -46,7 +47,7 @@ export function useLaunchCampaignTrigger({ enabled, onTrigger }: Options) {
     useEffect(() => {
         if (!enabled) return;
 
-        const pricingEl = document.getElementById('pricing');
+        const pricingEl = document.getElementById(SITE_SECTIONS.paketler);
         let observer: IntersectionObserver | null = null;
         let fallbackTimer: number | null = null;
 

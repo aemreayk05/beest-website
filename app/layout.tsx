@@ -9,6 +9,14 @@ import DesktopBlogButton from "@/components/layout/DesktopBlogButton";
 import LaunchCampaignRoot from "@/components/marketing/LaunchCampaignRoot";
 export const metadata: Metadata = {
   metadataBase: new URL('https://beeststudio.com'),
+  icons: {
+    icon: [
+      { url: '/favicon.ico', sizes: 'any' },
+      { url: '/favicon.svg', type: 'image/svg+xml' },
+    ],
+    shortcut: '/favicon.ico',
+    apple: '/favicon.ico',
+  },
   title: "Beest Studio — Premium Dijital Deneyimler",
   description:
     "İsviçre stili hassasiyetle strateji, marka, web tasarımı ve geliştirme alanlarında üst düzey dijital deneyimler üretiyoruz.",

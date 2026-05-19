@@ -2,6 +2,7 @@
 
 import { useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
+import { SITE_SECTIONS } from '@/lib/siteSections';
 
 // ─── Veri ─────────────────────────────────────────────────────────────────────
 const ADIMLAR = [
@@ -348,7 +349,7 @@ export default function CalismaGecisi() {
 
     return (
         <section
-            id="process"
+            id={SITE_SECTIONS.surec}
             style={{
                 width: '100%',
                 padding: '8rem 1.5rem',

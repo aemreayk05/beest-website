@@ -3,6 +3,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Check } from 'lucide-react';
 import PricingModal, { PackageType } from '../ui/PricingModal';
+import { SITE_SECTIONS } from '@/lib/siteSections';
 
 const packages: PackageType[] = [
     {
@@ -198,7 +199,7 @@ export default function Pricing() {
 
     return (
         <section
-            id="pricing"
+            id={SITE_SECTIONS.paketler}
             style={{
                 width: '100%',
                 padding: '8rem 1.5rem',

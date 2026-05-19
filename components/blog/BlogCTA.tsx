@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { homeHash, SITE_SECTIONS } from '@/lib/siteSections';
 
 export default function BlogCTA() {
     return (
@@ -22,13 +23,13 @@ export default function BlogCTA() {
                 
                 <div className="flex flex-col sm:flex-row gap-4 shrink-0">
                     <Link
-                        href="/#contact"
+                        href={homeHash(SITE_SECTIONS.iletisim)}
                         className="px-8 py-4 rounded-full bg-[#7F00FF] text-white font-bold text-sm tracking-widest uppercase hover:bg-[#6a00d6] hover:scale-105 transition-all duration-300 shadow-[0_10px_30px_-10px_rgba(127,0,255,0.6)] text-center"
                     >
                         Teklif Al
                     </Link>
                     <Link
-                        href="/#services"
+                        href={homeHash(SITE_SECTIONS.hizmetler)}
                         className="px-8 py-4 rounded-full bg-white/10 text-white font-bold text-sm tracking-widest uppercase hover:bg-white/20 hover:scale-105 transition-all duration-300 text-center"
                     >
                         Hizmetleri İncele

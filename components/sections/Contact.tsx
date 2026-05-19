@@ -4,6 +4,7 @@ import { Instagram, Linkedin, Check } from 'lucide-react';
 import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { SITE_SECTIONS } from '@/lib/siteSections';
 
 function WhatsAppIcon({ size = 24 }: { size?: number }) {
     return (
@@ -90,7 +91,7 @@ export default function Contact() {
 
     return (
         <section
-            id="contact"
+            id={SITE_SECTIONS.iletisim}
             className="w-full bg-[#F3F3F3] py-20 lg:py-40 relative overflow-hidden max-lg:!pt-6 max-lg:!pb-8 max-lg:!mt-0"
             aria-label="İletişim"
         >

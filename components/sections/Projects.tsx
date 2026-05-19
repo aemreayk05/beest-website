@@ -3,6 +3,7 @@
 import { useRef, useState, useEffect } from 'react';
 import Link from 'next/link';
 import ProjectCard from '../ui/ProjectCard';
+import { SITE_SECTIONS } from '@/lib/siteSections';
 
 export type ProjectData = {
     _id?: string;
@@ -93,7 +94,7 @@ export default function Projects({ projects = [] }: { projects?: ProjectData[] }
 
     return (
         <section
-            id="projects"
+            id={SITE_SECTIONS.projeler}
             ref={sectionRef}
             className="relative z-20 bg-[#F3F3F3] h-[auto] lg:h-[300vh] max-lg:!mt-4"
             aria-label="Beest Tasarım Mimarisi"
@@ -137,7 +138,7 @@ export default function Projects({ projects = [] }: { projects?: ProjectData[] }
                     <div className="hidden lg:flex flex-col items-center justify-center lg:w-[30vw] shrink-0 bg-white rounded-[2rem] p-10 text-center shadow-[0_10px_40px_-10px_rgba(127,0,255,0.08)]">
                         <h4 className="text-2xl font-bold text-[#111111] mb-6">Sıradaki neden<br />sizin projeniz olmasın?</h4>
                         <a
-                            href="#contact"
+                            href={`#${SITE_SECTIONS.iletisim}`}
                             className="inline-block px-8 py-4 rounded-full bg-[#7F00FF] text-white font-semibold text-sm tracking-wide hover:scale-105 transition-transform duration-300 shadow-[0_8px_24px_-8px_rgba(127,0,255,0.4)]"
                         >
                             Konuşalım
