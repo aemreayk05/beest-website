@@ -17,10 +17,10 @@ export const metadata: Metadata = {
     shortcut: '/favicon.ico',
     apple: '/favicon.ico',
   },
-  title: "Beest Studio — Premium Dijital Deneyimler",
+  title: "Beest Studio | Web Tasarım, Yazılım, SEO",
   description:
-    "İsviçre stili hassasiyetle strateji, marka, web tasarımı ve geliştirme alanlarında üst düzey dijital deneyimler üretiyoruz.",
-  keywords: ["yaratıcı ajans", "web tasarımı", "marka kimliği", "dijital deneyim", "beest studio"],
+    "Premium web tasarım, özel yazılım, e-ticaret ve SEO çözümleri geliştiriyoruz. Beest Studio ile markanızı dijitalde görünür, hızlı ve sürdürülebilir şekilde büyütün.",
+  keywords: ["yaratıcı ajans", "web tasarımı", "marka kimliği", "dijital deneyim", "beest studio", "SEO", "e-ticaret", "yazılım", "web geliştirme"],
   alternates: {
     canonical: '/',
   },
