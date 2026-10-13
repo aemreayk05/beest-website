@@ -7,7 +7,9 @@ import Pricing from '@/components/sections/Pricing';
 import Contact from '@/components/sections/Contact';
 import BeestMarquee from '@/components/ui/BeestMarquee';
 import QuickAccessCard from '@/components/ui/QuickAccessCard';
+import ComingSoon from '@/components/ComingSoon';
 import { client } from '@/sanity/lib/client';
+import { isComingSoon } from '@/lib/comingSoon';
 
 async function getServices() {
   try {
@@ -61,6 +63,8 @@ async function getProjects() {
 }
 
 export default async function Home() {
+  if (isComingSoon) return <ComingSoon />;
+
   const services = await getServices();
   const whyUsReasons = await getWhyUs();
   const projects = await getProjects();

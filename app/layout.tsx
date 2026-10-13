@@ -7,6 +7,7 @@ import BlogNavbar from "@/components/layout/BlogNavbar";
 import MobileNavbar from "@/components/layout/MobileNavbar";
 import DesktopBlogButton from "@/components/layout/DesktopBlogButton";
 import LaunchCampaignRoot from "@/components/marketing/LaunchCampaignRoot";
+import { isComingSoon } from "@/lib/comingSoon";
 export const metadata: Metadata = {
   metadataBase: new URL('https://beeststudio.com'),
   icons: {
@@ -81,17 +82,23 @@ export default function RootLayout({
         />
       </head>
       <body className="bg-dirty-white text-jet-black antialiased flex flex-col min-h-screen">
-        <BlogNavbar />
-        <MobileNavbar />
-        <DesktopBlogButton />
-        <LoadingScreen />
-        <LaunchCampaignRoot />
-        <SmoothScroll>
-          <div className="flex-grow">
-            {children}
-          </div>
-          <Footer />
-        </SmoothScroll>
+        {isComingSoon ? (
+          children
+        ) : (
+          <>
+            <BlogNavbar />
+            <MobileNavbar />
+            <DesktopBlogButton />
+            <LoadingScreen />
+            <LaunchCampaignRoot />
+            <SmoothScroll>
+              <div className="flex-grow">
+                {children}
+              </div>
+              <Footer />
+            </SmoothScroll>
+          </>
+        )}
       </body>
     </html>
   );

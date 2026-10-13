@@ -1,5 +1,6 @@
 import { MetadataRoute } from 'next';
 import { client } from '@/sanity/lib/client';
+import { isComingSoon } from '@/lib/comingSoon';
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://beeststudio.com';
 
@@ -28,6 +29,11 @@ async function getTagSlugs() {
 }
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  // Yer tutucu modda diğer tüm sayfalar ana sayfaya yönlendiği için yalnızca kökü listele
+  if (isComingSoon) {
+    return [{ url: SITE_URL, lastModified: new Date(), changeFrequency: 'weekly', priority: 1 }];
+  }
+
   const [posts, categories, tags] = await Promise.all([
     getBlogSlugs(),
     getCategorySlugs(),
