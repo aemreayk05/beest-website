@@ -1,10 +1,16 @@
 export default function ComingSoon() {
     return (
-        <main className="flex-1 min-h-screen flex items-center justify-center bg-white px-6 py-16">
-            <div className="max-w-xl w-full flex flex-col items-center text-center">
-                <p className="mb-6 text-[0.65rem] font-bold tracking-[0.18em] uppercase text-neon-purple">
+        <main className="relative flex-1 min-h-screen flex items-center justify-center overflow-hidden bg-white px-6 py-16">
+            {/* Beyaz zeminin üstünde yumuşak mor ışıma */}
+            <div
+                aria-hidden="true"
+                className="pointer-events-none absolute left-1/2 top-1/2 h-[28rem] w-[28rem] -translate-x-1/2 -translate-y-1/2 rounded-full bg-neon-purple/10 blur-3xl"
+            />
+
+            <div className="relative max-w-xl w-full flex flex-col items-center text-center">
+                <h1 className="mb-2 text-[0.65rem] font-bold tracking-[0.18em] uppercase text-neon-purple">
                     Yakında
-                </p>
+                </h1>
 
                 {/* SVG logo için düz img kullanıyoruz; Next/Image CSS resize uyarısını engeller. */}
                 {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -18,10 +24,7 @@ export default function ComingSoon() {
                     fetchPriority="high"
                 />
 
-                <h1 className="mt-10 text-4xl md:text-6xl font-black tracking-tighter text-jet-black leading-[0.95]">
-                    Yeni sitemiz çok yakında.
-                </h1>
-                <p className="mt-6 text-base md:text-lg text-black/55 leading-relaxed">
+                <p className="mt-2 text-base md:text-lg text-black/55 leading-relaxed">
                     Beest Studio&apos;yu yeniliyoruz. Çok yakında yeni yüzümüzle buradayız.
                 </p>
             </div>
