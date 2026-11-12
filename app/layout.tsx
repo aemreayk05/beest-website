@@ -81,7 +81,7 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
         />
       </head>
-      <body className="bg-dirty-white text-jet-black antialiased flex flex-col min-h-screen">
+      <body className={`${isComingSoon ? "bg-[#162c38]" : "bg-dirty-white"} text-jet-black antialiased flex flex-col min-h-screen`}>
         {isComingSoon ? (
           children
         ) : (
