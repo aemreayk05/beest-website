@@ -8,7 +8,7 @@ import MobileNavbar from "@/components/layout/MobileNavbar";
 import DesktopBlogButton from "@/components/layout/DesktopBlogButton";
 import LaunchCampaignRoot from "@/components/marketing/LaunchCampaignRoot";
 import { isComingSoon } from "@/lib/comingSoon";
-export const metadata: Metadata = {
+const siteMetadata: Metadata = {
   metadataBase: new URL('https://beeststudio.com'),
   icons: {
     icon: [
@@ -44,6 +44,33 @@ export const metadata: Metadata = {
     description: "İsviçre stili hassasiyetle üst düzey dijital deneyimler üretiyoruz.",
   },
 };
+
+// Yer tutucu modda yeni marka adı ve "Yenileniyoruz" sayfasının metni
+const comingSoonTitle = "Beest Yazılım Teknolojileri | Sitemizi yeniliyoruz";
+const comingSoonDescription =
+  "Fikrinizden ilk sürüme, tasarım ve yazılım bir arada. Yeni tasarımımız ve içeriklerimiz üzerinde çalışıyoruz; kısa süre sonra yeni yüzümüzle buradayız.";
+
+const comingSoonMetadata: Metadata = {
+  ...siteMetadata,
+  title: comingSoonTitle,
+  description: comingSoonDescription,
+  keywords: ["beest", "beest yazılım teknolojileri", "yazılım", "web tasarım", "e-ticaret", "özel yazılım"],
+  openGraph: {
+    title: comingSoonTitle,
+    description: comingSoonDescription,
+    url: 'https://beeststudio.com',
+    siteName: 'Beest Yazılım Teknolojileri',
+    locale: 'tr_TR',
+    type: "website",
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: comingSoonTitle,
+    description: comingSoonDescription,
+  },
+};
+
+export const metadata: Metadata = isComingSoon ? comingSoonMetadata : siteMetadata;
 
 const structuredData = {
   "@context": "https://schema.org",
